@@ -1,4 +1,5 @@
 // https://colorscheme.ru/#2m51TggNhK5Q1
+
 :root {
     --background-color: #E5FEB2;
     --primary-color: #8C9D6A;
@@ -6,6 +7,7 @@
     --secondary-color: #A1A16D;
     --sucess-color: #B1FBB1;
 }
+@import '~ngx-toastr/toastr';
 body {
     background-color: var(--background-color);
 }

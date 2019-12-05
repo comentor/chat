@@ -18,16 +18,17 @@
 .side-bar-section {
     overflow-y: scroll;
     overflow-x: hidden;
+    padding-right: 5px;
     height: 50%;
 }
-h3 {
+.side-bar-section h3 {
     margin: 5px;
 }
-// .btn {
-//     height: 50px;
-//     width: auto;
-// }
+button:disabled {
+    color: gray;
+}
 .own-message {
+    // margin-right: 5px;
     float: right;
     background-color: var(--sucess-color)!important;
 }
@@ -48,14 +49,21 @@ h3 {
     transition: 0.1s ease-out;
     padding-left: 20px;
 }
-.invite-room-block {
+.invite-room-block {    
     float: right;
+}
+.invite-private-block {
+    margin-bottom: 8px;
+    width: 100%;
+}
+.invite-input-private {
+    width: auto!important;
 }
 .invite-input {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     height: 26px;
-    width: 150px;
+    width: 200px;
     font-size: 16px;
 }
 .invite-btn {
@@ -69,6 +77,18 @@ h3 {
 .user-info {
 
 }
+.feedWrapper {
+    background-color: (#fff);
+    font-size: 1.2em;
+    flex: 5;
+    order: 2;
+    overflow-y: scroll;
+    padding: 10px 10px 0px 10px;
+}
+
+
+
+//////
 
 .userListWrapper {
     background-color: #2A2845;
@@ -80,16 +100,6 @@ h3 {
     order: 1;
     padding:20px 0px 40px 30px;
     border-right: 1px solid #222;
-}
-
-.feedWrapper {
-    background-color: (#fff);
-    font-family: "Open Sans", sans-serif;
-    font-size: 1.2em;
-    flex: 5;
-    order: 2;
-    overflow-y: scroll;
-    padding:20px 0px 0px 24px;
 }
 
 .chatFormWrapper {

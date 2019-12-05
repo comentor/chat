@@ -3,6 +3,7 @@ import * as gravatar from 'gravatar'
 import { DataService, roomTypes } from './../_services/data.service'
 import { AuthService } from './../_services/auth.service'
 import { Message, Room } from '../_models';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-chat',
@@ -21,11 +22,12 @@ export class ChatComponent implements OnInit {
   private room: Room;
   private feedSubscription: any;
   private user: any;
-  private emailCommon: string;
-  private emailPrivate: string;
+  private emailCommon: string = '';
+  private emailPrivate: string = '';
   constructor(
     private dataService: DataService,
-    private authService: AuthService 
+    private authService: AuthService,
+    private toastr: ToastrService 
   ) { 
     this.authService.authUser().subscribe((user) => {
       if(user) {
@@ -53,22 +55,50 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.dataService.getRooms().snapshotChanges().subscribe((data) => {
-    //   this.rooms = data.map((e) => {
-    //     return <Room>{
-    //       id: e.payload.doc.id,
-    //       ...e.payload.doc.data()
-    //     };
-    //   });
-    // });
+
   }
   send() {
     this.dataService.sendMessage(this.message, this.room.id);
     this.message = '';
   }
-  createRoom() {
-    this.dataService.createRoom(this.roomName, roomTypes.COMMON);
+  async createRoom() {
+    try {
+      await this.dataService.createRoom(this.roomName, roomTypes.COMMON);
+    } catch (e) {
+      this.toastr.error(e);
+    }
     this.roomName = '';
+  }
+  async inviteToRoom() {
+    this.emailCommon = this.emailCommon.trim();
+    try {
+      const res = await this.dataService.inviteToRoom(this.room, this.emailCommon);
+      this.toastr.success(`${this.emailCommon} has been added to the room`);
+    } catch (e) {
+      this.toastr.error(e);
+    }
+    this.emailCommon = '';
+  }
+  createPrivate() {
+    this.emailPrivate = this.emailPrivate.trim();
+    if (this.emailPrivate === this.user.email) {
+      this.toastr.error('You cannot invite yourself!');
+      return;
+    }
+    const existed = this.rooms.find((room) => room.type === roomTypes.PRIVATE && room.users.includes(this.emailPrivate));
+    if (existed) {
+      this.room = existed;
+      this.dataService.setRoom(this.room.id);
+      this.toastr.info('Conversation already existed');
+      return;
+    }
+    try {
+      this.dataService.createPrivate(this.emailPrivate);
+      this.toastr.success('Conversation created');
+    } catch(e) {
+      this.toastr.success(e);
+    }
+    this.emailPrivate = '';
   }
   onMessageKeyUp(event: KeyboardEvent) {
     if (event.keyCode === 13) {
@@ -95,27 +125,6 @@ export class ChatComponent implements OnInit {
     this.dataService.setRoom(room.id);
     localStorage && localStorage.setItem('roomId', this.room.id);
   }
-  inviteToRoom() {
-    this.room.users.push(this.emailCommon);
-    this.dataService.saveRoom(this.room);
-    this.emailCommon = '';
-  }
-  createPrivate() {
-    this.dataService.createPrivate(this.emailPrivate);
-    this.emailPrivate = '';
-  }
-  // subscribeToFeed() {
-  //   this.messages = [];
-  //   if (this.feedSubscription) {
-  //     this.feedSubscription.unsubscribe();
-  //   }
-  //   this.feedSubscription = this.dataService.getMessages(this.room.id).snapshotChanges().subscribe((data) => {
-  //     this.messages = data.map((doc) => {
-  //       return <Message>doc.payload.doc.data();
-  //     });
-  //     console.log(this.messages);
-  //   });
-  // }
   logout(event) {
     event.preventDefault();
     this.authService.logout();

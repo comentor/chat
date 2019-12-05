@@ -4,7 +4,9 @@ export class Room {
   name = '';
   createAt = '';
   createBy = '';
+  type = '';
   users = [];
+  joinedAt: any = {};
   constructor(json: any) {
     Object.assign(this, json, {id: json.id});
   }

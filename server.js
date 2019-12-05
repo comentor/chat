@@ -17,8 +17,32 @@ fbAdmin.initializeApp({
 });
 
 const db = fbAdmin.firestore();
-db.collection('messages').onSnapshot(docSnapshot => {
-    console.log(`Received doc snapshot: ${docSnapshot}`);
+const listeningStartedAt = (new Date()).toISOString();
+db.collection('rooms').onSnapshot(docSnapshot => {
+
+    docSnapshot.docChanges().forEach((change) => {
+        // console.log('======ROOMS');
+        // console.log(change.doc.data());
+        // console.log(change);
+    });
+    // console.log(`ROOMS: Received doc snapshot:`);
+    // console.log(docSnapshot.changes);
+    // console.log(docSnapshot);
+    // ...
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+  });
+
+  db.collection('messages').onSnapshot(docSnapshot => {
+    docSnapshot.docChanges().forEach((change) => {
+        const data = change.doc.data();
+        if (data.sentAt > listeningStartedAt) {
+            console.log(`I have to send an email from room ${data.roomId} except by ${data.sentBy}`);
+        }
+    });
+    // console.log(`MESSAGES: Received doc snapshot:`);
+    // console.log(docSnapshot.changes);
+    // console.log(docSnapshot);
     // ...
   }, err => {
     console.log(`Encountered error: ${err}`);
@@ -49,11 +73,11 @@ wss.on('connection', (ws) => {
     ws.on('close', () => console.log('Client disconnected'));
   });
 
-setInterval(() => {
-wss.clients.forEach((client) => {
-    client.send(new Date().toTimeString());
-});
-}, 1000);
+// setInterval(() => {
+// wss.clients.forEach((client) => {
+//     client.send(new Date().toTimeString());
+// });
+// }, 1000);
 // io.sockets.on('connection', function(socket) {
 //     console.log('new client');
 //     socket.on('username', function(username) {
