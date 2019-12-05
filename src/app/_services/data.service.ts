@@ -15,6 +15,11 @@ export class DataService {
     private fireAuth: AngularFireAuth,
     private firestore: AngularFirestore
   ) { 
+    var HOST = location.origin.replace(/^http/, 'ws')
+    var ws = new WebSocket(HOST);
+    ws.onmessage = function (event) {
+      console.log(event);
+    };
     this.authService.authUser().subscribe(user => {
       if (user) {
         this.user = user;

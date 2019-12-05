@@ -2,7 +2,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const { Server } = require('ws');
+const wss = new Server({ server: http });
 
 var engines = require('consolidate');
 
@@ -15,21 +16,34 @@ app.get('*', function(req, res) {
     res.render('index.html');
 });
 
-io.sockets.on('connection', function(socket) {
-    socket.on('username', function(username) {
-        socket.username = username;
-        io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
-    });
+wss.on('connection', (ws) => {
+    console.log('Client connected');
+    ws.on('close', () => console.log('Client disconnected'));
+  });
 
-    socket.on('disconnect', function(username) {
-        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
-    })
-
-    socket.on('chat_message', function(message) {
-        io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-    });
-
+setInterval(() => {
+wss.clients.forEach((client) => {
+    client.send(new Date().toTimeString());
 });
+}, 1000);
+// io.sockets.on('connection', function(socket) {
+//     console.log('new client');
+//     socket.on('username', function(username) {
+//         socket.username = username;
+//         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
+//     });
+
+//     socket.on('disconnect', function(username) {
+//         io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
+//     })
+
+//     socket.on('chat_message', function(message) {
+//         io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+//     });
+// });
+
+// setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+
 const port = process.env.PORT || 8080;;
 const server = http.listen(port, function() {
     console.log('listening on *:' + port);

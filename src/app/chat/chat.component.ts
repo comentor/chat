@@ -55,7 +55,7 @@ export class ChatComponent implements OnInit {
   }
   onMessageKeyUp(event: KeyboardEvent) {
     if (event.keyCode === 13) {
-      this.createRoom();
+      this.send();
     }
   }
   onRoomKeyUp(event: KeyboardEvent) {
