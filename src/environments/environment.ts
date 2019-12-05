@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyBbykWqKtUw8A-gFY3sovcLZmX60YCdNDs',
+    authDomain: 'foko-chat.firebaseapp.com',
+    databaseURL: 'https://foko-chat.firebaseio.com',
+    projectId: 'foko-chat',
+    storageBucket: 'foko-chat.appspot.com',
+    // messagingSenderId: 'Your Firebase Credentials Here'
+  }
 };
 
 /*

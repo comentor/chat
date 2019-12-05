@@ -1,0 +1,9 @@
+
+<div class="wrapper">
+    <h2>Log In</h2>
+    <input [(ngModel)]="email" type="email" name="email" class="input" />
+    <input [(ngModel)]="password" type="password" name="password" class="input" />
+    <button class="btn primary" (click)="login()">Log In</button>
+    <button class="btn secondary" (click)="register()">Register</button>
+    <p class="error">{{error}}</p>
+</div>
