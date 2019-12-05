@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable, BehaviorSubject } from 'rxjs';
 import * as firebase from 'firebase/app';
 
@@ -9,51 +8,32 @@ import * as firebase from 'firebase/app';
   providedIn: 'root'
 })
 export class AuthService implements CanActivate {
-  private roomName = '';
   private user: Observable<firebase.User>;
-  public authState = new BehaviorSubject(false);
+  private authState: BehaviorSubject<boolean>;
   constructor(
-    private fireAuth: AngularFireAuth,
-    private firestore: AngularFirestore
+    private fireAuth: AngularFireAuth
     ) {
       this.user = fireAuth.authState;
-      console.log(this.user);
+      this.authState = new BehaviorSubject(false);
+      this.user.subscribe((user) => {
+        this.authState.next(Boolean(user));
+      })
     }
     authUser() {
       return this.user;
     }
-    isAuthenticated() {
+    canActivate() {
       return this.authState.value;
     }
-    canActivate() {
-      return this.isAuthenticated();
-    }
-    login(email, password) {
-      return this.fireAuth.auth.signInWithEmailAndPassword(email, password)
-        .then((user) => {
-          console.log(user);
-          this.authUser().toPromise().then((data) => {
-            console.log(data);
-          });
-          this.authState.next(true);
-          // this.authState = user;
-          // this.setUserStatus('online');
-          // this.router.navigate(['chat']);
-        })
+    async login(email, password) {
+      await this.fireAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      await this.fireAuth.auth.signInWithEmailAndPassword(email, password);
     }  
+    async register(email, password) {
+      await this.fireAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      await this.fireAuth.auth.createUserWithEmailAndPassword(email, password);
+    }
     logout() {
       this.fireAuth.auth.signOut();
-      this.authState.next(false);
-    }
-    register(email, password) {
-      return this.fireAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        this.authState.next(true);
-        // console.log('===register===');
-        // console.log(user);
-        // this.authState = user;
-        // const status = 'online';
-        // this.setUserData(email, displayName, status);
-      })
     }
 }

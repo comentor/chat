@@ -4,8 +4,37 @@ const app = express();
 const http = require('http').Server(app);
 const { Server } = require('ws');
 const wss = new Server({ server: http });
+const  engines = require('consolidate');
 
-var engines = require('consolidate');
+// const environment = require('./src/environments/environment');
+
+const fbAdmin = require("firebase-admin");
+
+const serviceAccount = require("./firebase-admin.json");
+fbAdmin.initializeApp({
+  credential: fbAdmin.credential.cert(serviceAccount),
+  databaseURL: "https://foko-chat.firebaseio.com"
+});
+
+const db = fbAdmin.firestore();
+db.collection('messages').onSnapshot(docSnapshot => {
+    console.log(`Received doc snapshot: ${docSnapshot}`);
+    // ...
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+  });
+
+// const firebase = require("firebase/app");
+// const defaultProject = firebase.initializeApp({
+//     apiKey: 'AIzaSyBbykWqKtUw8A-gFY3sovcLZmX60YCdNDs',
+//     authDomain: 'foko-chat.firebaseapp.com',
+//     databaseURL: 'https://foko-chat.firebaseio.com',
+//     projectId: 'foko-chat',
+//     storageBucket: 'foko-chat.appspot.com',
+// });
+// const firestore = defaultProject.firestore();
+// const ref = firestore.collection('messages');
+// console.log(ref);
 
 app.set('views', path.join(__dirname, 'public'));
 app.engine('html', engines.mustache);
@@ -15,7 +44,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('*', function(req, res) {
     res.render('index.html');
 });
-
 wss.on('connection', (ws) => {
     console.log('Client connected');
     ws.on('close', () => console.log('Client disconnected'));

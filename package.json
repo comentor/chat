@@ -25,6 +25,7 @@
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "firebase": "^7.5.0",
+    "firebase-admin": "^8.8.0",
     "gravatar": "^1.8.0",
     "mustache": "^3.1.0",
     "rxjs": "~6.4.0",

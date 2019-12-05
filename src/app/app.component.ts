@@ -13,8 +13,13 @@ export class AppComponent {
     private authService: AuthService,
     private router: Router
   ) {
-    this.authService.authState.subscribe(async (state) => {
-      if (state) {
+    // console.log(localStorage.getItem('user'));
+    // this.authService.authUser().subscribe((user) => {
+    //   console.log(user);
+    // });
+    this.authService.authUser().subscribe(async (user) => {
+      console.log(user);
+      if (user) {
         this.router.navigate(['chat']);
       } else {
         this.router.navigate(['login']);

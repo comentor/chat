@@ -4,7 +4,7 @@
     display: flex;
 }
 .side-bar {
-    background-color: var(--primary-color);
+    background-color: var(--primary2-color);
     color: white;
     width: 25%;
     padding:5px 10px 5px 10px;
@@ -20,19 +20,55 @@
     overflow-x: hidden;
     height: 50%;
 }
-.btn {
-    width: auto;
+h3 {
+    margin: 5px;
 }
-.own-message{
+// .btn {
+//     height: 50px;
+//     width: auto;
+// }
+.own-message {
     float: right;
     background-color: var(--sucess-color)!important;
+}
+.chat-btn {
+    height: 50px;
+    width: auto;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.chat-input {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    flex: 10;
+    font-size: 1.3em;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #eee;
+    color: #000;
+    transition: 0.1s ease-out;
+    padding-left: 20px;
+}
+.invite-room-block {
+    float: right;
+}
+.invite-input {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    height: 26px;
+    width: 150px;
+    font-size: 16px;
+}
+.invite-btn {
+    width: auto;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    height: 30px;
+    font-size: 16px;
+    padding: 0px 5px!important;
 }
 .user-info {
 
 }
-
-
-////chatcomponent
 
 .userListWrapper {
     background-color: #2A2845;
@@ -85,7 +121,7 @@ app-user-list {
     background-color: #eee;
     color: #000;
     transition: 0.1s ease-out;
-    padding-left: 80px;
+    padding-left: 20px;
 }
 
 .chatInput:focus{

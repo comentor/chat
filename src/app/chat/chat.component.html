@@ -7,9 +7,8 @@
 
 <div class="chatFormWrapper">
 
-<input class="chatInput" [(ngModel)]="roomName" (keyup)="onRoomKeyUp($event)" />
-<button class="btn primary chatButton" 
-  (click)=createRoom()>Create Room</button>
+<input class="input chat-input" [(ngModel)]="roomName" (keyup)="onRoomKeyUp($event)" />
+<button class="btn primary chat-btn" (click)=createRoom()>Create Room</button>
 </div>
 
 <div class="wrapper">
@@ -17,17 +16,30 @@
             <div class="side-bar-section">
                 <h3>Rooms</h3>
                 <div *ngFor="let room of rooms">
-                    <div (click)="onRoomClick(room)" class="item">{{room.name}}</div>
+                    <div *ngIf="roomTypes.COMMON === room.type" (click)="onRoomClick(room)" class="item">{{room.name}}</div>
                 </div>
             </div>
             <div class="side-bar-section">
                     <h3>Private chats</h3>
-                </div>
+                    <span class="invite-room-block">
+                        <input placeholder="email to invite" class="input invite-input" [(ngModel)]="emailPrivate" (keyup)="onEmailPrivateKeyUp($event)" />
+                        <button class="btn primary invite-btn" (click)="createPrivate()">Invite</button>
+                    </span>
+                    <div *ngFor="let room of rooms">
+                        <div *ngIf="roomTypes.PRIVATE === room.type" (click)="onRoomClick(room)" class="item">{{getRoomName(room)}}</div>
+                    </div>
+            </div>
         </div>
         <div #scroller class="feedWrapper">
             <h3 *ngIf="!room">No message to show. Join/create a room or start private conversation</h3>
             <div class="feed" *ngIf="room">
-                <h3>Room: <b>{{room.name}}</b></h3>
+                <h3>
+                    Room: <i>{{getRoomName(room)}}</i>
+                    <span *ngIf="roomTypes.COMMON === room.type" class="invite-room-block">
+                        <input placeholder="email to invite" class="input invite-input" [(ngModel)]="emailCommon" (keyup)="onEmailCommonKeyUp($event)" />
+                        <button class="btn primary invite-btn" (click)="inviteToRoom()">Invite</button>
+                    </span>
+                </h3>
                 <div *ngFor="let message of messages" class="message">
                         <div class="messageContainer" [ngClass]="{'own-message': isAuthor(message)}">
                         <div class="messageData">
@@ -43,7 +55,6 @@
         </div>
       </div>
       <div class="chatFormWrapper">
-        <input class="chatInput" [disabled]="!room" [(ngModel)]="message" (keyup)="onMessageKeyUp($event)" />
-        <button class="btn primary chatButton" [disabled]="!room"
-          (click)=send()>Send</button>
+        <input class="input chat-input" [disabled]="!room" [(ngModel)]="message" (keyup)="onMessageKeyUp($event)" />
+        <button class="btn primary chat-btn" [disabled]="!room" (click)=send()>Send</button>
       </div>
