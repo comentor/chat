@@ -30,7 +30,7 @@ io.sockets.on('connection', function(socket) {
     });
 
 });
-
-const server = http.listen(8080, function() {
-    console.log('listening on *:8080');
+const port = process.env.PORT || 8080;;
+const server = http.listen(port, function() {
+    console.log('listening on *:' + port);
 });
