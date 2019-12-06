@@ -10,5 +10,5 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 ## Build
 
 Run `npm run build-server` to build the server-side of the project. The build artifacts will be stored in the `server/` directory.
-Run `npm run build-client` to build the client-side of the project. The build artifacts will be stored in the `public/` directory.
-Run `npm run build` to build both.
+Run `npm run build` to build the client-side of the project. The build artifacts will be stored in the `public/` directory.
+Run `npm run build-all` to build both.
