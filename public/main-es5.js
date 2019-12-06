@@ -400,7 +400,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 function AuthService(fireAuth) {
                     var _this = this;
                     this.fireAuth = fireAuth;
-                    this.apiAdapter = 'SERVER';
+                    this.apiAdapter = 'CLIENT';
                     if (localStorage && localStorage.getItem('apiAdapter')) {
                         this.apiAdapter = localStorage.getItem('apiAdapter');
                     }

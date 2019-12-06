@@ -316,7 +316,7 @@ __webpack_require__.r(__webpack_exports__);
 let AuthService = class AuthService {
     constructor(fireAuth) {
         this.fireAuth = fireAuth;
-        this.apiAdapter = 'SERVER';
+        this.apiAdapter = 'CLIENT';
         if (localStorage && localStorage.getItem('apiAdapter')) {
             this.apiAdapter = localStorage.getItem('apiAdapter');
         }

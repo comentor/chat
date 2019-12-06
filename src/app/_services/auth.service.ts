@@ -10,7 +10,7 @@ import * as firebase from 'firebase/app';
 export class AuthService implements CanActivate {
   private user: Observable<firebase.User>;
   private authState: BehaviorSubject<boolean>;
-  public apiAdapter: string = 'SERVER';
+  public apiAdapter: string = 'CLIENT';
   constructor(
     private fireAuth: AngularFireAuth
     ) {
