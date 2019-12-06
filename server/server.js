@@ -71,18 +71,19 @@ app.use(function (req, res, next) {
 app.set('views', publicDir);
 app.use(express.static(publicDir));
 app.post('/api/createRoom', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, e_1;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var _a, _b, _c, e_1;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
-                _c.trys.push([0, 2, , 3]);
+                _d.trys.push([0, 2, , 3]);
                 _b = (_a = res).json;
+                _c = { success: true };
                 return [4 /*yield*/, chatApi.createRoom(req.body)];
             case 1:
-                _b.apply(_a, [_c.sent()]);
+                _b.apply(_a, [(_c.response = _d.sent(), _c)]);
                 return [3 /*break*/, 3];
             case 2:
-                e_1 = _c.sent();
+                e_1 = _d.sent();
                 res.json({ success: false, errormsg: e_1 });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -90,18 +91,19 @@ app.post('/api/createRoom', function (req, res) { return __awaiter(void 0, void 
     });
 }); });
 app.post('/api/sendMessage', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, e_2;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var _a, _b, _c, e_2;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
-                _c.trys.push([0, 2, , 3]);
+                _d.trys.push([0, 2, , 3]);
                 _b = (_a = res).json;
+                _c = { success: true };
                 return [4 /*yield*/, chatApi.sendMessage(req.body)];
             case 1:
-                _b.apply(_a, [_c.sent()]);
+                _b.apply(_a, [(_c.response = _d.sent(), _c)]);
                 return [3 /*break*/, 3];
             case 2:
-                e_2 = _c.sent();
+                e_2 = _d.sent();
                 res.json({ success: false, errormsg: e_2 });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];

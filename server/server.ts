@@ -30,7 +30,7 @@ app.use(express.static(publicDir));
 
 app.post('/api/createRoom', async (req, res) => {
   try {
-    res.json(await chatApi.createRoom(req.body));
+    res.json({success: true, response: await chatApi.createRoom(req.body)});
   } catch (e) {
     res.json({success: false, errormsg: e});
   }
@@ -38,7 +38,7 @@ app.post('/api/createRoom', async (req, res) => {
 
 app.post('/api/sendMessage', async (req, res) => {
   try {
-    res.json(await chatApi.sendMessage(req.body));
+    res.json({success: true, response: await chatApi.sendMessage(req.body)});
   } catch (e) {
     res.json({success: false, errormsg: e});
   }
