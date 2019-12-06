@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service'
 import { Message, Room } from './../_models'
@@ -21,8 +22,8 @@ export class DataService {
   roomId: string;
   private feedSubscription: any;
   private roomSubscription: any;
-  // private adapter = 'CLIENT';
-  private adapter = 'SERVER';
+  private adapter = 'CLIENT';
+  // private adapter = 'SERVER';
   constructor(
     private authService: AuthService,
     private fireAuth: AngularFireAuth,
@@ -105,6 +106,10 @@ export class DataService {
     }
     this.subsribeToFeed();
   }
+  async leaveRoom(room) {
+    room.users = room.users.filter(email => email !== this.user.email);
+    await this.saveRoom(room);
+  }
   async createPrivate(email: string) {
     const createdAt = (new Date()).toISOString();
     await this.firestore.collection('rooms').add({
@@ -129,13 +134,15 @@ export class DataService {
     if (this.feedSubscription) {
       this.feedSubscription.unsubscribe();
     }
+    if (!this.roomId) {
+      this.messages.next([]);
+    }
     this.feedSubscription = this.firestore.collection('messages', (ref) => {
       let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       const room = this.getRooms().getValue().find(room => this.roomId === room.id);
       query = query.orderBy('sentAt', 'asc');
       if (this.roomId) { query = query.where('roomId', '==', this.roomId); }
       if (room && room.joinedAt[this.user.email]) { query = query.where('sentAt', '>', room.joinedAt[this.user.email]); }
-      console.log(query);
       return query;
     }).snapshotChanges().subscribe((data) => {
       const messages = data.map((e) => {

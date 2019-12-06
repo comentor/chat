@@ -6,7 +6,7 @@
 .side-bar {
     background-color: var(--primary2-color);
     color: white;
-    width: 25%;
+    width: 20%;
     padding:5px 10px 5px 10px;
     font-size: 1.2em;
 }
@@ -16,12 +16,13 @@
     cursor: pointer;
 }
 .side-bar-section {
+    // display: flex;
     overflow-y: scroll;
     overflow-x: hidden;
     padding-right: 5px;
     height: 50%;
 }
-.side-bar-section h3 {
+.side-bar h3 {
     margin: 5px;
 }
 button:disabled {
@@ -49,21 +50,22 @@ button:disabled {
     transition: 0.1s ease-out;
     padding-left: 20px;
 }
-.invite-room-block {    
-    float: right;
+.invite-room-block {   
+    width: 90%; 
+    // float: right;
 }
 .invite-private-block {
     margin-bottom: 8px;
     width: 100%;
 }
-.invite-input-private {
-    width: auto!important;
-}
+// .invite-input-private {
+//     width: auto!important;
+// }
 .invite-input {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     height: 26px;
-    width: 200px;
+    width: 160px;
     font-size: 16px;
 }
 .invite-btn {
@@ -96,7 +98,7 @@ button:disabled {
     background-color: (#fff);
     font-size: 1.2em;
     flex: 5;
-    order: 2;
+    // order: 2;
     overflow-y: scroll;
     padding: 10px 10px 0px 10px;
 }
@@ -132,7 +134,12 @@ button:disabled {
 	border-radius: 10px;
 	background-color: #F5F5F5;
 }
-
+.leave-btn {
+    margin: 5px 0px; 
+}
+.user-list {
+    margin-top: 5px;
+}
 app-user-list {
     width: 100%;
 }

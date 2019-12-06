@@ -129,6 +129,11 @@ export class ChatComponent implements OnInit {
     this.dataService.setRoom(room.id);
     localStorage && localStorage.setItem('roomId', this.room.id);
   }
+  async leaveRoom() {
+    await this.dataService.leaveRoom(this.room);
+    this.room = null;
+    this.dataService.setRoom(null);
+  }
   logout() {
     // event.preventDefault();
     this.authService.logout();
@@ -142,5 +147,8 @@ export class ChatComponent implements OnInit {
   }
   isCurrentRoom(room) {
     return room === this.room;
+  }
+  isMe(email) {
+    return email === this.user.email;
   }
 }
