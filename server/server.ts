@@ -1,14 +1,10 @@
-const express = require('express');
-const path = require('path');
-const app = express();
-const http = require('http').Server(app);
-// const { Server } = require('ws');
-// const wss = new Server({ server: http });
 import { ChatApi } from './chatApi';
 import * as bodyParser from 'body-parser'
 
-const chatApi = new ChatApi(http);
-const publicDir = path.join(__dirname, '../', 'public'); 
+const express = require('express');
+const path = require('path');
+const app = express();
+const http = require('http').Server(app); 
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -25,9 +21,13 @@ app.use((req, res, next) => {
       next();
   }
 });
+
+const publicDir = path.join(__dirname, '../', 'public');
+
 app.set('views', publicDir);
 app.use(express.static(publicDir)); 
 
+const chatApi = new ChatApi(http);
 app.post('/api/room', async (req, res) => {
   try {
     res.json({success: true, response: await chatApi.apiRoom(req.body.data, req.body.method)});
@@ -47,32 +47,6 @@ app.post('/api/message', async (req, res) => {
 app.get('*', function(req, res) {
   res.sendFile(path.join(publicDir, 'index.html'));
 });
-// wss.on('connection', (ws) => {
-//     ws.on('close', () => console.log('Client disconnected'));
-//   });
-
-// setInterval(() => {
-// wss.clients.forEach((client) => {
-//     client.send(new Date().toTimeString());
-// });
-// }, 1000);
-// io.sockets.on('connection', function(socket) {
-//     console.log('new client');
-//     socket.on('username', function(username) {
-//         socket.username = username;
-//         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
-//     });
-
-//     socket.on('disconnect', function(username) {
-//         io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
-//     })
-
-//     socket.on('chat_message', function(message) {
-//         io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-//     });
-// });
-
-// setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 
 const port = process.env.PORT || 8080;;
 const server = http.listen(port, function() {

@@ -56,40 +56,56 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fbAdmin = __importStar(require("firebase-admin"));
 var ws_1 = require("ws");
+var _ = __importStar(require("underscore"));
 var serviceAccount = require("./../firebase-admin.json");
 var ChatApi = /** @class */ (function () {
     function ChatApi(server) {
         this.server = server;
-        this.feedSubsribers = {};
-        this.openWebsocket();
+        this.rooms = [];
         fbAdmin.initializeApp({
             credential: fbAdmin.credential.cert(serviceAccount),
             databaseURL: "https://foko-chat.firebaseio.com"
         });
         this.firestore = fbAdmin.firestore();
-        // const listeningStartedAt = (new Date()).toISOString();
-        // this.firestore.collection('rooms').onSnapshot(docSnapshot => {
-        //     docSnapshot.docChanges().forEach((change) => {
-        //     });
-        // }, err => {
-        //     console.log(`Encountered error: ${err}`);
-        // });
-        // this.firestore.collection('messages').onSnapshot(docSnapshot => {
-        //     docSnapshot.docChanges().forEach((change) => {
-        //         const data = change.doc.data();
-        //         if (data.sentAt > listeningStartedAt) {
-        //             console.log(`I have to send an email from room ${data.roomId} except by ${data.sentBy}`);
-        //         }
-        //     });
-        // }, err => {
-        //     console.log(`Encountered error: ${err}`);
-        // });
+        this.openWebsocket();
+        this.subscribeToAllMessages();
+        this.subscribeToAllRooms();
     }
+    ChatApi.prototype.sendEmail = function (sentBy, roomId) {
+        var room = this.rooms.find(function (room) { return room.id === roomId; });
+        var receipients = room.users.filter(function (email) { return room.joinedAt[email] && email !== sentBy; });
+        var text = room.type === 'PRIVATE' ?
+            sentBy + " has sent a private message to you" :
+            sentBy + " has sent a message to a group you joined: " + room.name;
+        receipients.forEach(function (email) {
+            console.log(email);
+            console.log(text);
+        });
+    };
+    ChatApi.prototype.subscribeToAllMessages = function () {
+        var debouncedSend = _.debounce(this.sendEmail.bind(this), 2000);
+        var listeningStartedAt = (new Date()).toISOString();
+        this.firestore.collection('messages').onSnapshot(function (docSnapshot) {
+            docSnapshot.docChanges().forEach(function (change) {
+                var data = change.doc.data();
+                if (data.sentAt > listeningStartedAt) {
+                    debouncedSend(data.sentBy, data.roomId);
+                }
+            });
+        }, function (err) {
+            console.log("Encountered error: " + err);
+        });
+    };
+    ChatApi.prototype.subscribeToAllRooms = function () {
+        var _this = this;
+        this.firestore.collection('rooms').onSnapshot(function (docSnapshot) {
+            _this.rooms = docSnapshot.docs.map(function (doc) { return (__assign({ id: doc.id }, doc.data())); });
+        });
+    };
     ChatApi.prototype.openWebsocket = function () {
         var _this = this;
         var wss = new ws_1.Server({ server: this.server });
         wss.on('connection', function (ws) {
-            console.log("WSS clients: " + wss.clients.length);
             var feedUnsubscribe;
             var roomsUnsubscribe;
             console.log('Client connected');
@@ -127,8 +143,6 @@ var ChatApi = /** @class */ (function () {
         });
     };
     ChatApi.prototype.getRoomsSubscriber = function (data, ws) {
-        console.log('getRoomsSubscriber');
-        console.log(data);
         var ref = this.firestore.collection('rooms');
         return ref
             .where('users', 'array-contains', data.email)

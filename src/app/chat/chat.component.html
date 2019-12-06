@@ -15,7 +15,9 @@
         <div class="side-bar-section">
             <h3>Rooms</h3>
             <div *ngFor="let room of rooms">
-                <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.COMMON === room.type" (click)="onRoomClick(room)" class="item">{{room.name}}</div>
+                <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.COMMON === room.type" (click)="onRoomClick(room)" class="item">
+                    <span class="new-room" *ngIf="ifNew(room)">(new)</span>{{room.name}}
+                </div>
             </div>
         </div>
         <div class="side-bar-section">
@@ -55,7 +57,7 @@
         <div class="invite-private-block">
             <h3>Members</h3>
             <div *ngFor="let email of room.users">
-                <div [ngClass]="{'current-room': isMe(email)}" class="item">{{email}}</div>
+                <div [ngClass]="{'current-room': isMe(email)}" class="item"><span class="new-room" *ngIf="!isMember(email)">(invited)</span>{{email}}</div>
             </div>
         </div>
         <button class="btn primary leave-btn" [disabled]="false" (click)=leaveRoom()>Leave room</button>

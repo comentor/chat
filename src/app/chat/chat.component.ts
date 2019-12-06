@@ -155,4 +155,10 @@ export class ChatComponent implements OnInit {
   isMe(email) {
     return email === this.user.email;
   }
+  ifNew(room) {
+    return !room.joinedAt[this.user.email];
+  }
+  isMember(email) {
+    return this.room.joinedAt[email];
+  }
 }

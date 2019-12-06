@@ -43,16 +43,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var chatApi_1 = require("./chatApi");
+var bodyParser = __importStar(require("body-parser"));
 var express = require('express');
 var path = require('path');
 var app = express();
 var http = require('http').Server(app);
-// const { Server } = require('ws');
-// const wss = new Server({ server: http });
-var chatApi_1 = require("./chatApi");
-var bodyParser = __importStar(require("body-parser"));
-var chatApi = new chatApi_1.ChatApi(http);
-var publicDir = path.join(__dirname, '../', 'public');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // Allow any method from any host and log requests
@@ -68,8 +64,10 @@ app.use(function (req, res, next) {
         next();
     }
 });
+var publicDir = path.join(__dirname, '../', 'public');
 app.set('views', publicDir);
 app.use(express.static(publicDir));
+var chatApi = new chatApi_1.ChatApi(http);
 app.post('/api/room', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, _b, _c, e_1;
     return __generator(this, function (_d) {
@@ -113,28 +111,6 @@ app.post('/api/message', function (req, res) { return __awaiter(void 0, void 0, 
 app.get('*', function (req, res) {
     res.sendFile(path.join(publicDir, 'index.html'));
 });
-// wss.on('connection', (ws) => {
-//     ws.on('close', () => console.log('Client disconnected'));
-//   });
-// setInterval(() => {
-// wss.clients.forEach((client) => {
-//     client.send(new Date().toTimeString());
-// });
-// }, 1000);
-// io.sockets.on('connection', function(socket) {
-//     console.log('new client');
-//     socket.on('username', function(username) {
-//         socket.username = username;
-//         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
-//     });
-//     socket.on('disconnect', function(username) {
-//         io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
-//     })
-//     socket.on('chat_message', function(message) {
-//         io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-//     });
-// });
-// setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 var port = process.env.PORT || 8080;
 ;
 var server = http.listen(port, function () {

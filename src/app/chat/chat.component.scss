@@ -124,25 +124,33 @@ button:disabled {
     color: red;
     font-style: italic;
 }
+.new-room {
+    margin-right: 2px;
+    font-size: 0.7em;
+    cursor: pointer;
+    display: inline;
+    color: green;
+    font-style: italic;
+}
 .adapter-data {
-    font-size: 1.5em;
+    font-size: 1.2em;
     float: left;
     font-style: italic;
 }
 
 //////
 
-.userListWrapper {
-    background-color: #2A2845;
-    color: #fff;
-    display: flex;
-    font-family: "Open Sans", sans-serif;
-    font-size: 1.2em;
-    flex: 1;
-    order: 1;
-    padding:20px 0px 40px 30px;
-    border-right: 1px solid #222;
-}
+// .userListWrapper {
+//     background-color: #2A2845;
+//     color: #fff;
+//     display: flex;
+//     font-family: "Open Sans", sans-serif;
+//     font-size: 1.2em;
+//     flex: 1;
+//     order: 1;
+//     padding:20px 0px 40px 30px;
+//     border-right: 1px solid #222;
+// }
 
 .chatFormWrapper {
     display: flex;
@@ -162,9 +170,12 @@ button:disabled {
 .user-list {
     margin-top: 5px;
 }
-app-user-list {
-    width: 100%;
+.messageData{
+    flex: 1;
+    padding: 10px;
+    font-size: 0.7em;
 }
+
 
 
 
