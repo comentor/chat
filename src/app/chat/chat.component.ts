@@ -134,6 +134,9 @@ export class ChatComponent implements OnInit {
     this.room = null;
     this.dataService.setRoom(null);
   }
+  async hideMessage(message: Message) {
+    await this.dataService.hideMessage(message);
+  }
   logout() {
     // event.preventDefault();
     this.authService.logout();

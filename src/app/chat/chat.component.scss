@@ -107,6 +107,24 @@ button:disabled {
     background-color: var(--primary-color);
 }
 
+.sender{
+    display: block;
+    color: #222;
+    font-weight: bold;
+}
+
+.timestamp {
+    color: #555;
+    font-style: italic;
+}
+
+.delete {
+    cursor: pointer;
+    display: block;
+    color: red;
+    font-style: italic;
+}
+
 
 //////
 

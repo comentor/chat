@@ -18,14 +18,14 @@
                 </div>
             </div>
             <div class="side-bar-section">
-                    <h3>Private chats</h3>
-                    <div class="invite-private-block">
-                        <input [(ngModel)]="emailPrivate" (keyup)="onEmailPrivateKeyUp($event)" placeholder="email to invite" class="input invite-input invite-input-private" />
-                        <button [disabled]="emailPrivate.trim().length === 0" (click)="createPrivate()" class="btn primary invite-btn">Invite</button>
-                    </div>
-                    <div *ngFor="let room of rooms">
-                        <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.PRIVATE === room.type" (click)="onRoomClick(room)" class="item">{{getRoomName(room)}}</div>
-                    </div>
+                <h3>Private chats</h3>
+                <div class="invite-private-block">
+                    <input [(ngModel)]="emailPrivate" (keyup)="onEmailPrivateKeyUp($event)" placeholder="email to invite" class="input invite-input invite-input-private" />
+                    <button [disabled]="emailPrivate.trim().length === 0" (click)="createPrivate()" class="btn primary invite-btn">Invite</button>
+                </div>
+                <div *ngFor="let room of rooms">
+                    <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.PRIVATE === room.type" (click)="onRoomClick(room)" class="item">{{getRoomName(room)}}</div>
+                </div>
             </div>
         </div>
         <div #scroller class="feedWrapper">
@@ -36,6 +36,7 @@
                         <div class="messageData">
                             <span class="sender">{{ message.sentBy }}></span>
                             <span class="timestamp">{{ message.sentAt | date:'medium' }}</span>
+                            <span class="delete" (click)="hideMessage(message);">Delete</span>
                         </div>
                         <div class="messageContent">
                             {{ message.text }}
@@ -45,15 +46,13 @@
             </div>
         </div>
         <div class="side-bar right-bar" *ngIf="room">
-            <h3>
-                Current Room: <i>{{getRoomName(room)}}</i>
-            </h3>
+            <h3>Current Room: <i>{{getRoomName(room)}}</i></h3>
             <span *ngIf="roomTypes.COMMON === room.type" class="invite-room-block">
                 <input [(ngModel)]="emailCommon" (keyup)="onEmailCommonKeyUp($event)" placeholder="email to invite" class="input invite-input" />
                 <button [disabled]="emailCommon.trim().length === 0" (click)="inviteToRoom()" class="btn primary invite-btn">Invite</button>
             </span>
             <div class="invite-private-block">
-                    <h3>Members</h3>
+                <h3>Members</h3>
                 <div *ngFor="let email of room.users">
                     <div [ngClass]="{'current-room': isMe(email)}" class="item">{{email}}</div>
                 </div>

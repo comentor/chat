@@ -67,7 +67,8 @@ export class DataService {
       text: message,
       sentAt: sentAt,
       sentBy: this.user.email,
-      roomId
+      roomId,
+      hiddenFor: []
     });
   }
   async createRoom(name, type: string = 'common') {
@@ -97,6 +98,16 @@ export class DataService {
     );
     return res;
   }
+  async saveRoom(room) {
+    const id = room.id || null;
+    const result = await this.firestore.collection('rooms').ref.doc(id).set(room);
+    return result;
+  }
+  async saveMessage(message) {
+    const id = message.id || null;
+    const result = await this.firestore.collection('messages').ref.doc(id).set(message);
+    return result;
+  }
   setRoom(roomId) {
     this.roomId = roomId;
     let room = this.getRooms().getValue().find(room => roomId === room.id);
@@ -109,6 +120,13 @@ export class DataService {
   async leaveRoom(room) {
     room.users = room.users.filter(email => email !== this.user.email);
     await this.saveRoom(room);
+  }
+  async hideMessage(message) {
+    if (!Array.isArray(message.hiddenFor)) {
+      message.hiddenFor = [];
+    }
+    message.hiddenFor.push(this.user.email);
+    await this.saveMessage(message);
   }
   async createPrivate(email: string) {
     const createdAt = (new Date()).toISOString();
@@ -147,7 +165,7 @@ export class DataService {
     }).snapshotChanges().subscribe((data) => {
       const messages = data.map((e) => {
         return <Message> { ...e.payload.doc.data(), id: e.payload.doc.id }
-      });
+      }).filter(message => !message.hiddenFor || !message.hiddenFor.includes(this.user.email));
       this.messages.next(messages);
     });
   }
@@ -165,10 +183,5 @@ export class DataService {
       });
       this.rooms.next(rooms);
     });
-  }
-  async saveRoom(room) {
-    const id = room.id || null;
-    const result = await this.firestore.collection('rooms').ref.doc(id).set(room);
-    return result;
   }
 }
