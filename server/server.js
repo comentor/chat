@@ -70,28 +70,44 @@ app.use(function (req, res, next) {
 });
 app.set('views', publicDir);
 app.use(express.static(publicDir));
-app.post('/api/createRoom', function (req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var result, e_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    console.log(req.body);
-                    return [4 /*yield*/, chatApi.createRoom(req.body)];
-                case 1:
-                    result = _a.sent();
-                    res.json(result);
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_1 = _a.sent();
-                    res.json({ success: false, errormsg: e_1 });
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
+app.post('/api/createRoom', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, _b, e_1;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 2, , 3]);
+                _b = (_a = res).json;
+                return [4 /*yield*/, chatApi.createRoom(req.body)];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
+                return [3 /*break*/, 3];
+            case 2:
+                e_1 = _c.sent();
+                res.json({ success: false, errormsg: e_1 });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
     });
-});
+}); });
+app.post('/api/sendMessage', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, _b, e_2;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 2, , 3]);
+                _b = (_a = res).json;
+                return [4 /*yield*/, chatApi.sendMessage(req.body)];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
+                return [3 /*break*/, 3];
+            case 2:
+                e_2 = _c.sent();
+                res.json({ success: false, errormsg: e_2 });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 app.get('*', function (req, res) {
     res.sendFile(path.join(publicDir, 'index.html'));
 });

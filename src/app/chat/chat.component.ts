@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as gravatar from 'gravatar'
 import { DataService, roomTypes } from './../_services/data.service'
 import { AuthService } from './../_services/auth.service'
@@ -12,7 +12,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 
 export class ChatComponent implements OnInit {
-
   private roomTypes = roomTypes;
   private message = '';
   private roomName = '';
@@ -24,6 +23,7 @@ export class ChatComponent implements OnInit {
   private user: any;
   private emailCommon: string = '';
   private emailPrivate: string = '';
+  @ViewChild('scroller', {static: false}) private feedContainer: ElementRef;
   constructor(
     private dataService: DataService,
     private authService: AuthService,
@@ -32,13 +32,13 @@ export class ChatComponent implements OnInit {
     this.authService.authUser().subscribe((user) => {
       if(user) {
         this.user = user;
-        this.avatar = gravatar.url(user.email);
+        this.avatar = gravatar.url(user.email, {default: 'robohash', size: 50});
       } else {
         this.user = null;
         this.avatar = null;
       }
     });
-    this.dataService.getMessages().subscribe(messages => this.messages = messages);
+    this.dataService.getMessages().subscribe(messages => { this.messages = messages; setTimeout(this.scrollToBottom.bind(this), 200); });
     this.dataService.getRooms().subscribe(rooms => { 
       this.rooms = rooms; 
       const roomId = localStorage && localStorage.getItem('roomId');
@@ -57,8 +57,12 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
 
   }
-  send() {
-    this.dataService.sendMessage(this.message, this.room.id);
+  scrollToBottom() {
+    this.feedContainer.nativeElement.scrollTop
+    = this.feedContainer.nativeElement.scrollHeight;
+  }
+  async send() {
+    await this.dataService.sendMessage(this.message, this.room.id);
     this.message = '';
   }
   async createRoom() {
@@ -125,8 +129,8 @@ export class ChatComponent implements OnInit {
     this.dataService.setRoom(room.id);
     localStorage && localStorage.setItem('roomId', this.room.id);
   }
-  logout(event) {
-    event.preventDefault();
+  logout() {
+    // event.preventDefault();
     this.authService.logout();
     return false;
   }
@@ -135,5 +139,8 @@ export class ChatComponent implements OnInit {
   }
   isAuthor(message) {
     return this.user && this.user.email === message.sentBy; 
+  }
+  isCurrentRoom(room) {
+    return room === this.room;
   }
 }

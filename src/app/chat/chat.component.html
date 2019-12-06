@@ -1,8 +1,6 @@
 <div class="user-info">
     <img class="avatar" src="{{avatar}}" />
-    <span>
-        <a href="#" (click)="logout($event)">Logout</a>
-    </span>
+    <button class="btn secondary logout-btn" (click)=logout()>Logout</button>
 </div>
 
 <div class="chatFormWrapper">
@@ -11,37 +9,30 @@
 <button class="btn primary chat-btn" [disabled]="roomName.trim().length === 0" (click)=createRoom()>Create Room</button>
 </div>
 
-<div class="wrapper">
+<div class="#scroller wrapper">
         <div class="side-bar">
             <div class="side-bar-section">
                 <h3>Rooms</h3>
                 <div *ngFor="let room of rooms">
-                    <div *ngIf="roomTypes.COMMON === room.type" (click)="onRoomClick(room)" class="item">{{room.name}}</div>
+                    <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.COMMON === room.type" (click)="onRoomClick(room)" class="item">{{room.name}}</div>
                 </div>
             </div>
             <div class="side-bar-section">
                     <h3>Private chats</h3>
-                    <span class="invite-room-block invite-private-block">
+                    <div class="invite-private-block">
                         <input [(ngModel)]="emailPrivate" (keyup)="onEmailPrivateKeyUp($event)" placeholder="email to invite" class="input invite-input invite-input-private" />
                         <button [disabled]="emailPrivate.trim().length === 0" (click)="createPrivate()" class="btn primary invite-btn">Invite</button>
-                    </span>
+                    </div>
                     <div *ngFor="let room of rooms">
-                        <div *ngIf="roomTypes.PRIVATE === room.type" (click)="onRoomClick(room)" class="item">{{getRoomName(room)}}</div>
+                        <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.PRIVATE === room.type" (click)="onRoomClick(room)" class="item">{{getRoomName(room)}}</div>
                     </div>
             </div>
         </div>
         <div #scroller class="feedWrapper">
             <h3 *ngIf="!room">No message to show. Join/create a room or start private conversation</h3>
             <div class="feed" *ngIf="room">
-                <h3>
-                    Room: <i>{{getRoomName(room)}}</i>
-                    <span *ngIf="roomTypes.COMMON === room.type" class="invite-room-block">
-                        <input [(ngModel)]="emailCommon" (keyup)="onEmailCommonKeyUp($event)" placeholder="email to invite" class="input invite-input" />
-                        <button [disabled]="emailCommon.trim().length === 0" (click)="inviteToRoom()" class="btn primary invite-btn">Invite</button>
-                    </span>
-                </h3>
                 <div *ngFor="let message of messages" class="message">
-                        <div class="messageContainer" [ngClass]="{'own-message': isAuthor(message)}">
+                    <div class="messageContainer" [ngClass]="{'own-message': isAuthor(message)}">
                         <div class="messageData">
                             <span class="sender">{{ message.sentBy }}></span>
                             <span class="timestamp">{{ message.sentAt | date:'medium' }}</span>
@@ -51,6 +42,13 @@
                         </div>
                     </div>
                 </div>
+                <h3>
+                    Room: <i>{{getRoomName(room)}}</i>
+                    <span *ngIf="roomTypes.COMMON === room.type" class="invite-room-block">
+                        <input [(ngModel)]="emailCommon" (keyup)="onEmailCommonKeyUp($event)" placeholder="email to invite" class="input invite-input" />
+                        <button [disabled]="emailCommon.trim().length === 0" (click)="inviteToRoom()" class="btn primary invite-btn">Invite</button>
+                    </span>
+                </h3>
             </div>
         </div>
       </div>

@@ -21,6 +21,7 @@ export class DataService {
   roomId: string;
   private feedSubscription: any;
   private roomSubscription: any;
+  // private adapter = 'CLIENT';
   private adapter = 'SERVER';
   constructor(
     private authService: AuthService,
@@ -42,11 +43,28 @@ export class DataService {
       }
     })
   }
-  sendMessage(message: string, roomId: string = null) {
+  getMessages() {
+    return this.messages;
+  }
+  getRooms() {
+    return this.rooms;
+  }
+  async sendMessage(message: string, roomId: string = null) {
+    return await this[`sendMessage${this.adapter}`].apply(this, arguments);
+  }
+  async sendMessageSERVER(message: string, roomId: string = null) {
     const timestamp = (new Date()).toISOString();
+    const res: any = await this.httpClient.post(`//${location.host}/api/sendMessage`, {
+      text: message, roomId, sentBy: this.user.email
+    }).toPromise();
+    if (!res.success) { throw res.errormsg; }
+    return res;
+  }
+  async sendMessageCLIENT(message: string, roomId: string = null) {
+    const sentAt = (new Date()).toISOString();
     this.firestore.collection('messages').add({
       text: message,
-      sentAt: timestamp,
+      sentAt: sentAt,
       sentBy: this.user.email,
       roomId
     });
@@ -56,10 +74,11 @@ export class DataService {
     
   }
   async createRoomSERVER(name, type: string = 'common') {
-    const res = await this.httpClient.post(`//${location.host}/api/createRoom`, {
+    const res: any = await this.httpClient.post(`//${location.host}/api/createRoom`, {
         name, type, sentBy: this.user.email
     }).toPromise();
-    console.log(res);
+    if (!res.success) { throw res.errormsg; }
+    return res;
   }
   async createRoomCLIENT(name, type: string = 'common') {
     const createdAt = (new Date()).toISOString();
@@ -77,12 +96,6 @@ export class DataService {
     );
     return res;
   }
-  getMessages() {
-    return this.messages;
-  }
-  getRooms() {
-    return this.rooms;
-  }
   setRoom(roomId) {
     this.roomId = roomId;
     let room = this.getRooms().getValue().find(room => roomId === room.id);
@@ -92,9 +105,13 @@ export class DataService {
     }
     this.subsribeToFeed();
   }
-  createPrivate(email: string) {
-    this.firestore.collection('rooms').add({
+  async createPrivate(email: string) {
+    const createdAt = (new Date()).toISOString();
+    await this.firestore.collection('rooms').add({
       type: roomTypes.PRIVATE,
+      joinedAt: {
+        [this.user.email]: createdAt
+      },
       users: [this.user.email, email]
     });
   }
@@ -143,7 +160,8 @@ export class DataService {
     });
   }
   async saveRoom(room) {
-    const result = await this.firestore.collection('rooms').ref.doc(room.id).set(room);
+    const id = room.id || null;
+    const result = await this.firestore.collection('rooms').ref.doc(id).set(room);
     return result;
   }
 }

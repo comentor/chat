@@ -27,15 +27,23 @@ app.use((req, res, next) => {
 });
 app.set('views', publicDir);
 app.use(express.static(publicDir)); 
-app.post('/api/createRoom', async function(req, res) {
+
+app.post('/api/createRoom', async (req, res) => {
   try {
-    console.log(req.body);
-    const result = await chatApi.createRoom(req.body);
-    res.json(result);
+    res.json(await chatApi.createRoom(req.body));
   } catch (e) {
     res.json({success: false, errormsg: e});
   }
 });
+
+app.post('/api/sendMessage', async (req, res) => {
+  try {
+    res.json(await chatApi.sendMessage(req.body));
+  } catch (e) {
+    res.json({success: false, errormsg: e});
+  }
+});
+
 app.get('*', function(req, res) {
   res.sendFile(path.join(publicDir, 'index.html'));
 });

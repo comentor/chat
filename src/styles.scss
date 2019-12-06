@@ -40,3 +40,7 @@ body {
 .secondary {
     background-color: var(--secondary-color);
 }
+.vertical-align-center {
+    display: flex;
+    align-items: center;
+}
