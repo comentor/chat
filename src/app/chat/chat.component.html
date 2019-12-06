@@ -1,10 +1,10 @@
 <div class="user-info">
+    <h3 *ngIf="user">Logged as {{user.email}}</h3>
     <img class="avatar" src="{{avatar}}" />
     <button class="btn secondary logout-btn" (click)=logout()>Logout</button>
 </div>
 
 <div class="chatFormWrapper">
-
 <input class="input chat-input" [(ngModel)]="roomName" (keyup)="onRoomKeyUp($event)" />
 <button class="btn primary chat-btn" [disabled]="roomName.trim().length === 0" (click)=createRoom()>Create Room</button>
 </div>
