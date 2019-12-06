@@ -23,12 +23,13 @@ export class ChatComponent implements OnInit {
   private user: any;
   private emailCommon: string = '';
   private emailPrivate: string = '';
+  private apiAdapter: string;
   @ViewChild('scroller', {static: false}) private feedContainer: ElementRef;
   constructor(
     private dataService: DataService,
     private authService: AuthService,
     private toastr: ToastrService 
-  ) { 
+  ) {
     this.authService.authUser().subscribe((user) => {
       if(user) {
         this.user = user;
@@ -55,7 +56,7 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.apiAdapter = this.authService.apiAdapter;
   }
   scrollToBottom() {
     this.feedContainer.nativeElement.scrollTop

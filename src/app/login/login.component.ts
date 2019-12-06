@@ -11,9 +11,12 @@ export class LoginComponent implements OnInit {
   private email = '';
   private password = '';
   private error = '';
+  private adapterApi: string;
   constructor(
     private authService: AuthService
-  ) { }
+  ) { 
+    this.adapterApi = this.authService.apiAdapter;
+  }
 
   ngOnInit() {
   }
@@ -27,6 +30,10 @@ export class LoginComponent implements OnInit {
     this.error = '';
     this.authService.register(this.email, this.password)
       .catch(error => this.error = error);
+  }
+  adapterChange(event) {
+    this.authService.apiAdapter = this.adapterApi;
+    localStorage && localStorage.setItem('apiAdapter', this.authService.apiAdapter);
   }
 
 }

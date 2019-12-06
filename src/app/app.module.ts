@@ -30,7 +30,7 @@ import { environment } from '../environments/environment';
     AngularFireModule.initializeApp(environment.firebase),
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot({
-      timeOut: 2500,
+      timeOut: 3500,
     }),
     // HttpModule,
 		HttpClientModule,

@@ -1,3 +1,4 @@
+<span class="adapter-data">Communication with database through: {{apiAdapter}}</span>
 <div class="user-info">
     <h3 *ngIf="user">Logged as {{user.email}}</h3>
     <img class="avatar" src="{{avatar}}" />
@@ -10,57 +11,57 @@
 </div>
 
 <div class="#scroller wrapper">
-        <div class="side-bar">
-            <div class="side-bar-section">
-                <h3>Rooms</h3>
-                <div *ngFor="let room of rooms">
-                    <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.COMMON === room.type" (click)="onRoomClick(room)" class="item">{{room.name}}</div>
-                </div>
-            </div>
-            <div class="side-bar-section">
-                <h3>Private chats</h3>
-                <div class="invite-private-block">
-                    <input [(ngModel)]="emailPrivate" (keyup)="onEmailPrivateKeyUp($event)" placeholder="email to invite" class="input invite-input invite-input-private" />
-                    <button [disabled]="emailPrivate.trim().length === 0" (click)="createPrivate()" class="btn primary invite-btn">Invite</button>
-                </div>
-                <div *ngFor="let room of rooms">
-                    <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.PRIVATE === room.type" (click)="onRoomClick(room)" class="item">{{getRoomName(room)}}</div>
-                </div>
+    <div class="side-bar">
+        <div class="side-bar-section">
+            <h3>Rooms</h3>
+            <div *ngFor="let room of rooms">
+                <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.COMMON === room.type" (click)="onRoomClick(room)" class="item">{{room.name}}</div>
             </div>
         </div>
-        <div #scroller class="feedWrapper">
-            <h3 *ngIf="!room">No message to show. Join/create a room or start private conversation</h3>
-            <div class="feed" *ngIf="room">
-                <div *ngFor="let message of messages" class="message">
-                    <div class="messageContainer" [ngClass]="{'own-message': isAuthor(message)}">
-                        <div class="messageData">
-                            <span class="sender">{{ message.sentBy }}></span>
-                            <span class="timestamp">{{ message.sentAt | date:'medium' }}</span>
-                            <span class="delete" (click)="hideMessage(message);">Delete</span>
-                        </div>
-                        <div class="messageContent">
-                            {{ message.text }}
-                        </div>
+        <div class="side-bar-section">
+            <h3>Private chats</h3>
+            <div class="invite-private-block">
+                <input [(ngModel)]="emailPrivate" (keyup)="onEmailPrivateKeyUp($event)" placeholder="email to invite" class="input invite-input invite-input-private" />
+                <button [disabled]="emailPrivate.trim().length === 0" (click)="createPrivate()" class="btn primary invite-btn">Invite</button>
+            </div>
+            <div *ngFor="let room of rooms">
+                <div [ngClass]="{'current-room': isCurrentRoom(room)}" *ngIf="roomTypes.PRIVATE === room.type" (click)="onRoomClick(room)" class="item">{{getRoomName(room)}}</div>
+            </div>
+        </div>
+    </div>
+    <div #scroller class="feedWrapper">
+        <h3 *ngIf="!room">No message to show. Join/create a room or start private conversation</h3>
+        <div class="feed" *ngIf="room">
+            <div *ngFor="let message of messages" class="message">
+                <div class="messageContainer" [ngClass]="{'own-message': isAuthor(message)}">
+                    <div class="messageData">
+                        <span class="sender">{{ message.sentBy }}></span>
+                        <span class="timestamp">{{ message.sentAt | date:'medium' }}</span>
+                        <span class="delete" (click)="hideMessage(message);">Delete</span>
+                    </div>
+                    <div class="messageContent">
+                        {{ message.text }}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="side-bar right-bar" *ngIf="room">
-            <h3>Current Room: <i>{{getRoomName(room)}}</i></h3>
-            <span *ngIf="roomTypes.COMMON === room.type" class="invite-room-block">
-                <input [(ngModel)]="emailCommon" (keyup)="onEmailCommonKeyUp($event)" placeholder="email to invite" class="input invite-input" />
-                <button [disabled]="emailCommon.trim().length === 0" (click)="inviteToRoom()" class="btn primary invite-btn">Invite</button>
-            </span>
-            <div class="invite-private-block">
-                <h3>Members</h3>
-                <div *ngFor="let email of room.users">
-                    <div [ngClass]="{'current-room': isMe(email)}" class="item">{{email}}</div>
-                </div>
+    </div>
+    <div class="side-bar right-bar" *ngIf="room">
+        <h3>Current Room: <i>{{getRoomName(room)}}</i></h3>
+        <span *ngIf="roomTypes.COMMON === room.type" class="invite-room-block">
+            <input [(ngModel)]="emailCommon" (keyup)="onEmailCommonKeyUp($event)" type="email" placeholder="Email to invite" class="input invite-input" />
+            <button [disabled]="emailCommon.trim().length === 0" (click)="inviteToRoom()" class="btn primary invite-btn">Invite</button>
+        </span>
+        <div class="invite-private-block">
+            <h3>Members</h3>
+            <div *ngFor="let email of room.users">
+                <div [ngClass]="{'current-room': isMe(email)}" class="item">{{email}}</div>
             </div>
-            <button class="btn primary leave-btn" [disabled]="false" (click)=leaveRoom()>Leave room</button>
         </div>
-      </div>
-      <div class="chatFormWrapper">
-        <input placeholder="Type your message" class="input chat-input" [disabled]="!room" [(ngModel)]="message" (keyup)="onMessageKeyUp($event)" />
-        <button class="btn primary chat-btn" [disabled]="!room || message.trim().length === 0" (click)=send()>Send</button>
-      </div>
+        <button class="btn primary leave-btn" [disabled]="false" (click)=leaveRoom()>Leave room</button>
+    </div>
+</div>
+<div class="chatFormWrapper">
+    <input placeholder="Type your message" class="input chat-input" [disabled]="!room" [(ngModel)]="message" (keyup)="onMessageKeyUp($event)" />
+    <button class="btn primary chat-btn" [disabled]="!room || message.trim().length === 0" (click)=send()>Send</button>
+</div>

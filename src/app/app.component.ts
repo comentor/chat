@@ -18,7 +18,6 @@ export class AppComponent {
     //   console.log(user);
     // });
     this.authService.authUser().subscribe(async (user) => {
-      console.log(user);
       if (user) {
         this.router.navigate(['chat']);
       } else {

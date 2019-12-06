@@ -1,6 +1,10 @@
 
 <div class="wrapper">
     <h2>Log In</h2>
+    <select [(ngModel)]="adapterApi" (change)="adapterChange($event)">
+        <option value="SERVER">Server-side API</option>
+        <option value="CLIENT">Client-side API</option>
+    </select>
     <input [(ngModel)]="email" type="email" name="email" class="input login-input" />
     <input [(ngModel)]="password" type="password" name="password" class="input login-input" />
     <button class="btn primary" (click)="login()">Log In</button>

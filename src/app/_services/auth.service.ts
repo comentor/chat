@@ -10,9 +10,13 @@ import * as firebase from 'firebase/app';
 export class AuthService implements CanActivate {
   private user: Observable<firebase.User>;
   private authState: BehaviorSubject<boolean>;
+  public apiAdapter: string = 'SERVER';
   constructor(
     private fireAuth: AngularFireAuth
     ) {
+      if (localStorage && localStorage.getItem('apiAdapter')) {
+        this.apiAdapter = localStorage.getItem('apiAdapter');
+      }
       this.user = fireAuth.authState;
       this.authState = new BehaviorSubject(false);
       this.user.subscribe((user) => {

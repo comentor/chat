@@ -55,71 +55,141 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fbAdmin = __importStar(require("firebase-admin"));
+var ws_1 = require("ws");
 var serviceAccount = require("./../firebase-admin.json");
 var ChatApi = /** @class */ (function () {
     function ChatApi(server) {
         this.server = server;
+        this.feedSubsribers = {};
+        this.openWebsocket();
         fbAdmin.initializeApp({
             credential: fbAdmin.credential.cert(serviceAccount),
             databaseURL: "https://foko-chat.firebaseio.com"
         });
         this.firestore = fbAdmin.firestore();
-        var listeningStartedAt = (new Date()).toISOString();
-        this.firestore.collection('rooms').onSnapshot(function (docSnapshot) {
-            docSnapshot.docChanges().forEach(function (change) {
-            });
-        }, function (err) {
-            console.log("Encountered error: " + err);
-        });
-        this.firestore.collection('messages').onSnapshot(function (docSnapshot) {
-            docSnapshot.docChanges().forEach(function (change) {
-                var data = change.doc.data();
-                if (data.sentAt > listeningStartedAt) {
-                    console.log("I have to send an email from room " + data.roomId + " except by " + data.sentBy);
+        // const listeningStartedAt = (new Date()).toISOString();
+        // this.firestore.collection('rooms').onSnapshot(docSnapshot => {
+        //     docSnapshot.docChanges().forEach((change) => {
+        //     });
+        // }, err => {
+        //     console.log(`Encountered error: ${err}`);
+        // });
+        // this.firestore.collection('messages').onSnapshot(docSnapshot => {
+        //     docSnapshot.docChanges().forEach((change) => {
+        //         const data = change.doc.data();
+        //         if (data.sentAt > listeningStartedAt) {
+        //             console.log(`I have to send an email from room ${data.roomId} except by ${data.sentBy}`);
+        //         }
+        //     });
+        // }, err => {
+        //     console.log(`Encountered error: ${err}`);
+        // });
+    }
+    ChatApi.prototype.openWebsocket = function () {
+        var _this = this;
+        var wss = new ws_1.Server({ server: this.server });
+        wss.on('connection', function (ws) {
+            console.log("WSS clients: " + wss.clients.length);
+            var feedUnsubscribe;
+            var roomsUnsubscribe;
+            console.log('Client connected');
+            ws.on('message', function (msg) {
+                msg = JSON.parse(msg);
+                switch (msg.event) {
+                    case 'setRoom':
+                        feedUnsubscribe = _this.getFeedSubscriber(msg.data, ws);
+                        break;
+                    case 'getRooms':
+                        roomsUnsubscribe = _this.getRoomsSubscriber(msg.data, ws);
+                        break;
                 }
             });
-        }, function (err) {
-            console.log("Encountered error: " + err);
-        });
-    }
-    ChatApi.prototype.createRoom = function (data) {
-        return __awaiter(this, void 0, void 0, function () {
-            var createdAt, dataToSave, res;
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        createdAt = (new Date()).toISOString();
-                        dataToSave = {
-                            name: data.name,
-                            createdAt: createdAt,
-                            createdBy: data.sentBy,
-                            type: data.type,
-                            users: [data.sentBy],
-                            joinedAt: (_a = {},
-                                _a[data.sentBy] = createdAt,
-                                _a)
-                        };
-                        return [4 /*yield*/, this.firestore.collection('rooms').add(dataToSave)];
-                    case 1:
-                        res = _b.sent();
-                        return [2 /*return*/, res];
+            ws.on('close', function () {
+                console.log('Client disconnected');
+                if (feedUnsubscribe) {
+                    feedUnsubscribe.call();
+                }
+                if (roomsUnsubscribe) {
+                    roomsUnsubscribe.call();
                 }
             });
         });
     };
-    ChatApi.prototype.sendMessage = function (data) {
+    ChatApi.prototype.getFeedSubscriber = function (data, ws) {
+        var ref = this.firestore.collection('messages');
+        return ref
+            .where('roomId', '==', data.roomId)
+            .where('sentAt', '>', data.joinedAt)
+            .orderBy('sentAt', 'asc')
+            .onSnapshot(function (docSnapshot) {
+            var records = docSnapshot.docs.map(function (doc) { return (__assign({ id: doc.id }, doc.data())); });
+            ws.send(JSON.stringify({ event: 'newMessages', data: records }));
+        });
+    };
+    ChatApi.prototype.getRoomsSubscriber = function (data, ws) {
+        console.log('getRoomsSubscriber');
+        console.log(data);
+        var ref = this.firestore.collection('rooms');
+        return ref
+            .where('users', 'array-contains', data.email)
+            // .orderBy('createdAt', 'asc')
+            .onSnapshot(function (docSnapshot) {
+            var records = docSnapshot.docs.map(function (doc) { return (__assign({ id: doc.id }, doc.data())); });
+            ws.send(JSON.stringify({ event: 'newRooms', data: records }));
+        });
+    };
+    ChatApi.prototype.apiRoom = function (data, method) {
+        if (method === void 0) { method = 'save'; }
         return __awaiter(this, void 0, void 0, function () {
-            var sentAt, dataToSave, res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var id, ref, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
-                        sentAt = (new Date()).toISOString();
-                        dataToSave = __assign(__assign({}, data), { sentAt: sentAt });
-                        return [4 /*yield*/, this.firestore.collection('messages').add(dataToSave)];
+                        id = data.id || null;
+                        ref = this.firestore.collection('rooms');
+                        _a = method;
+                        switch (_a) {
+                            case 'save': return [3 /*break*/, 1];
+                        }
+                        return [3 /*break*/, 1];
                     case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
+                        if (!id) return [3 /*break*/, 2];
+                        _b = ref.doc(id).set(data);
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, ref.add(data)];
+                    case 3:
+                        _b = _c.sent();
+                        _c.label = 4;
+                    case 4: return [4 /*yield*/, (_b)];
+                    case 5: return [2 /*return*/, _c.sent()];
+                }
+            });
+        });
+    };
+    ChatApi.prototype.apiMessage = function (data, method) {
+        if (method === void 0) { method = 'save'; }
+        return __awaiter(this, void 0, void 0, function () {
+            var id, ref, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        id = data.id || null;
+                        ref = this.firestore.collection('messages');
+                        _a = method;
+                        switch (_a) {
+                            case 'save': return [3 /*break*/, 1];
+                        }
+                        return [3 /*break*/, 1];
+                    case 1:
+                        if (!id) return [3 /*break*/, 2];
+                        _b = ref.doc(id).set(data);
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, ref.add(data)];
+                    case 3:
+                        _b = _c.sent();
+                        _c.label = 4;
+                    case 4: return [4 /*yield*/, (_b)];
+                    case 5: return [2 /*return*/, _c.sent()];
                 }
             });
         });

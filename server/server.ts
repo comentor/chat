@@ -28,17 +28,17 @@ app.use((req, res, next) => {
 app.set('views', publicDir);
 app.use(express.static(publicDir)); 
 
-app.post('/api/createRoom', async (req, res) => {
+app.post('/api/room', async (req, res) => {
   try {
-    res.json({success: true, response: await chatApi.createRoom(req.body)});
+    res.json({success: true, response: await chatApi.apiRoom(req.body.data, req.body.method)});
   } catch (e) {
-    res.json({success: false, errormsg: e});
+    res.json({success: false, errormsg: String(e)});
   }
 });
 
-app.post('/api/sendMessage', async (req, res) => {
+app.post('/api/message', async (req, res) => {
   try {
-    res.json({success: true, response: await chatApi.sendMessage(req.body)});
+    res.json({success: true, response: await chatApi.apiMessage(req.body.data, req.body.method)});
   } catch (e) {
     res.json({success: false, errormsg: e});
   }

@@ -70,7 +70,7 @@ app.use(function (req, res, next) {
 });
 app.set('views', publicDir);
 app.use(express.static(publicDir));
-app.post('/api/createRoom', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post('/api/room', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, _b, _c, e_1;
     return __generator(this, function (_d) {
         switch (_d.label) {
@@ -78,19 +78,19 @@ app.post('/api/createRoom', function (req, res) { return __awaiter(void 0, void 
                 _d.trys.push([0, 2, , 3]);
                 _b = (_a = res).json;
                 _c = { success: true };
-                return [4 /*yield*/, chatApi.createRoom(req.body)];
+                return [4 /*yield*/, chatApi.apiRoom(req.body.data, req.body.method)];
             case 1:
                 _b.apply(_a, [(_c.response = _d.sent(), _c)]);
                 return [3 /*break*/, 3];
             case 2:
                 e_1 = _d.sent();
-                res.json({ success: false, errormsg: e_1 });
+                res.json({ success: false, errormsg: String(e_1) });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
-app.post('/api/sendMessage', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post('/api/message', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, _b, _c, e_2;
     return __generator(this, function (_d) {
         switch (_d.label) {
@@ -98,7 +98,7 @@ app.post('/api/sendMessage', function (req, res) { return __awaiter(void 0, void
                 _d.trys.push([0, 2, , 3]);
                 _b = (_a = res).json;
                 _c = { success: true };
-                return [4 /*yield*/, chatApi.sendMessage(req.body)];
+                return [4 /*yield*/, chatApi.apiMessage(req.body.data, req.body.method)];
             case 1:
                 _b.apply(_a, [(_c.response = _d.sent(), _c)]);
                 return [3 /*break*/, 3];
