@@ -7,6 +7,7 @@ export class Room {
   type = '';
   users = [];
   joinedAt: any = {};
+  invitedBy: any = {};
   constructor(json: any) {
     Object.assign(this, json, {id: json.id});
   }

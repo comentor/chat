@@ -1,0 +1,12 @@
+<h3>Blocklist</h3>
+<div *ngIf="user">
+    <div *ngFor="let email of user.blockList">
+        <div class="item">
+            {{email}}
+            <img (click)="removeFromBlockList(email)" class="delete-btn" src="/assets/icons/delete.svg" />
+        </div>
+    </div>
+    <div *ngIf="user.blockList.length === 0"><i>Blocklist is emplty</i></div>
+    <button (click)="save()" class="popup-btn btn primary" [mat-dialog-close]="true">Save</button>
+    <button class="popup-btn btn secondary" [mat-dialog-close]="true">Cancel</button>
+</div>

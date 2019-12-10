@@ -137,7 +137,16 @@ button:disabled {
     float: left;
     font-style: italic;
 }
-
+.member-settings {
+    vertical-align: bottom;
+    padding-right: 2px;
+}
+.user-settings {
+    vertical-align: bottom;
+    height: 50px;
+    padding-left: 5px;
+    // padding-right: 2px;
+}
 //////
 
 // .userListWrapper {

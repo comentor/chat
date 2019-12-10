@@ -1,11 +1,13 @@
 import * as fbAdmin from "firebase-admin";
+import * as nodemailer from "nodemailer";
 import { Server as WSS} from "ws";
-import * as _ from "underscore";
+import * as _ from "lodash";
 const serviceAccount = require("./../firebase-admin.json");
 
 export class ChatApi {
     private firestore: fbAdmin.firestore.Firestore;
     private rooms = [];
+    private mailer;
 
     constructor(private server) {
         fbAdmin.initializeApp({
@@ -13,11 +15,27 @@ export class ChatApi {
             databaseURL: "https://foko-chat.firebaseio.com"
         });
         this.firestore = fbAdmin.firestore();
+
+        
+
+        this.initMailer();
         this.openWebsocket();
         this.subscribeToAllMessages();
         this.subscribeToAllRooms();
     }
-    sendEmail(sentBy, roomId) {
+    async initMailer() {
+        const testAccount = await nodemailer.createTestAccount();
+        this.mailer = nodemailer.createTransport({
+          host: "smtp.ethereal.email",
+          port: 587,
+          secure: false,
+          auth: {
+            user: testAccount.user,
+            pass: testAccount.pass
+          }
+        });
+    }
+    async sendEmail(sentBy, roomId) {
         const room = this.rooms.find(room => room.id === roomId);
         const receipients = room.users.filter(email => room.joinedAt[email] && email !== sentBy);
         const text = room.type === 'PRIVATE' ? 
@@ -27,6 +45,20 @@ export class ChatApi {
             console.log(email);
             console.log(text);
         });
+        try {
+            const info = await this.mailer.sendMail({
+                from: 'Chat',
+                to: receipients.join(', '),
+                subject: "You received a message",
+                text: text,
+                html: text
+              });
+              console.log("===console.log(info);");
+              console.log(info);
+        } catch(e) {
+            console.log("===mailer error");
+            console.log(e);
+        }
     }
     subscribeToAllMessages() {
         const debouncedSend = _.debounce(this.sendEmail.bind(this), 2000);
@@ -34,6 +66,8 @@ export class ChatApi {
         this.firestore.collection('messages').onSnapshot(docSnapshot => {
             docSnapshot.docChanges().forEach((change) => {
                 const data = change.doc.data();
+                console.log('===change')
+                // console.log(change.doc.metadata);
                 if (data.sentAt > listeningStartedAt) {
                     debouncedSend(data.sentBy, data.roomId);
                 }

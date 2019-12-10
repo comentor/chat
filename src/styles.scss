@@ -8,10 +8,14 @@
     --sucess-color: #B1FBB1;
 }
 @import '~ngx-toastr/toastr';
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+// @import '~@angular/material';
 body {
     background-color: var(--background-color);
 }
-  
+.mat-dialog-container {
+    background-color: var(--background-color);
+}
 .btn {
     cursor: pointer;
     border: none;
@@ -44,3 +48,5 @@ body {
     display: flex;
     align-items: center;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

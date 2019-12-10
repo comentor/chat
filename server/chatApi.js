@@ -55,8 +55,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fbAdmin = __importStar(require("firebase-admin"));
+var nodemailer = __importStar(require("nodemailer"));
 var ws_1 = require("ws");
-var _ = __importStar(require("underscore"));
+var _ = __importStar(require("lodash"));
 var serviceAccount = require("./../firebase-admin.json");
 var ChatApi = /** @class */ (function () {
     function ChatApi(server) {
@@ -67,19 +68,71 @@ var ChatApi = /** @class */ (function () {
             databaseURL: "https://foko-chat.firebaseio.com"
         });
         this.firestore = fbAdmin.firestore();
+        this.initMailer();
         this.openWebsocket();
         this.subscribeToAllMessages();
         this.subscribeToAllRooms();
     }
+    ChatApi.prototype.initMailer = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var testAccount;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, nodemailer.createTestAccount()];
+                    case 1:
+                        testAccount = _a.sent();
+                        this.mailer = nodemailer.createTransport({
+                            host: "smtp.ethereal.email",
+                            port: 587,
+                            secure: false,
+                            auth: {
+                                user: testAccount.user,
+                                pass: testAccount.pass
+                            }
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     ChatApi.prototype.sendEmail = function (sentBy, roomId) {
-        var room = this.rooms.find(function (room) { return room.id === roomId; });
-        var receipients = room.users.filter(function (email) { return room.joinedAt[email] && email !== sentBy; });
-        var text = room.type === 'PRIVATE' ?
-            sentBy + " has sent a private message to you" :
-            sentBy + " has sent a message to a group you joined: " + room.name;
-        receipients.forEach(function (email) {
-            console.log(email);
-            console.log(text);
+        return __awaiter(this, void 0, void 0, function () {
+            var room, receipients, text, info, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        room = this.rooms.find(function (room) { return room.id === roomId; });
+                        receipients = room.users.filter(function (email) { return room.joinedAt[email] && email !== sentBy; });
+                        text = room.type === 'PRIVATE' ?
+                            sentBy + " has sent a private message to you" :
+                            sentBy + " has sent a message to a group you joined: " + room.name;
+                        receipients.forEach(function (email) {
+                            console.log(email);
+                            console.log(text);
+                        });
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.mailer.sendMail({
+                                from: 'Chat',
+                                to: receipients.join(', '),
+                                subject: "You received a message",
+                                text: text,
+                                html: text
+                            })];
+                    case 2:
+                        info = _a.sent();
+                        console.log("===console.log(info);");
+                        console.log(info);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_1 = _a.sent();
+                        console.log("===mailer error");
+                        console.log(e_1);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
     };
     ChatApi.prototype.subscribeToAllMessages = function () {
@@ -88,6 +141,8 @@ var ChatApi = /** @class */ (function () {
         this.firestore.collection('messages').onSnapshot(function (docSnapshot) {
             docSnapshot.docChanges().forEach(function (change) {
                 var data = change.doc.data();
+                console.log('===change');
+                // console.log(change.doc.metadata);
                 if (data.sentAt > listeningStartedAt) {
                     debouncedSend(data.sentBy, data.roomId);
                 }

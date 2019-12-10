@@ -1,6 +1,6 @@
 # FokoChat
 
-Angular 8 Chat with groups and private messaging. Supports two API: AngularFirestore gRPC and NodeJS/Websockets API
+Angular 8 / NodeJS chat with groups and private messaging. Supports two API: AngularFirestore gRPC and NodeJS/Websockets API
 
 ## Development server
 

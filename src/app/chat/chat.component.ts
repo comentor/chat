@@ -2,8 +2,10 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as gravatar from 'gravatar'
 import { DataService, roomTypes } from './../_services/data.service'
 import { AuthService } from './../_services/auth.service'
-import { Message, Room } from '../_models';
+import { Message, Room, User } from '../_models';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog, MatDialogConfig } from "@angular/material";
+import { UserSettingsComponent } from '../user-settings/user-settings.component';
 
 @Component({
   selector: 'app-chat',
@@ -19,8 +21,8 @@ export class ChatComponent implements OnInit {
   private messages: Array<Message>;
   private avatar: string;
   private room: Room;
-  private feedSubscription: any;
-  private user: any;
+  private authUser: any;
+  private user: User;
   private emailCommon: string = '';
   private emailPrivate: string = '';
   private apiAdapter: string;
@@ -28,17 +30,22 @@ export class ChatComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private authService: AuthService,
-    private toastr: ToastrService 
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) {
-    this.authService.authUser().subscribe((user) => {
-      if(user) {
-        this.user = user;
-        this.avatar = gravatar.url(user.email, {default: 'robohash', size: 50});
+    this.authService.authUser().subscribe((authUser) => {
+      if(authUser) {
+        this.authUser = authUser;
+        this.avatar = gravatar.url(authUser.email, {default: 'robohash', size: 50});
       } else {
-        this.user = null;
+        this.authUser = null;
         this.avatar = null;
       }
     });
+    this.authService.userData().subscribe((user) => {
+      this.user = new User(user.data());
+    });
+    
     this.dataService.getMessages().subscribe(messages => { this.messages = messages; setTimeout(this.scrollToBottom.bind(this), 200); });
     this.dataService.getRooms().subscribe(rooms => { 
       this.rooms = rooms; 
@@ -52,10 +59,10 @@ export class ChatComponent implements OnInit {
         })
       }
     });
-    // this.roomTypes = roomTypes;
+    this.roomTypes = roomTypes;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.apiAdapter = this.authService.apiAdapter;
   }
   scrollToBottom() {
@@ -86,7 +93,7 @@ export class ChatComponent implements OnInit {
   }
   createPrivate() {
     this.emailPrivate = this.emailPrivate.trim();
-    if (this.emailPrivate === this.user.email) {
+    if (this.emailPrivate === this.authUser.email) {
       this.toastr.error('You cannot invite yourself!');
       return;
     }
@@ -139,24 +146,35 @@ export class ChatComponent implements OnInit {
     await this.dataService.hideMessage(message);
   }
   logout() {
-    // event.preventDefault();
     this.authService.logout();
     return false;
   }
+  openUserSettings() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '320';
+    this.dialog.open(UserSettingsComponent, dialogConfig);
+  }
+  blockMember(email) {
+    if (confirm('Are you sure you want to block this user? He will no be able to add you to group chats anymore.')) {
+      this.user.addToBlockList(email);
+      this.authService.saveUserData(this.user.toJSON());
+    }
+  }
   getRoomName(room) {
-    return room.type === roomTypes.COMMON ? room.name : room.users.find(user => user !== this.user.email);
+    return room.type === roomTypes.COMMON ? room.name : room.users.find(user => user !== this.authUser.email);
   }
   isAuthor(message) {
-    return this.user && this.user.email === message.sentBy; 
+    return this.authUser && this.authUser.email === message.sentBy; 
   }
   isCurrentRoom(room) {
     return room === this.room;
   }
   isMe(email) {
-    return email === this.user.email;
+    return email === this.authUser.email;
   }
   ifNew(room) {
-    return !room.joinedAt[this.user.email];
+    return !room.joinedAt[this.authUser.email];
   }
   isMember(email) {
     return this.room.joinedAt[email];

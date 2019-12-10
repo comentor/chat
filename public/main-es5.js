@@ -66,7 +66,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<span class=\"adapter-data\">Communication with database through: {{apiAdapter}}</span>\n<div class=\"user-info\">\n    <h3 *ngIf=\"user\">Logged as {{user.email}}</h3>\n    <img class=\"avatar\" src=\"{{avatar}}\" />\n    <button class=\"btn secondary logout-btn\" (click)=logout()>Logout</button>\n</div>\n\n<div class=\"chatFormWrapper\">\n    <input placeholder=\"Type a new room name\" class=\"input chat-input\" [(ngModel)]=\"roomName\" (keyup)=\"onRoomKeyUp($event)\" />\n    <button class=\"btn primary chat-btn\" [disabled]=\"roomName.trim().length === 0\" (click)=createRoom()>Create Room</button>\n</div>\n\n<div class=\"#scroller wrapper\">\n    <div class=\"side-bar\">\n        <div class=\"side-bar-section\">\n            <h3>Rooms</h3>\n            <div *ngFor=\"let room of rooms\">\n                <div [ngClass]=\"{'current-room': isCurrentRoom(room)}\" *ngIf=\"roomTypes.COMMON === room.type\" (click)=\"onRoomClick(room)\" class=\"item\">\n                    <span class=\"new-room\" *ngIf=\"ifNew(room)\">(new)</span>{{room.name}}\n                </div>\n            </div>\n        </div>\n        <div class=\"side-bar-section\">\n            <h3>Private chats</h3>\n            <div class=\"invite-private-block\">\n                <input [(ngModel)]=\"emailPrivate\" (keyup)=\"onEmailPrivateKeyUp($event)\" placeholder=\"email to invite\" class=\"input invite-input invite-input-private\" />\n                <button [disabled]=\"emailPrivate.trim().length === 0\" (click)=\"createPrivate()\" class=\"btn primary invite-btn\">Invite</button>\n            </div>\n            <div *ngFor=\"let room of rooms\">\n                <div [ngClass]=\"{'current-room': isCurrentRoom(room)}\" *ngIf=\"roomTypes.PRIVATE === room.type\" (click)=\"onRoomClick(room)\" class=\"item\">{{getRoomName(room)}}</div>\n            </div>\n        </div>\n    </div>\n    <div #scroller class=\"feedWrapper\">\n        <h3 *ngIf=\"!room\">No message to show. Join/create a room or start private conversation</h3>\n        <div class=\"feed\" *ngIf=\"room\">\n            <div *ngFor=\"let message of messages\" class=\"message\">\n                <div class=\"messageContainer\" [ngClass]=\"{'own-message': isAuthor(message)}\">\n                    <div class=\"messageData\">\n                        <span class=\"sender\">{{ message.sentBy }}></span>\n                        <span class=\"timestamp\">{{ message.sentAt | date:'medium' }}</span>\n                        <span class=\"delete\" (click)=\"hideMessage(message);\">Delete</span>\n                    </div>\n                    <div class=\"messageContent\">\n                        {{ message.text }}\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"side-bar right-bar\" *ngIf=\"room\">\n        <h3>Current Room: <i>{{getRoomName(room)}}</i></h3>\n        <span *ngIf=\"roomTypes.COMMON === room.type\" class=\"invite-room-block\">\n            <input [(ngModel)]=\"emailCommon\" (keyup)=\"onEmailCommonKeyUp($event)\" type=\"email\" placeholder=\"Email to invite\" class=\"input invite-input\" />\n            <button [disabled]=\"emailCommon.trim().length === 0\" (click)=\"inviteToRoom()\" class=\"btn primary invite-btn\">Invite</button>\n        </span>\n        <div class=\"invite-private-block\">\n            <h3>Members</h3>\n            <div *ngFor=\"let email of room.users\">\n                <div [ngClass]=\"{'current-room': isMe(email)}\" class=\"item\"><span class=\"new-room\" *ngIf=\"!isMember(email)\">(invited)</span>{{email}}</div>\n            </div>\n        </div>\n        <button class=\"btn primary leave-btn\" [disabled]=\"false\" (click)=leaveRoom()>Leave room</button>\n    </div>\n</div>\n<div class=\"chatFormWrapper\">\n    <input placeholder=\"Type your message\" class=\"input chat-input\" [disabled]=\"!room\" [(ngModel)]=\"message\" (keyup)=\"onMessageKeyUp($event)\" />\n    <button class=\"btn primary chat-btn\" [disabled]=\"!room || message.trim().length === 0\" (click)=send()>Send</button>\n</div>");
+            /* harmony default export */ __webpack_exports__["default"] = ("<span class=\"adapter-data\">Communication with database through: {{apiAdapter}}</span>\n<div class=\"user-info\">\n    <h3 *ngIf=\"user\">Logged as {{authUser.email}}</h3>\n    <img class=\"avatar\" src=\"{{avatar}}\" />\n    <img (click)=\"openUserSettings()\" class=\"user-settings\" src=\"/assets/icons/settings.svg\" />\n    <button class=\"btn secondary logout-btn\" (click)=logout()>Logout</button>\n</div>\n\n<div class=\"chatFormWrapper\">\n    <input placeholder=\"Type a new room name\" class=\"input chat-input\" [(ngModel)]=\"roomName\" (keyup)=\"onRoomKeyUp($event)\" />\n    <button class=\"btn primary chat-btn\" [disabled]=\"roomName.trim().length === 0\" (click)=createRoom()>Create Room</button>\n</div>\n\n<div class=\"#scroller wrapper\">\n    <div class=\"side-bar\">\n        <div class=\"side-bar-section\">\n            <h3>Rooms</h3>\n            <div *ngFor=\"let room of rooms\">\n                <div [ngClass]=\"{'current-room': isCurrentRoom(room)}\" *ngIf=\"roomTypes.COMMON === room.type\" (click)=\"onRoomClick(room)\" class=\"item\">\n                    <span class=\"new-room\" *ngIf=\"ifNew(room)\">(new)</span>{{room.name}}\n                </div>\n            </div>\n        </div>\n        <div class=\"side-bar-section\">\n            <h3>Private chats</h3>\n            <div class=\"invite-private-block\">\n                <input [(ngModel)]=\"emailPrivate\" (keyup)=\"onEmailPrivateKeyUp($event)\" placeholder=\"email to invite\" class=\"input invite-input invite-input-private\" />\n                <button [disabled]=\"emailPrivate.trim().length === 0\" (click)=\"createPrivate()\" class=\"btn primary invite-btn\">Invite</button>\n            </div>\n            <div *ngFor=\"let room of rooms\">\n                <div [ngClass]=\"{'current-room': isCurrentRoom(room)}\" *ngIf=\"roomTypes.PRIVATE === room.type\" (click)=\"onRoomClick(room)\" class=\"item\">{{getRoomName(room)}}</div>\n            </div>\n        </div>\n    </div>\n    <div #scroller class=\"feedWrapper\">\n        <h3 *ngIf=\"!room\">No message to show. Join/create a room or start private conversation</h3>\n        <div class=\"feed\" *ngIf=\"room\">\n            <div *ngFor=\"let message of messages\" class=\"message\">\n                <div class=\"messageContainer\" [ngClass]=\"{'own-message': isAuthor(message)}\">\n                    <div class=\"messageData\">\n                        <span class=\"sender\">{{ message.sentBy }}></span>\n                        <span class=\"timestamp\">{{ message.sentAt | date:'medium' }}</span>\n                        <span class=\"delete\" (click)=\"hideMessage(message);\">Delete</span>\n                    </div>\n                    <div class=\"messageContent\">\n                        {{ message.text }}\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"side-bar right-bar\" *ngIf=\"room\">\n        <h3>Current Room: <i>{{getRoomName(room)}}</i></h3>\n        <span *ngIf=\"roomTypes.COMMON === room.type\" class=\"invite-room-block\">\n            <input [(ngModel)]=\"emailCommon\" (keyup)=\"onEmailCommonKeyUp($event)\" type=\"email\" placeholder=\"Email to invite\" class=\"input invite-input\" />\n            <button [disabled]=\"emailCommon.trim().length === 0\" (click)=\"inviteToRoom()\" class=\"btn primary invite-btn\">Invite</button>\n        </span>\n        <div class=\"invite-private-block\">\n            <h3>Members</h3>\n            <div *ngFor=\"let email of room.users\">\n                <div [ngClass]=\"{'current-room': isMe(email)}\" class=\"item\">\n                    <img *ngIf=\"!isMe(email)\" (click)=\"blockMember(email)\" class=\"member-settings\" src=\"/assets/icons/block.svg\" />\n                    <span class=\"new-room\" *ngIf=\"!isMember(email)\">(invited)</span>{{email}}\n                </div>\n            </div>\n        </div>\n        <button class=\"btn primary leave-btn\" [disabled]=\"false\" (click)=leaveRoom()>Leave room</button>\n    </div>\n</div>\n<div class=\"chatFormWrapper\">\n    <input placeholder=\"Type your message\" class=\"input chat-input\" [disabled]=\"!room\" [(ngModel)]=\"message\" (keyup)=\"onMessageKeyUp($event)\" />\n    <button class=\"btn primary chat-btn\" [disabled]=\"!room || message.trim().length === 0\" (click)=send()>Send</button>\n</div>\n");
             /***/ 
         }),
         /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/login/login.component.html": 
@@ -78,6 +78,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
             /* harmony default export */ __webpack_exports__["default"] = ("\n<div class=\"wrapper\">\n    <h2>Log In</h2>\n    <select [(ngModel)]=\"adapterApi\" (change)=\"adapterChange($event)\">\n        <option value=\"SERVER\">Server-side API</option>\n        <option value=\"CLIENT\">Client-side API</option>\n    </select>\n    <input [(ngModel)]=\"email\" type=\"email\" name=\"email\" class=\"input login-input\" />\n    <input [(ngModel)]=\"password\" type=\"password\" name=\"password\" class=\"input login-input\" />\n    <button class=\"btn primary\" (click)=\"login()\">Log In</button>\n    <button class=\"btn secondary\" (click)=\"register()\">Register</button>\n    <p class=\"error\">{{error}}</p>\n</div>");
+            /***/ 
+        }),
+        /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/user-settings/user-settings.component.html": 
+        /*!**************************************************************************************************!*\
+          !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/user-settings/user-settings.component.html ***!
+          \**************************************************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = ("<h3>Blocklist</h3>\n<div *ngIf=\"user\">\n    <div *ngFor=\"let email of user.blockList\">\n        <div class=\"item\">\n            {{email}}\n            <img (click)=\"removeFromBlockList(email)\" class=\"delete-btn\" src=\"/assets/icons/delete.svg\" />\n        </div>\n    </div>\n    <div *ngIf=\"user.blockList.length === 0\"><i>Blocklist is emplty</i></div>\n    <button (click)=\"save()\" class=\"popup-btn btn primary\" [mat-dialog-close]=\"true\">Save</button>\n    <button class=\"popup-btn btn secondary\" [mat-dialog-close]=\"true\">Cancel</button>\n</div>");
             /***/ 
         }),
         /***/ "./node_modules/tslib/tslib.es6.js": 
@@ -380,6 +391,120 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             }
             /***/ 
         }),
+        /***/ "./src/app/_models/index.ts": 
+        /*!**********************************!*\
+          !*** ./src/app/_models/index.ts ***!
+          \**********************************/
+        /*! exports provided: Message, Room, User */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./message */ "./src/app/_models/message.ts");
+            /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Message", function () { return _message__WEBPACK_IMPORTED_MODULE_1__["Message"]; });
+            /* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./room */ "./src/app/_models/room.ts");
+            /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Room", function () { return _room__WEBPACK_IMPORTED_MODULE_2__["Room"]; });
+            /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./user */ "./src/app/_models/user.ts");
+            /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "User", function () { return _user__WEBPACK_IMPORTED_MODULE_3__["User"]; });
+            /***/ 
+        }),
+        /***/ "./src/app/_models/message.ts": 
+        /*!************************************!*\
+          !*** ./src/app/_models/message.ts ***!
+          \************************************/
+        /*! exports provided: Message */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Message", function () { return Message; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+            /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/ __webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+            var Message = /** @class */ (function () {
+                function Message(json) {
+                    this.text = '';
+                    this.sentAt = '';
+                    this.sentBy = '';
+                    this.hiddenFor = [];
+                    this.toJSON = function () {
+                        return lodash__WEBPACK_IMPORTED_MODULE_1___default.a.merge({}, this);
+                    };
+                    Object.assign(this, json, { id: json.id });
+                }
+                return Message;
+            }());
+            /***/ 
+        }),
+        /***/ "./src/app/_models/room.ts": 
+        /*!*********************************!*\
+          !*** ./src/app/_models/room.ts ***!
+          \*********************************/
+        /*! exports provided: Room */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Room", function () { return Room; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+            /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/ __webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+            var Room = /** @class */ (function () {
+                function Room(json) {
+                    this.id = '';
+                    this.name = '';
+                    this.createAt = '';
+                    this.createBy = '';
+                    this.type = '';
+                    this.users = [];
+                    this.joinedAt = {};
+                    this.invitedBy = {};
+                    this.toJSON = function () {
+                        return lodash__WEBPACK_IMPORTED_MODULE_1___default.a.merge({}, this);
+                    };
+                    Object.assign(this, json, { id: json.id });
+                }
+                return Room;
+            }());
+            /***/ 
+        }),
+        /***/ "./src/app/_models/user.ts": 
+        /*!*********************************!*\
+          !*** ./src/app/_models/user.ts ***!
+          \*********************************/
+        /*! exports provided: User */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "User", function () { return User; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            var User = /** @class */ (function () {
+                function User(json) {
+                    this.blockList = [];
+                    this.addToBlockList = function (email) {
+                        if (!this.blockList.includes(email)) {
+                            this.blockList.push(email);
+                        }
+                    };
+                    this.removeFromBlockList = function (email) {
+                        var index = this.blockList.indexOf(email);
+                        if (index > -1) {
+                            this.blockList.splice(index, 1);
+                        }
+                    };
+                    Object.assign(this, json);
+                }
+                User.prototype.toJSON = function () {
+                    var res = {};
+                    for (var property in this) {
+                        if (typeof this[property] !== "function") {
+                            res[property] = this[property];
+                        }
+                    }
+                    return res;
+                };
+                return User;
+            }());
+            /***/ 
+        }),
         /***/ "./src/app/_services/auth.service.ts": 
         /*!*******************************************!*\
           !*** ./src/app/_services/auth.service.ts ***!
@@ -393,25 +518,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
             /* harmony import */ var angularfire2_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/auth */ "./node_modules/angularfire2/auth/index.js");
             /* harmony import */ var angularfire2_auth__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/ __webpack_require__.n(angularfire2_auth__WEBPACK_IMPORTED_MODULE_2__);
-            /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
-            /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! firebase/app */ "./node_modules/firebase/app/dist/index.cjs.js");
-            /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/ __webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_4__);
+            /* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
+            /* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/ __webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_3__);
+            /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+            /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! firebase/app */ "./node_modules/firebase/app/dist/index.cjs.js");
+            /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/ __webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_5__);
             var AuthService = /** @class */ (function () {
-                function AuthService(fireAuth) {
+                function AuthService(fireAuth, firestore) {
                     var _this = this;
                     this.fireAuth = fireAuth;
+                    this.firestore = firestore;
                     this.apiAdapter = 'CLIENT';
                     if (localStorage && localStorage.getItem('apiAdapter')) {
                         this.apiAdapter = localStorage.getItem('apiAdapter');
                     }
-                    this.user = fireAuth.authState;
-                    this.authState = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](false);
+                    this.user = this.fireAuth.authState;
+                    // fireAuth.authState.
+                    this.authState = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
                     this.user.subscribe(function (user) {
                         _this.authState.next(Boolean(user));
+                        if (user) {
+                            _this.uid = user.uid;
+                        }
+                        console.log(user);
                     });
                 }
                 AuthService.prototype.authUser = function () {
                     return this.user;
+                };
+                AuthService.prototype.userData = function () {
+                    return this.firestore.doc("users/" + this.uid).get();
+                };
+                AuthService.prototype.saveUserData = function (data) {
+                    return this.firestore.doc("users/" + this.uid).set(data);
                 };
                 AuthService.prototype.canActivate = function () {
                     return this.authState.value;
@@ -420,7 +559,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
                         return __generator(this, function (_a) {
                             switch (_a.label) {
-                                case 0: return [4 /*yield*/, this.fireAuth.auth.setPersistence(firebase_app__WEBPACK_IMPORTED_MODULE_4__["auth"].Auth.Persistence.LOCAL)];
+                                case 0: return [4 /*yield*/, this.fireAuth.auth.setPersistence(firebase_app__WEBPACK_IMPORTED_MODULE_5__["auth"].Auth.Persistence.LOCAL)];
                                 case 1:
                                     _a.sent();
                                     return [4 /*yield*/, this.fireAuth.auth.signInWithEmailAndPassword(email, password)];
@@ -435,7 +574,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
                         return __generator(this, function (_a) {
                             switch (_a.label) {
-                                case 0: return [4 /*yield*/, this.fireAuth.auth.setPersistence(firebase_app__WEBPACK_IMPORTED_MODULE_4__["auth"].Auth.Persistence.LOCAL)];
+                                case 0: return [4 /*yield*/, this.fireAuth.auth.setPersistence(firebase_app__WEBPACK_IMPORTED_MODULE_5__["auth"].Auth.Persistence.LOCAL)];
                                 case 1:
                                     _a.sent();
                                     return [4 /*yield*/, this.fireAuth.auth.createUserWithEmailAndPassword(email, password)];
@@ -452,7 +591,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 return AuthService;
             }());
             AuthService.ctorParameters = function () { return [
-                { type: angularfire2_auth__WEBPACK_IMPORTED_MODULE_2__["AngularFireAuth"] }
+                { type: angularfire2_auth__WEBPACK_IMPORTED_MODULE_2__["AngularFireAuth"] },
+                { type: angularfire2_firestore__WEBPACK_IMPORTED_MODULE_3__["AngularFirestore"] }
             ]; };
             AuthService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -479,35 +619,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             /* harmony import */ var angularfire2_auth__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/ __webpack_require__.n(angularfire2_auth__WEBPACK_IMPORTED_MODULE_3__);
             /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
             /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./auth.service */ "./src/app/_services/auth.service.ts");
-            /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+            /* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../_models */ "./src/app/_models/index.ts");
+            /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
             var roomTypes = {
                 'COMMON': 'COMMON',
                 'PRIVATE': 'PRIVATE'
             };
             var WEBSOCKET_HOST = location.origin.replace(/^http/, 'ws').replace(/^https/, 'ws');
             var DataService = /** @class */ (function () {
-                // private adapter = 'SERVER';
-                // private adapter = 'SERVER';
                 function DataService(authService, fireAuth, firestore, httpClient) {
                     var _this = this;
                     this.authService = authService;
                     this.fireAuth = fireAuth;
                     this.firestore = firestore;
                     this.httpClient = httpClient;
-                    // var HOST = location.origin.replace(/^http/, 'ws')
-                    // var ws = new WebSocket(HOST);
-                    // ws.onmessage = function (event) {
-                    //   console.log(event);
-                    // };
-                    console.log(this.authService.apiAdapter);
-                    // this.adapter = this.authService.apiAdapter;
                     this.messages = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
                     this.rooms = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
-                    this.authService.authUser().subscribe(function (user) {
-                        if (user) {
-                            _this.user = user;
+                    this.authService.authUser().subscribe(function (authUser) {
+                        if (authUser) {
+                            _this.authUser = authUser;
                             _this.subsribeToRooms();
                         }
+                    });
+                    this.authService.userData().subscribe(function (user) {
+                        _this.user = new _models__WEBPACK_IMPORTED_MODULE_6__["User"](user.data());
                     });
                 }
                 DataService.prototype.getMessages = function () {
@@ -536,7 +671,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                                     if (!message.id) {
                                         sentAt = (new Date()).toISOString();
                                         message = Object.assign({
-                                            sentBy: this.user.email,
+                                            sentBy: this.authUser.email,
                                             sentAt: sentAt,
                                             hiddenFor: []
                                         }, message);
@@ -665,7 +800,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                             switch (_a.label) {
                                 case 0: return [4 /*yield*/, this.saveRoom({
                                         type: roomTypes.PRIVATE,
-                                        users: [this.user.email, email]
+                                        users: [this.authUser.email, email]
                                     })];
                                 case 1:
                                     _a.sent();
@@ -686,6 +821,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                                         throw 'The user is already in the room!';
                                     }
                                     room.users.push(email);
+                                    room.invitedBy[email] = this.authUser.email;
                                     return [4 /*yield*/, this.saveRoom(room)];
                                 case 1: return [2 /*return*/, _a.sent()];
                             }
@@ -698,7 +834,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
-                                    room.users = room.users.filter(function (email) { return email !== _this.user.email; });
+                                    room.users = room.users.filter(function (email) { return email !== _this.authUser.email; });
                                     return [4 /*yield*/, this.saveRoom(room)];
                                 case 1:
                                     _a.sent();
@@ -718,10 +854,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                                         createdAt = (new Date()).toISOString();
                                         room = Object.assign({
                                             createdAt: createdAt,
-                                            createdBy: this.user.email,
-                                            users: [this.user.email],
+                                            createdBy: this.authUser.email,
+                                            users: [this.authUser.email],
+                                            invitedBy: {},
                                             joinedAt: (_a = {},
-                                                _a[this.user.email] = createdAt,
+                                                _a[this.authUser.email] = createdAt,
                                                 _a)
                                         }, room);
                                     }
@@ -734,8 +871,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 DataService.prototype.setRoom = function (roomId) {
                     this.roomId = roomId;
                     var room = this.getRooms().getValue().find(function (room) { return roomId === room.id; });
-                    if (!room.joinedAt[this.user.email]) {
-                        room.joinedAt[this.user.email] = (new Date()).toISOString();
+                    if (!room.joinedAt[this.authUser.email]) {
+                        room.joinedAt[this.authUser.email] = (new Date()).toISOString();
                         this.saveRoom(room);
                     }
                     this.subsribeToFeed();
@@ -748,7 +885,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                                     if (!Array.isArray(message.hiddenFor)) {
                                         message.hiddenFor = [];
                                     }
-                                    message.hiddenFor.push(this.user.email);
+                                    message.hiddenFor.push(this.authUser.email);
                                     return [4 /*yield*/, this.saveMessage(message)];
                                 case 1:
                                     _a.sent();
@@ -775,12 +912,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     this.feedSocket = new WebSocket(WEBSOCKET_HOST);
                     this.feedSocket.onopen = function () {
                         var room = _this.getRooms().getValue().find(function (room) { return _this.roomId === room.id; });
-                        _this.feedSocket.send(JSON.stringify({ event: 'setRoom', data: { roomId: _this.roomId, joinedAt: room.joinedAt[_this.user.email] } }));
+                        _this.feedSocket.send(JSON.stringify({ event: 'setRoom', data: { roomId: _this.roomId, joinedAt: room.joinedAt[_this.authUser.email] } }));
                     };
                     this.feedSocket.onmessage = function (event) {
                         var res = JSON.parse(event.data);
                         if (Array.isArray(res.data)) {
-                            _this.messages.next(res.data.filter(function (message) { return !message.hiddenFor || !message.hiddenFor.includes(_this.user.email); }));
+                            _this.messages.next(res.data.filter(function (message) { return !message.hiddenFor || !message.hiddenFor.includes(_this.authUser.email); }));
                         }
                     };
                 };
@@ -803,14 +940,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                         if (_this.roomId) {
                             query = query.where('roomId', '==', _this.roomId);
                         }
-                        if (room && room.joinedAt[_this.user.email]) {
-                            query = query.where('sentAt', '>', room.joinedAt[_this.user.email]);
+                        if (room && room.joinedAt[_this.authUser.email]) {
+                            query = query.where('sentAt', '>', room.joinedAt[_this.authUser.email]);
                         }
                         return query;
                     }).snapshotChanges().subscribe(function (data) {
                         var messages = data.map(function (e) {
                             return Object.assign({}, e.payload.doc.data(), { id: e.payload.doc.id });
-                        }).filter(function (message) { return !message.hiddenFor || !message.hiddenFor.includes(_this.user.email); });
+                        }).filter(function (message) { return !message.hiddenFor || !message.hiddenFor.includes(_this.authUser.email); });
                         _this.messages.next(messages);
                     });
                 };
@@ -827,7 +964,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     }
                     this.roomSocket = new WebSocket(WEBSOCKET_HOST);
                     this.roomSocket.onopen = function () {
-                        _this.roomSocket.send(JSON.stringify({ event: 'getRooms', data: { email: _this.user.email } }));
+                        _this.roomSocket.send(JSON.stringify({ event: 'getRooms', data: { email: _this.authUser.email } }));
                     };
                     this.roomSocket.onmessage = function (event) {
                         var res = JSON.parse(event.data);
@@ -846,11 +983,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     }
                     this.roomSubscription = this.firestore.collection('rooms', function (ref) {
                         var query = ref;
-                        query = query.where('users', 'array-contains', _this.user.email);
+                        query = query.where('users', 'array-contains', _this.authUser.email);
+                        query = query.orderBy('createdAt', 'desc');
                         return query;
                     }).snapshotChanges().subscribe(function (data) {
                         var rooms = data.map(function (e) {
                             return Object.assign({}, e.payload.doc.data(), { id: e.payload.doc.id });
+                        }).filter(function (room) {
+                            return !_this.user.blockList.includes(room.invitedBy[_this.authUser.email]);
                         });
                         _this.rooms.next(rooms);
                     });
@@ -861,7 +1001,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 { type: _auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
                 { type: angularfire2_auth__WEBPACK_IMPORTED_MODULE_3__["AngularFireAuth"] },
                 { type: angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"] },
-                { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HttpClient"] }
+                { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_7__["HttpClient"] }
             ]; };
             DataService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -990,7 +1130,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             /* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm2015/animations.js");
             /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm2015/ngx-toastr.js");
             /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../environments/environment */ "./src/environments/environment.ts");
-            // import { HttpModule } from '@angular/http';
+            /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm2015/material.js");
+            /* harmony import */ var _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./user-settings/user-settings.component */ "./src/app/user-settings/user-settings.component.ts");
             var AppModule = /** @class */ (function () {
                 function AppModule() {
                 }
@@ -1001,7 +1142,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     declarations: [
                         _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"],
                         _login_login_component__WEBPACK_IMPORTED_MODULE_6__["LoginComponent"],
-                        _chat_chat_component__WEBPACK_IMPORTED_MODULE_7__["ChatComponent"]
+                        _chat_chat_component__WEBPACK_IMPORTED_MODULE_7__["ChatComponent"],
+                        _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_16__["UserSettingsComponent"]
                     ],
                     imports: [
                         _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -1012,12 +1154,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                         angularfire2_auth__WEBPACK_IMPORTED_MODULE_11__["AngularFireAuthModule"],
                         angularfire2__WEBPACK_IMPORTED_MODULE_9__["AngularFireModule"].initializeApp(_environments_environment__WEBPACK_IMPORTED_MODULE_14__["environment"].firebase),
                         _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_12__["BrowserAnimationsModule"],
+                        _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatDialogModule"],
                         ngx_toastr__WEBPACK_IMPORTED_MODULE_13__["ToastrModule"].forRoot({
                             timeOut: 3500,
                         }),
-                        // HttpModule,
                         _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"],
                     ],
+                    entryComponents: [_user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_16__["UserSettingsComponent"]],
                     providers: [],
                     bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
                 })
@@ -1032,7 +1175,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = (".wrapper {\n  height: 550px;\n  display: flex;\n}\n\n.side-bar {\n  background-color: var(--primary2-color);\n  color: white;\n  width: 20%;\n  padding: 5px 10px 5px 10px;\n  font-size: 1.2em;\n}\n\n.side-bar .item {\n  border-bottom: 1px solid white;\n  padding: 5px 0px;\n  cursor: pointer;\n}\n\n.side-bar-section {\n  overflow-y: scroll;\n  overflow-x: hidden;\n  padding-right: 5px;\n  height: 50%;\n}\n\n.side-bar h3 {\n  margin: 5px;\n}\n\nbutton:disabled {\n  color: gray;\n}\n\n.own-message {\n  float: right;\n  background-color: var(--sucess-color) !important;\n}\n\n.chat-btn {\n  height: 50px;\n  width: auto;\n  border-top-left-radius: 0px;\n  border-bottom-left-radius: 0px;\n}\n\n.chat-input {\n  border-top-right-radius: 0px;\n  border-bottom-right-radius: 0px;\n  flex: 10;\n  font-size: 1.3em;\n  font-family: \"Open Sans\", sans-serif;\n  background-color: #eee;\n  color: #000;\n  transition: 0.1s ease-out;\n  padding-left: 20px;\n}\n\n.invite-room-block {\n  width: 90%;\n}\n\n.invite-private-block {\n  margin-bottom: 8px;\n  width: 100%;\n}\n\n.invite-input {\n  border-top-right-radius: 0px;\n  border-bottom-right-radius: 0px;\n  height: 26px;\n  width: 160px;\n  font-size: 16px;\n}\n\n.invite-btn {\n  width: auto;\n  border-top-left-radius: 0px;\n  border-bottom-left-radius: 0px;\n  height: 30px;\n  font-size: 16px;\n  padding: 0px 5px !important;\n}\n\n.avatar {\n  vertical-align: middle;\n}\n\n.logout-btn {\n  width: auto;\n  margin-left: 5px;\n  height: 50px;\n  vertical-align: middle;\n}\n\n.user-info {\n  padding: 5px 0px;\n  text-align: right;\n}\n\n.user-info h3 {\n  display: inline;\n  padding-right: 5px;\n  vertical-align: bottom;\n}\n\n.feedWrapper {\n  background-color: #fff;\n  font-size: 1.2em;\n  flex: 5;\n  overflow-y: scroll;\n  padding: 10px 10px 0px 10px;\n}\n\n.current-room {\n  border: 1px;\n  background-color: var(--primary-color);\n}\n\n.sender {\n  display: block;\n  color: #222;\n  font-weight: bold;\n}\n\n.timestamp {\n  color: #555;\n  font-style: italic;\n}\n\n.delete {\n  cursor: pointer;\n  display: block;\n  color: red;\n  font-style: italic;\n}\n\n.new-room {\n  margin-right: 2px;\n  font-size: 0.7em;\n  cursor: pointer;\n  display: inline;\n  color: green;\n  font-style: italic;\n}\n\n.adapter-data {\n  font-size: 1.2em;\n  float: left;\n  font-style: italic;\n}\n\n.chatFormWrapper {\n  display: flex;\n  height: 50px;\n  background-color: #eee;\n  z-index: 3;\n}\n\n#scroll-style::-webkit-scrollbar-track {\n  border-radius: 10px;\n  background-color: #F5F5F5;\n}\n\n.leave-btn {\n  margin: 5px 0px;\n}\n\n.user-list {\n  margin-top: 5px;\n}\n\n.messageData {\n  flex: 1;\n  padding: 10px;\n  font-size: 0.7em;\n}\n\n.chatInput {\n  flex: 10;\n  font-size: 1.3em;\n  font-family: \"Open Sans\", sans-serif;\n  background-color: #eee;\n  color: #000;\n  transition: 0.1s ease-out;\n  padding-left: 20px;\n}\n\n.chatInput:focus {\n  background-color: #E4F1FE;\n  color: #222;\n  transition: 0.2s ease-in;\n}\n\n.chatButton:hover {\n  background-color: #444;\n}\n\n.feed {\n  display: flex;\n  flex-direction: column;\n}\n\n.message {\n  flex-direction: column;\n  margin: 10px 0;\n}\n\n.messageContainer {\n  display: flex;\n  height: auto;\n  width: 70%;\n  min-width: 400px;\n  border-radius: 5px;\n  align-items: stretch;\n  background-color: #eee;\n  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.26), 0 3px 6px rgba(0, 0, 0, 0.23);\n}\n\n.ownMessage {\n  background-color: #01579B;\n}\n\n.messageData {\n  flex: 1;\n  padding: 10px;\n  font-size: 0.7em;\n}\n\n.sender {\n  display: block;\n  color: #222;\n  font-weight: bold;\n}\n\n.isOwnSender {\n  color: #E1F5FE;\n}\n\n.timestamp {\n  color: #555;\n  font-style: italic;\n}\n\n.isOwnTimestamp {\n  color: #4FC3F7;\n}\n\n.messageContent {\n  height: auto;\n  flex: 9;\n  background-color: #fff;\n  padding: 10px;\n  border-top-right-radius: 5px;\n  border-bottom-right-radius: 5px;\n}\n\n.isOwnMessageContent {\n  background-color: #E3F2FD;\n  color: #01579B;\n}\n\n.userItem {\n  height: auto;\n  padding: 10px;\n  width: 90%;\n  margin-top: 10px;\n  border-radius: 1px;\n  align-items: flex-start;\n  background-color: #201835;\n  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);\n  color: #A098A5;\n  border-radius: 8px;\n  transition: ease-in 0.2s;\n}\n\n.userItem:hover {\n  background-color: #453968;\n  color: #ddd;\n  transition: ease-in 0.1s;\n}\n\n.online {\n  background-color: #0FA;\n}\n\n.busy {\n  background-color: #FB0;\n}\n\n.offline {\n  background-color: #888;\n}\n\n.status {\n  border: 1px solid black;\n  display: inline-block;\n  min-width: 10px;\n  min-height: 10px;\n  border-radius: 50%;\n  margin: 10px 12px 0px 10px;\n}\n\n.userName {\n  display: inline-block;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY2hhdC9jOlxcZGV2XFxyZXBvXFxmb2tvLWNoYXQvc3JjXFxhcHBcXGNoYXRcXGNoYXQuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NoYXQvY2hhdC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQTtFQUNJLGFBQUE7RUFDQSxhQUFBO0FDQUo7O0FERUE7RUFDSSx1Q0FBQTtFQUNBLFlBQUE7RUFDQSxVQUFBO0VBQ0EsMEJBQUE7RUFDQSxnQkFBQTtBQ0NKOztBRENBO0VBQ0ksOEJBQUE7RUFDQSxnQkFBQTtFQUNBLGVBQUE7QUNFSjs7QURBQTtFQUVJLGtCQUFBO0VBQ0Esa0JBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7QUNFSjs7QURBQTtFQUNJLFdBQUE7QUNHSjs7QUREQTtFQUNJLFdBQUE7QUNJSjs7QURGQTtFQUVJLFlBQUE7RUFDQSxnREFBQTtBQ0lKOztBREZBO0VBQ0ksWUFBQTtFQUNBLFdBQUE7RUFDQSwyQkFBQTtFQUNBLDhCQUFBO0FDS0o7O0FESEE7RUFDSSw0QkFBQTtFQUNBLCtCQUFBO0VBQ0EsUUFBQTtFQUNBLGdCQUFBO0VBQ0Esb0NBQUE7RUFDQSxzQkFBQTtFQUNBLFdBQUE7RUFDQSx5QkFBQTtFQUNBLGtCQUFBO0FDTUo7O0FESkE7RUFDSSxVQUFBO0FDT0o7O0FESkE7RUFDSSxrQkFBQTtFQUNBLFdBQUE7QUNPSjs7QURGQTtFQUNJLDRCQUFBO0VBQ0EsK0JBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtFQUNBLGVBQUE7QUNLSjs7QURIQTtFQUNJLFdBQUE7RUFDQSwyQkFBQTtFQUNBLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLGVBQUE7RUFDQSwyQkFBQTtBQ01KOztBREpBO0VBQ0ksc0JBQUE7QUNPSjs7QURMQTtFQUNJLFdBQUE7RUFDQSxnQkFBQTtFQUNBLFlBQUE7RUFDQSxzQkFBQTtBQ1FKOztBRE5BO0VBQ0ksZ0JBQUE7RUFDQSxpQkFBQTtBQ1NKOztBRFBBO0VBQ0ksZUFBQTtFQUNBLGtCQUFBO0VBQ0Esc0JBQUE7QUNVSjs7QURSQTtFQUNJLHNCQUFBO0VBQ0EsZ0JBQUE7RUFDQSxPQUFBO0VBRUEsa0JBQUE7RUFDQSwyQkFBQTtBQ1VKOztBRFJBO0VBQ0ksV0FBQTtFQUNBLHNDQUFBO0FDV0o7O0FEUkE7RUFDSSxjQUFBO0VBQ0EsV0FBQTtFQUNBLGlCQUFBO0FDV0o7O0FEUkE7RUFDSSxXQUFBO0VBQ0Esa0JBQUE7QUNXSjs7QURSQTtFQUNJLGVBQUE7RUFDQSxjQUFBO0VBQ0EsVUFBQTtFQUNBLGtCQUFBO0FDV0o7O0FEVEE7RUFDSSxpQkFBQTtFQUNBLGdCQUFBO0VBQ0EsZUFBQTtFQUNBLGVBQUE7RUFDQSxZQUFBO0VBQ0Esa0JBQUE7QUNZSjs7QURWQTtFQUNJLGdCQUFBO0VBQ0EsV0FBQTtFQUNBLGtCQUFBO0FDYUo7O0FESUE7RUFDSSxhQUFBO0VBQ0EsWUFBQTtFQUNBLHNCQUFBO0VBQ0EsVUFBQTtBQ0RKOztBRElBO0VBRUMsbUJBQUE7RUFDQSx5QkFBQTtBQ0ZEOztBRElBO0VBQ0ksZUFBQTtBQ0RKOztBREdBO0VBQ0ksZUFBQTtBQ0FKOztBREVBO0VBQ0ksT0FBQTtFQUNBLGFBQUE7RUFDQSxnQkFBQTtBQ0NKOztBRFFBO0VBQ0ksUUFBQTtFQUNBLGdCQUFBO0VBQ0Esb0NBQUE7RUFDQSxzQkFBQTtFQUNBLFdBQUE7RUFDQSx5QkFBQTtFQUNBLGtCQUFBO0FDTEo7O0FEUUE7RUFDSSx5QkFBQTtFQUNBLFdBQUE7RUFDQSx3QkFBQTtBQ0xKOztBRHFCQTtFQUNJLHNCQUFBO0FDbEJKOztBRHVCQTtFQUNJLGFBQUE7RUFDQSxzQkFBQTtBQ3BCSjs7QUR1QkE7RUFDSSxzQkFBQTtFQUNBLGNBQUE7QUNwQko7O0FEd0JBO0VBQ0ksYUFBQTtFQUNBLFlBQUE7RUFDQSxVQUFBO0VBQ0EsZ0JBQUE7RUFDQSxrQkFBQTtFQUNBLG9CQUFBO0VBQ0Esc0JBQUE7RUFDQSx3RUFBQTtBQ3JCSjs7QUR3QkE7RUFDSSx5QkFBQTtBQ3JCSjs7QUR3QkE7RUFDSSxPQUFBO0VBQ0EsYUFBQTtFQUNBLGdCQUFBO0FDckJKOztBRHdCQTtFQUNJLGNBQUE7RUFDQSxXQUFBO0VBQ0EsaUJBQUE7QUNyQko7O0FEd0JBO0VBQ0ksY0FBQTtBQ3JCSjs7QUR3QkE7RUFDSSxXQUFBO0VBQ0Esa0JBQUE7QUNyQko7O0FEd0JBO0VBQ0ksY0FBQTtBQ3JCSjs7QUR3QkE7RUFDSSxZQUFBO0VBQ0EsT0FBQTtFQUNBLHNCQUFBO0VBQ0EsYUFBQTtFQUNBLDRCQUFBO0VBQ0EsK0JBQUE7QUNyQko7O0FEd0JBO0VBQ0kseUJBQUE7RUFDQSxjQUFBO0FDckJKOztBRDBCQTtFQUNJLFlBQUE7RUFDQSxhQUFBO0VBQ0EsVUFBQTtFQUNBLGdCQUFBO0VBQ0Esa0JBQUE7RUFDQSx1QkFBQTtFQUNBLHlCQUFBO0VBQ0Esd0VBQUE7RUFDQSxjQUFBO0VBQ0Esa0JBQUE7RUFDQSx3QkFBQTtBQ3ZCSjs7QUQwQkE7RUFDSSx5QkFBQTtFQUNBLFdBQUE7RUFDQSx3QkFBQTtBQ3ZCSjs7QUQwQkE7RUFDSSxzQkFBQTtBQ3ZCSjs7QUQwQkE7RUFDSSxzQkFBQTtBQ3ZCSjs7QUQwQkE7RUFDSSxzQkFBQTtBQ3ZCSjs7QUQwQkE7RUFDSSx1QkFBQTtFQUNBLHFCQUFBO0VBQ0EsZUFBQTtFQUNBLGdCQUFBO0VBQ0Esa0JBQUE7RUFDQSwwQkFBQTtBQ3ZCSjs7QUQwQkE7RUFDSSxxQkFBQTtBQ3ZCSiIsImZpbGUiOiJzcmMvYXBwL2NoYXQvY2hhdC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi8vLy9leHBcclxuLndyYXBwZXIge1xyXG4gICAgaGVpZ2h0OiA1NTBweDtcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcbn1cclxuLnNpZGUtYmFyIHtcclxuICAgIGJhY2tncm91bmQtY29sb3I6IHZhcigtLXByaW1hcnkyLWNvbG9yKTtcclxuICAgIGNvbG9yOiB3aGl0ZTtcclxuICAgIHdpZHRoOiAyMCU7XHJcbiAgICBwYWRkaW5nOjVweCAxMHB4IDVweCAxMHB4O1xyXG4gICAgZm9udC1zaXplOiAxLjJlbTtcclxufVxyXG4uc2lkZS1iYXIgLml0ZW0ge1xyXG4gICAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkIHdoaXRlO1xyXG4gICAgcGFkZGluZzogNXB4IDBweDtcclxuICAgIGN1cnNvcjogcG9pbnRlcjtcclxufVxyXG4uc2lkZS1iYXItc2VjdGlvbiB7XHJcbiAgICAvLyBkaXNwbGF5OiBmbGV4O1xyXG4gICAgb3ZlcmZsb3cteTogc2Nyb2xsO1xyXG4gICAgb3ZlcmZsb3cteDogaGlkZGVuO1xyXG4gICAgcGFkZGluZy1yaWdodDogNXB4O1xyXG4gICAgaGVpZ2h0OiA1MCU7XHJcbn1cclxuLnNpZGUtYmFyIGgzIHtcclxuICAgIG1hcmdpbjogNXB4O1xyXG59XHJcbmJ1dHRvbjpkaXNhYmxlZCB7XHJcbiAgICBjb2xvcjogZ3JheTtcclxufVxyXG4ub3duLW1lc3NhZ2Uge1xyXG4gICAgLy8gbWFyZ2luLXJpZ2h0OiA1cHg7XHJcbiAgICBmbG9hdDogcmlnaHQ7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1zdWNlc3MtY29sb3IpIWltcG9ydGFudDtcclxufVxyXG4uY2hhdC1idG4ge1xyXG4gICAgaGVpZ2h0OiA1MHB4O1xyXG4gICAgd2lkdGg6IGF1dG87XHJcbiAgICBib3JkZXItdG9wLWxlZnQtcmFkaXVzOiAwcHg7XHJcbiAgICBib3JkZXItYm90dG9tLWxlZnQtcmFkaXVzOiAwcHg7XHJcbn1cclxuLmNoYXQtaW5wdXQge1xyXG4gICAgYm9yZGVyLXRvcC1yaWdodC1yYWRpdXM6IDBweDtcclxuICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAwcHg7XHJcbiAgICBmbGV4OiAxMDtcclxuICAgIGZvbnQtc2l6ZTogMS4zZW07XHJcbiAgICBmb250LWZhbWlseTogJ09wZW4gU2FucycsIHNhbnMtc2VyaWY7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZWVlO1xyXG4gICAgY29sb3I6ICMwMDA7XHJcbiAgICB0cmFuc2l0aW9uOiAwLjFzIGVhc2Utb3V0O1xyXG4gICAgcGFkZGluZy1sZWZ0OiAyMHB4O1xyXG59XHJcbi5pbnZpdGUtcm9vbS1ibG9jayB7ICAgXHJcbiAgICB3aWR0aDogOTAlOyBcclxuICAgIC8vIGZsb2F0OiByaWdodDtcclxufVxyXG4uaW52aXRlLXByaXZhdGUtYmxvY2sge1xyXG4gICAgbWFyZ2luLWJvdHRvbTogOHB4O1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbn1cclxuLy8gLmludml0ZS1pbnB1dC1wcml2YXRlIHtcclxuLy8gICAgIHdpZHRoOiBhdXRvIWltcG9ydGFudDtcclxuLy8gfVxyXG4uaW52aXRlLWlucHV0IHtcclxuICAgIGJvcmRlci10b3AtcmlnaHQtcmFkaXVzOiAwcHg7XHJcbiAgICBib3JkZXItYm90dG9tLXJpZ2h0LXJhZGl1czogMHB4O1xyXG4gICAgaGVpZ2h0OiAyNnB4O1xyXG4gICAgd2lkdGg6IDE2MHB4O1xyXG4gICAgZm9udC1zaXplOiAxNnB4O1xyXG59XHJcbi5pbnZpdGUtYnRuIHtcclxuICAgIHdpZHRoOiBhdXRvO1xyXG4gICAgYm9yZGVyLXRvcC1sZWZ0LXJhZGl1czogMHB4O1xyXG4gICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMHB4O1xyXG4gICAgaGVpZ2h0OiAzMHB4O1xyXG4gICAgZm9udC1zaXplOiAxNnB4O1xyXG4gICAgcGFkZGluZzogMHB4IDVweCFpbXBvcnRhbnQ7XHJcbn1cclxuLmF2YXRhciB7XHJcbiAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xyXG59XHJcbi5sb2dvdXQtYnRuIHtcclxuICAgIHdpZHRoOiBhdXRvO1xyXG4gICAgbWFyZ2luLWxlZnQ6IDVweDtcclxuICAgIGhlaWdodDogNTBweDtcclxuICAgIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XHJcbn1cclxuLnVzZXItaW5mbyB7XHJcbiAgICBwYWRkaW5nOiA1cHggMHB4O1xyXG4gICAgdGV4dC1hbGlnbjogcmlnaHQ7XHJcbn1cclxuLnVzZXItaW5mbyBoMyB7XHJcbiAgICBkaXNwbGF5OiBpbmxpbmU7XHJcbiAgICBwYWRkaW5nLXJpZ2h0OiA1cHg7XHJcbiAgICB2ZXJ0aWNhbC1hbGlnbjogYm90dG9tO1xyXG59XHJcbi5mZWVkV3JhcHBlciB7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAoI2ZmZik7XHJcbiAgICBmb250LXNpemU6IDEuMmVtO1xyXG4gICAgZmxleDogNTtcclxuICAgIC8vIG9yZGVyOiAyO1xyXG4gICAgb3ZlcmZsb3cteTogc2Nyb2xsO1xyXG4gICAgcGFkZGluZzogMTBweCAxMHB4IDBweCAxMHB4O1xyXG59XHJcbi5jdXJyZW50LXJvb20ge1xyXG4gICAgYm9yZGVyOiAxcHg7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1wcmltYXJ5LWNvbG9yKTtcclxufVxyXG5cclxuLnNlbmRlcntcclxuICAgIGRpc3BsYXk6IGJsb2NrO1xyXG4gICAgY29sb3I6ICMyMjI7XHJcbiAgICBmb250LXdlaWdodDogYm9sZDtcclxufVxyXG5cclxuLnRpbWVzdGFtcCB7XHJcbiAgICBjb2xvcjogIzU1NTtcclxuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcclxufVxyXG5cclxuLmRlbGV0ZSB7XHJcbiAgICBjdXJzb3I6IHBvaW50ZXI7XHJcbiAgICBkaXNwbGF5OiBibG9jaztcclxuICAgIGNvbG9yOiByZWQ7XHJcbiAgICBmb250LXN0eWxlOiBpdGFsaWM7XHJcbn1cclxuLm5ldy1yb29tIHtcclxuICAgIG1hcmdpbi1yaWdodDogMnB4O1xyXG4gICAgZm9udC1zaXplOiAwLjdlbTtcclxuICAgIGN1cnNvcjogcG9pbnRlcjtcclxuICAgIGRpc3BsYXk6IGlubGluZTtcclxuICAgIGNvbG9yOiBncmVlbjtcclxuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcclxufVxyXG4uYWRhcHRlci1kYXRhIHtcclxuICAgIGZvbnQtc2l6ZTogMS4yZW07XHJcbiAgICBmbG9hdDogbGVmdDtcclxuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcclxufVxyXG5cclxuLy8vLy8vXHJcblxyXG4vLyAudXNlckxpc3RXcmFwcGVyIHtcclxuLy8gICAgIGJhY2tncm91bmQtY29sb3I6ICMyQTI4NDU7XHJcbi8vICAgICBjb2xvcjogI2ZmZjtcclxuLy8gICAgIGRpc3BsYXk6IGZsZXg7XHJcbi8vICAgICBmb250LWZhbWlseTogXCJPcGVuIFNhbnNcIiwgc2Fucy1zZXJpZjtcclxuLy8gICAgIGZvbnQtc2l6ZTogMS4yZW07XHJcbi8vICAgICBmbGV4OiAxO1xyXG4vLyAgICAgb3JkZXI6IDE7XHJcbi8vICAgICBwYWRkaW5nOjIwcHggMHB4IDQwcHggMzBweDtcclxuLy8gICAgIGJvcmRlci1yaWdodDogMXB4IHNvbGlkICMyMjI7XHJcbi8vIH1cclxuXHJcbi5jaGF0Rm9ybVdyYXBwZXIge1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGhlaWdodDogNTBweDtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICNlZWU7XHJcbiAgICB6LWluZGV4OiAzO1xyXG59XHJcblxyXG4jc2Nyb2xsLXN0eWxlOjotd2Via2l0LXNjcm9sbGJhci10cmFja1xyXG57XHJcblx0Ym9yZGVyLXJhZGl1czogMTBweDtcclxuXHRiYWNrZ3JvdW5kLWNvbG9yOiAjRjVGNUY1O1xyXG59XHJcbi5sZWF2ZS1idG4ge1xyXG4gICAgbWFyZ2luOiA1cHggMHB4OyBcclxufVxyXG4udXNlci1saXN0IHtcclxuICAgIG1hcmdpbi10b3A6IDVweDtcclxufVxyXG4ubWVzc2FnZURhdGF7XHJcbiAgICBmbGV4OiAxO1xyXG4gICAgcGFkZGluZzogMTBweDtcclxuICAgIGZvbnQtc2l6ZTogMC43ZW07XHJcbn1cclxuXHJcblxyXG5cclxuXHJcblxyXG5cclxuLy8vL2Zvcm1cclxuLmNoYXRJbnB1dHtcclxuICAgIGZsZXg6IDEwO1xyXG4gICAgZm9udC1zaXplOiAxLjNlbTtcclxuICAgIGZvbnQtZmFtaWx5OiAnT3BlbiBTYW5zJywgc2Fucy1zZXJpZjtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICNlZWU7XHJcbiAgICBjb2xvcjogIzAwMDtcclxuICAgIHRyYW5zaXRpb246IDAuMXMgZWFzZS1vdXQ7XHJcbiAgICBwYWRkaW5nLWxlZnQ6IDIwcHg7XHJcbn1cclxuXHJcbi5jaGF0SW5wdXQ6Zm9jdXN7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjRTRGMUZFO1xyXG4gICAgY29sb3I6ICMyMjI7XHJcbiAgICB0cmFuc2l0aW9uOiAwLjJzIGVhc2UtaW47XHJcbn1cclxuXHJcblxyXG4vLyAuY2hhdEJ1dHRvbntcclxuLy8gICAgIGZsZXg6IDE7XHJcbi8vICAgICBwYWRkaW5nOiAxMHB4O1xyXG4vLyAgICAgcGFkZGluZzogOHB4IDI0cHg7XHJcbi8vICAgICBmb250LXNpemU6IDEuM2VtO1xyXG4vLyAgICAgZm9udC1mYW1pbHk6ICdEcm9pZCBTYW5zJywgc2Fucy1zZXJpZjtcclxuLy8gICAgIGJhY2tncm91bmQtY29sb3I6ICMyQTI4NDU7XHJcbi8vICAgICBjb2xvcjogd2hpdGU7XHJcbi8vICAgICB0cmFuc2l0aW9uOiAwLjJzIGVhc2Utb3V0O1xyXG4vLyAgICAgbWluLXdpZHRoOiA1MHB4O1xyXG4vLyB9XHJcblxyXG4uY2hhdEJ1dHRvbjpob3ZlcntcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICM0NDQ7XHJcbn1cclxuXHJcblxyXG4vLy8vZmVlZFxyXG4uZmVlZHtcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xyXG59XHJcblxyXG4ubWVzc2FnZXtcclxuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XHJcbiAgICBtYXJnaW46IDEwcHggMDtcclxufVxyXG5cclxuLy8vLy9tZXNzYWdlXHJcbi5tZXNzYWdlQ29udGFpbmVye1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGhlaWdodDogYXV0bztcclxuICAgIHdpZHRoOiA3MCU7XHJcbiAgICBtaW4td2lkdGg6IDQwMHB4O1xyXG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xyXG4gICAgYWxpZ24taXRlbXM6c3RyZXRjaDtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICNlZWU7XHJcbiAgICBib3gtc2hhZG93OiAwIDNweCA2cHggcmdiYSgwLDAsMCwwLjI2KSwgMCAzcHggNnB4IHJnYmEoMCwwLDAsMC4yMyk7XHJcbn1cclxuXHJcbi5vd25NZXNzYWdle1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzAxNTc5QjtcclxufVxyXG5cclxuLm1lc3NhZ2VEYXRhe1xyXG4gICAgZmxleDogMTtcclxuICAgIHBhZGRpbmc6IDEwcHg7XHJcbiAgICBmb250LXNpemU6IDAuN2VtO1xyXG59XHJcblxyXG4uc2VuZGVye1xyXG4gICAgZGlzcGxheTogYmxvY2s7XHJcbiAgICBjb2xvcjogIzIyMjtcclxuICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xyXG59XHJcblxyXG4uaXNPd25TZW5kZXJ7XHJcbiAgICBjb2xvcjogI0UxRjVGRTtcclxufVxyXG5cclxuLnRpbWVzdGFtcCB7XHJcbiAgICBjb2xvcjogIzU1NTtcclxuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcclxufVxyXG5cclxuLmlzT3duVGltZXN0YW1we1xyXG4gICAgY29sb3I6ICM0RkMzRjc7XHJcbn1cclxuXHJcbi5tZXNzYWdlQ29udGVudHtcclxuICAgIGhlaWdodDogYXV0bztcclxuICAgIGZsZXg6IDk7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmO1xyXG4gICAgcGFkZGluZzogMTBweDtcclxuICAgIGJvcmRlci10b3AtcmlnaHQtcmFkaXVzOiA1cHg7XHJcbiAgICBib3JkZXItYm90dG9tLXJpZ2h0LXJhZGl1czogNXB4O1xyXG59XHJcblxyXG4uaXNPd25NZXNzYWdlQ29udGVudHtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICNFM0YyRkQ7XHJcbiAgICBjb2xvcjogIzAxNTc5QjtcclxufVxyXG5cclxuXHJcbi8vLy91c2VyXHJcbi51c2VySXRlbXtcclxuICAgIGhlaWdodDogYXV0bztcclxuICAgIHBhZGRpbmc6IDEwcHg7XHJcbiAgICB3aWR0aDogOTAlO1xyXG4gICAgbWFyZ2luLXRvcDogMTBweDtcclxuICAgIGJvcmRlci1yYWRpdXM6IDFweDtcclxuICAgIGFsaWduLWl0ZW1zOmZsZXgtc3RhcnQ7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjAxODM1O1xyXG4gICAgYm94LXNoYWRvdzogMCAzcHggNnB4IHJnYmEoMCwwLDAsMC4xNiksIDAgM3B4IDZweCByZ2JhKDAsMCwwLDAuMjMpO1xyXG4gICAgY29sb3I6ICNBMDk4QTU7XHJcbiAgICBib3JkZXItcmFkaXVzOiA4cHg7XHJcbiAgICB0cmFuc2l0aW9uOiBlYXNlLWluIDAuMnM7XHJcbn1cclxuXHJcbi51c2VySXRlbTpob3ZlcntcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICM0NTM5Njg7XHJcbiAgICBjb2xvcjogI2RkZDtcclxuICAgIHRyYW5zaXRpb246IGVhc2UtaW4gMC4xcztcclxufVxyXG5cclxuLm9ubGluZXtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICMwRkE7XHJcbn1cclxuXHJcbi5idXN5e1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogI0ZCMDtcclxufVxyXG5cclxuLm9mZmxpbmV7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjODg4O1xyXG59XHJcblxyXG4uc3RhdHVze1xyXG4gICAgYm9yZGVyOiAxcHggc29saWQgYmxhY2s7XHJcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XHJcbiAgICBtaW4td2lkdGg6IDEwcHg7XHJcbiAgICBtaW4taGVpZ2h0OiAxMHB4O1xyXG4gICAgYm9yZGVyLXJhZGl1czogNTAlO1xyXG4gICAgbWFyZ2luOiAxMHB4IDEycHggMHB4IDEwcHg7XHJcbn1cclxuXHJcbi51c2VyTmFtZXtcclxuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcclxufSIsIi53cmFwcGVyIHtcbiAgaGVpZ2h0OiA1NTBweDtcbiAgZGlzcGxheTogZmxleDtcbn1cblxuLnNpZGUtYmFyIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tcHJpbWFyeTItY29sb3IpO1xuICBjb2xvcjogd2hpdGU7XG4gIHdpZHRoOiAyMCU7XG4gIHBhZGRpbmc6IDVweCAxMHB4IDVweCAxMHB4O1xuICBmb250LXNpemU6IDEuMmVtO1xufVxuXG4uc2lkZS1iYXIgLml0ZW0ge1xuICBib3JkZXItYm90dG9tOiAxcHggc29saWQgd2hpdGU7XG4gIHBhZGRpbmc6IDVweCAwcHg7XG4gIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLnNpZGUtYmFyLXNlY3Rpb24ge1xuICBvdmVyZmxvdy15OiBzY3JvbGw7XG4gIG92ZXJmbG93LXg6IGhpZGRlbjtcbiAgcGFkZGluZy1yaWdodDogNXB4O1xuICBoZWlnaHQ6IDUwJTtcbn1cblxuLnNpZGUtYmFyIGgzIHtcbiAgbWFyZ2luOiA1cHg7XG59XG5cbmJ1dHRvbjpkaXNhYmxlZCB7XG4gIGNvbG9yOiBncmF5O1xufVxuXG4ub3duLW1lc3NhZ2Uge1xuICBmbG9hdDogcmlnaHQ7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLXN1Y2Vzcy1jb2xvcikgIWltcG9ydGFudDtcbn1cblxuLmNoYXQtYnRuIHtcbiAgaGVpZ2h0OiA1MHB4O1xuICB3aWR0aDogYXV0bztcbiAgYm9yZGVyLXRvcC1sZWZ0LXJhZGl1czogMHB4O1xuICBib3JkZXItYm90dG9tLWxlZnQtcmFkaXVzOiAwcHg7XG59XG5cbi5jaGF0LWlucHV0IHtcbiAgYm9yZGVyLXRvcC1yaWdodC1yYWRpdXM6IDBweDtcbiAgYm9yZGVyLWJvdHRvbS1yaWdodC1yYWRpdXM6IDBweDtcbiAgZmxleDogMTA7XG4gIGZvbnQtc2l6ZTogMS4zZW07XG4gIGZvbnQtZmFtaWx5OiBcIk9wZW4gU2Fuc1wiLCBzYW5zLXNlcmlmO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZWVlO1xuICBjb2xvcjogIzAwMDtcbiAgdHJhbnNpdGlvbjogMC4xcyBlYXNlLW91dDtcbiAgcGFkZGluZy1sZWZ0OiAyMHB4O1xufVxuXG4uaW52aXRlLXJvb20tYmxvY2sge1xuICB3aWR0aDogOTAlO1xufVxuXG4uaW52aXRlLXByaXZhdGUtYmxvY2sge1xuICBtYXJnaW4tYm90dG9tOiA4cHg7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4uaW52aXRlLWlucHV0IHtcbiAgYm9yZGVyLXRvcC1yaWdodC1yYWRpdXM6IDBweDtcbiAgYm9yZGVyLWJvdHRvbS1yaWdodC1yYWRpdXM6IDBweDtcbiAgaGVpZ2h0OiAyNnB4O1xuICB3aWR0aDogMTYwcHg7XG4gIGZvbnQtc2l6ZTogMTZweDtcbn1cblxuLmludml0ZS1idG4ge1xuICB3aWR0aDogYXV0bztcbiAgYm9yZGVyLXRvcC1sZWZ0LXJhZGl1czogMHB4O1xuICBib3JkZXItYm90dG9tLWxlZnQtcmFkaXVzOiAwcHg7XG4gIGhlaWdodDogMzBweDtcbiAgZm9udC1zaXplOiAxNnB4O1xuICBwYWRkaW5nOiAwcHggNXB4ICFpbXBvcnRhbnQ7XG59XG5cbi5hdmF0YXIge1xuICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xufVxuXG4ubG9nb3V0LWJ0biB7XG4gIHdpZHRoOiBhdXRvO1xuICBtYXJnaW4tbGVmdDogNXB4O1xuICBoZWlnaHQ6IDUwcHg7XG4gIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XG59XG5cbi51c2VyLWluZm8ge1xuICBwYWRkaW5nOiA1cHggMHB4O1xuICB0ZXh0LWFsaWduOiByaWdodDtcbn1cblxuLnVzZXItaW5mbyBoMyB7XG4gIGRpc3BsYXk6IGlubGluZTtcbiAgcGFkZGluZy1yaWdodDogNXB4O1xuICB2ZXJ0aWNhbC1hbGlnbjogYm90dG9tO1xufVxuXG4uZmVlZFdyYXBwZXIge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmO1xuICBmb250LXNpemU6IDEuMmVtO1xuICBmbGV4OiA1O1xuICBvdmVyZmxvdy15OiBzY3JvbGw7XG4gIHBhZGRpbmc6IDEwcHggMTBweCAwcHggMTBweDtcbn1cblxuLmN1cnJlbnQtcm9vbSB7XG4gIGJvcmRlcjogMXB4O1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1wcmltYXJ5LWNvbG9yKTtcbn1cblxuLnNlbmRlciB7XG4gIGRpc3BsYXk6IGJsb2NrO1xuICBjb2xvcjogIzIyMjtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG59XG5cbi50aW1lc3RhbXAge1xuICBjb2xvcjogIzU1NTtcbiAgZm9udC1zdHlsZTogaXRhbGljO1xufVxuXG4uZGVsZXRlIHtcbiAgY3Vyc29yOiBwb2ludGVyO1xuICBkaXNwbGF5OiBibG9jaztcbiAgY29sb3I6IHJlZDtcbiAgZm9udC1zdHlsZTogaXRhbGljO1xufVxuXG4ubmV3LXJvb20ge1xuICBtYXJnaW4tcmlnaHQ6IDJweDtcbiAgZm9udC1zaXplOiAwLjdlbTtcbiAgY3Vyc29yOiBwb2ludGVyO1xuICBkaXNwbGF5OiBpbmxpbmU7XG4gIGNvbG9yOiBncmVlbjtcbiAgZm9udC1zdHlsZTogaXRhbGljO1xufVxuXG4uYWRhcHRlci1kYXRhIHtcbiAgZm9udC1zaXplOiAxLjJlbTtcbiAgZmxvYXQ6IGxlZnQ7XG4gIGZvbnQtc3R5bGU6IGl0YWxpYztcbn1cblxuLmNoYXRGb3JtV3JhcHBlciB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGhlaWdodDogNTBweDtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2VlZTtcbiAgei1pbmRleDogMztcbn1cblxuI3Njcm9sbC1zdHlsZTo6LXdlYmtpdC1zY3JvbGxiYXItdHJhY2sge1xuICBib3JkZXItcmFkaXVzOiAxMHB4O1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjRjVGNUY1O1xufVxuXG4ubGVhdmUtYnRuIHtcbiAgbWFyZ2luOiA1cHggMHB4O1xufVxuXG4udXNlci1saXN0IHtcbiAgbWFyZ2luLXRvcDogNXB4O1xufVxuXG4ubWVzc2FnZURhdGEge1xuICBmbGV4OiAxO1xuICBwYWRkaW5nOiAxMHB4O1xuICBmb250LXNpemU6IDAuN2VtO1xufVxuXG4uY2hhdElucHV0IHtcbiAgZmxleDogMTA7XG4gIGZvbnQtc2l6ZTogMS4zZW07XG4gIGZvbnQtZmFtaWx5OiBcIk9wZW4gU2Fuc1wiLCBzYW5zLXNlcmlmO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZWVlO1xuICBjb2xvcjogIzAwMDtcbiAgdHJhbnNpdGlvbjogMC4xcyBlYXNlLW91dDtcbiAgcGFkZGluZy1sZWZ0OiAyMHB4O1xufVxuXG4uY2hhdElucHV0OmZvY3VzIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogI0U0RjFGRTtcbiAgY29sb3I6ICMyMjI7XG4gIHRyYW5zaXRpb246IDAuMnMgZWFzZS1pbjtcbn1cblxuLmNoYXRCdXR0b246aG92ZXIge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjNDQ0O1xufVxuXG4uZmVlZCB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG59XG5cbi5tZXNzYWdlIHtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgbWFyZ2luOiAxMHB4IDA7XG59XG5cbi5tZXNzYWdlQ29udGFpbmVyIHtcbiAgZGlzcGxheTogZmxleDtcbiAgaGVpZ2h0OiBhdXRvO1xuICB3aWR0aDogNzAlO1xuICBtaW4td2lkdGg6IDQwMHB4O1xuICBib3JkZXItcmFkaXVzOiA1cHg7XG4gIGFsaWduLWl0ZW1zOiBzdHJldGNoO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZWVlO1xuICBib3gtc2hhZG93OiAwIDNweCA2cHggcmdiYSgwLCAwLCAwLCAwLjI2KSwgMCAzcHggNnB4IHJnYmEoMCwgMCwgMCwgMC4yMyk7XG59XG5cbi5vd25NZXNzYWdlIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzAxNTc5Qjtcbn1cblxuLm1lc3NhZ2VEYXRhIHtcbiAgZmxleDogMTtcbiAgcGFkZGluZzogMTBweDtcbiAgZm9udC1zaXplOiAwLjdlbTtcbn1cblxuLnNlbmRlciB7XG4gIGRpc3BsYXk6IGJsb2NrO1xuICBjb2xvcjogIzIyMjtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG59XG5cbi5pc093blNlbmRlciB7XG4gIGNvbG9yOiAjRTFGNUZFO1xufVxuXG4udGltZXN0YW1wIHtcbiAgY29sb3I6ICM1NTU7XG4gIGZvbnQtc3R5bGU6IGl0YWxpYztcbn1cblxuLmlzT3duVGltZXN0YW1wIHtcbiAgY29sb3I6ICM0RkMzRjc7XG59XG5cbi5tZXNzYWdlQ29udGVudCB7XG4gIGhlaWdodDogYXV0bztcbiAgZmxleDogOTtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZjtcbiAgcGFkZGluZzogMTBweDtcbiAgYm9yZGVyLXRvcC1yaWdodC1yYWRpdXM6IDVweDtcbiAgYm9yZGVyLWJvdHRvbS1yaWdodC1yYWRpdXM6IDVweDtcbn1cblxuLmlzT3duTWVzc2FnZUNvbnRlbnQge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjRTNGMkZEO1xuICBjb2xvcjogIzAxNTc5Qjtcbn1cblxuLnVzZXJJdGVtIHtcbiAgaGVpZ2h0OiBhdXRvO1xuICBwYWRkaW5nOiAxMHB4O1xuICB3aWR0aDogOTAlO1xuICBtYXJnaW4tdG9wOiAxMHB4O1xuICBib3JkZXItcmFkaXVzOiAxcHg7XG4gIGFsaWduLWl0ZW1zOiBmbGV4LXN0YXJ0O1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjAxODM1O1xuICBib3gtc2hhZG93OiAwIDNweCA2cHggcmdiYSgwLCAwLCAwLCAwLjE2KSwgMCAzcHggNnB4IHJnYmEoMCwgMCwgMCwgMC4yMyk7XG4gIGNvbG9yOiAjQTA5OEE1O1xuICBib3JkZXItcmFkaXVzOiA4cHg7XG4gIHRyYW5zaXRpb246IGVhc2UtaW4gMC4ycztcbn1cblxuLnVzZXJJdGVtOmhvdmVyIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzQ1Mzk2ODtcbiAgY29sb3I6ICNkZGQ7XG4gIHRyYW5zaXRpb246IGVhc2UtaW4gMC4xcztcbn1cblxuLm9ubGluZSB7XG4gIGJhY2tncm91bmQtY29sb3I6ICMwRkE7XG59XG5cbi5idXN5IHtcbiAgYmFja2dyb3VuZC1jb2xvcjogI0ZCMDtcbn1cblxuLm9mZmxpbmUge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjODg4O1xufVxuXG4uc3RhdHVzIHtcbiAgYm9yZGVyOiAxcHggc29saWQgYmxhY2s7XG4gIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgbWluLXdpZHRoOiAxMHB4O1xuICBtaW4taGVpZ2h0OiAxMHB4O1xuICBib3JkZXItcmFkaXVzOiA1MCU7XG4gIG1hcmdpbjogMTBweCAxMnB4IDBweCAxMHB4O1xufVxuXG4udXNlck5hbWUge1xuICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG59Il19 */");
+            /* harmony default export */ __webpack_exports__["default"] = (".wrapper {\n  height: 550px;\n  display: flex;\n}\n\n.side-bar {\n  background-color: var(--primary2-color);\n  color: white;\n  width: 20%;\n  padding: 5px 10px 5px 10px;\n  font-size: 1.2em;\n}\n\n.side-bar .item {\n  border-bottom: 1px solid white;\n  padding: 5px 0px;\n  cursor: pointer;\n}\n\n.side-bar-section {\n  overflow-y: scroll;\n  overflow-x: hidden;\n  padding-right: 5px;\n  height: 50%;\n}\n\n.side-bar h3 {\n  margin: 5px;\n}\n\nbutton:disabled {\n  color: gray;\n}\n\n.own-message {\n  float: right;\n  background-color: var(--sucess-color) !important;\n}\n\n.chat-btn {\n  height: 50px;\n  width: auto;\n  border-top-left-radius: 0px;\n  border-bottom-left-radius: 0px;\n}\n\n.chat-input {\n  border-top-right-radius: 0px;\n  border-bottom-right-radius: 0px;\n  flex: 10;\n  font-size: 1.3em;\n  font-family: \"Open Sans\", sans-serif;\n  background-color: #eee;\n  color: #000;\n  transition: 0.1s ease-out;\n  padding-left: 20px;\n}\n\n.invite-room-block {\n  width: 90%;\n}\n\n.invite-private-block {\n  margin-bottom: 8px;\n  width: 100%;\n}\n\n.invite-input {\n  border-top-right-radius: 0px;\n  border-bottom-right-radius: 0px;\n  height: 26px;\n  width: 160px;\n  font-size: 16px;\n}\n\n.invite-btn {\n  width: auto;\n  border-top-left-radius: 0px;\n  border-bottom-left-radius: 0px;\n  height: 30px;\n  font-size: 16px;\n  padding: 0px 5px !important;\n}\n\n.avatar {\n  vertical-align: middle;\n}\n\n.logout-btn {\n  width: auto;\n  margin-left: 5px;\n  height: 50px;\n  vertical-align: middle;\n}\n\n.user-info {\n  padding: 5px 0px;\n  text-align: right;\n}\n\n.user-info h3 {\n  display: inline;\n  padding-right: 5px;\n  vertical-align: bottom;\n}\n\n.feedWrapper {\n  background-color: #fff;\n  font-size: 1.2em;\n  flex: 5;\n  overflow-y: scroll;\n  padding: 10px 10px 0px 10px;\n}\n\n.current-room {\n  border: 1px;\n  background-color: var(--primary-color);\n}\n\n.sender {\n  display: block;\n  color: #222;\n  font-weight: bold;\n}\n\n.timestamp {\n  color: #555;\n  font-style: italic;\n}\n\n.delete {\n  cursor: pointer;\n  display: block;\n  color: red;\n  font-style: italic;\n}\n\n.new-room {\n  margin-right: 2px;\n  font-size: 0.7em;\n  cursor: pointer;\n  display: inline;\n  color: green;\n  font-style: italic;\n}\n\n.adapter-data {\n  font-size: 1.2em;\n  float: left;\n  font-style: italic;\n}\n\n.member-settings {\n  vertical-align: bottom;\n  padding-right: 2px;\n}\n\n.user-settings {\n  vertical-align: bottom;\n  height: 50px;\n  padding-left: 5px;\n}\n\n.chatFormWrapper {\n  display: flex;\n  height: 50px;\n  background-color: #eee;\n  z-index: 3;\n}\n\n#scroll-style::-webkit-scrollbar-track {\n  border-radius: 10px;\n  background-color: #F5F5F5;\n}\n\n.leave-btn {\n  margin: 5px 0px;\n}\n\n.user-list {\n  margin-top: 5px;\n}\n\n.messageData {\n  flex: 1;\n  padding: 10px;\n  font-size: 0.7em;\n}\n\n.chatInput {\n  flex: 10;\n  font-size: 1.3em;\n  font-family: \"Open Sans\", sans-serif;\n  background-color: #eee;\n  color: #000;\n  transition: 0.1s ease-out;\n  padding-left: 20px;\n}\n\n.chatInput:focus {\n  background-color: #E4F1FE;\n  color: #222;\n  transition: 0.2s ease-in;\n}\n\n.chatButton:hover {\n  background-color: #444;\n}\n\n.feed {\n  display: flex;\n  flex-direction: column;\n}\n\n.message {\n  flex-direction: column;\n  margin: 10px 0;\n}\n\n.messageContainer {\n  display: flex;\n  height: auto;\n  width: 70%;\n  min-width: 400px;\n  border-radius: 5px;\n  align-items: stretch;\n  background-color: #eee;\n  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.26), 0 3px 6px rgba(0, 0, 0, 0.23);\n}\n\n.ownMessage {\n  background-color: #01579B;\n}\n\n.messageData {\n  flex: 1;\n  padding: 10px;\n  font-size: 0.7em;\n}\n\n.sender {\n  display: block;\n  color: #222;\n  font-weight: bold;\n}\n\n.isOwnSender {\n  color: #E1F5FE;\n}\n\n.timestamp {\n  color: #555;\n  font-style: italic;\n}\n\n.isOwnTimestamp {\n  color: #4FC3F7;\n}\n\n.messageContent {\n  height: auto;\n  flex: 9;\n  background-color: #fff;\n  padding: 10px;\n  border-top-right-radius: 5px;\n  border-bottom-right-radius: 5px;\n}\n\n.isOwnMessageContent {\n  background-color: #E3F2FD;\n  color: #01579B;\n}\n\n.userItem {\n  height: auto;\n  padding: 10px;\n  width: 90%;\n  margin-top: 10px;\n  border-radius: 1px;\n  align-items: flex-start;\n  background-color: #201835;\n  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);\n  color: #A098A5;\n  border-radius: 8px;\n  transition: ease-in 0.2s;\n}\n\n.userItem:hover {\n  background-color: #453968;\n  color: #ddd;\n  transition: ease-in 0.1s;\n}\n\n.online {\n  background-color: #0FA;\n}\n\n.busy {\n  background-color: #FB0;\n}\n\n.offline {\n  background-color: #888;\n}\n\n.status {\n  border: 1px solid black;\n  display: inline-block;\n  min-width: 10px;\n  min-height: 10px;\n  border-radius: 50%;\n  margin: 10px 12px 0px 10px;\n}\n\n.userName {\n  display: inline-block;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY2hhdC9jOlxcZGV2XFxyZXBvXFxmb2tvLWNoYXQvc3JjXFxhcHBcXGNoYXRcXGNoYXQuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NoYXQvY2hhdC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQTtFQUNJLGFBQUE7RUFDQSxhQUFBO0FDQUo7O0FERUE7RUFDSSx1Q0FBQTtFQUNBLFlBQUE7RUFDQSxVQUFBO0VBQ0EsMEJBQUE7RUFDQSxnQkFBQTtBQ0NKOztBRENBO0VBQ0ksOEJBQUE7RUFDQSxnQkFBQTtFQUNBLGVBQUE7QUNFSjs7QURBQTtFQUVJLGtCQUFBO0VBQ0Esa0JBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7QUNFSjs7QURBQTtFQUNJLFdBQUE7QUNHSjs7QUREQTtFQUNJLFdBQUE7QUNJSjs7QURGQTtFQUVJLFlBQUE7RUFDQSxnREFBQTtBQ0lKOztBREZBO0VBQ0ksWUFBQTtFQUNBLFdBQUE7RUFDQSwyQkFBQTtFQUNBLDhCQUFBO0FDS0o7O0FESEE7RUFDSSw0QkFBQTtFQUNBLCtCQUFBO0VBQ0EsUUFBQTtFQUNBLGdCQUFBO0VBQ0Esb0NBQUE7RUFDQSxzQkFBQTtFQUNBLFdBQUE7RUFDQSx5QkFBQTtFQUNBLGtCQUFBO0FDTUo7O0FESkE7RUFDSSxVQUFBO0FDT0o7O0FESkE7RUFDSSxrQkFBQTtFQUNBLFdBQUE7QUNPSjs7QURGQTtFQUNJLDRCQUFBO0VBQ0EsK0JBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtFQUNBLGVBQUE7QUNLSjs7QURIQTtFQUNJLFdBQUE7RUFDQSwyQkFBQTtFQUNBLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLGVBQUE7RUFDQSwyQkFBQTtBQ01KOztBREpBO0VBQ0ksc0JBQUE7QUNPSjs7QURMQTtFQUNJLFdBQUE7RUFDQSxnQkFBQTtFQUNBLFlBQUE7RUFDQSxzQkFBQTtBQ1FKOztBRE5BO0VBQ0ksZ0JBQUE7RUFDQSxpQkFBQTtBQ1NKOztBRFBBO0VBQ0ksZUFBQTtFQUNBLGtCQUFBO0VBQ0Esc0JBQUE7QUNVSjs7QURSQTtFQUNJLHNCQUFBO0VBQ0EsZ0JBQUE7RUFDQSxPQUFBO0VBRUEsa0JBQUE7RUFDQSwyQkFBQTtBQ1VKOztBRFJBO0VBQ0ksV0FBQTtFQUNBLHNDQUFBO0FDV0o7O0FEUkE7RUFDSSxjQUFBO0VBQ0EsV0FBQTtFQUNBLGlCQUFBO0FDV0o7O0FEUkE7RUFDSSxXQUFBO0VBQ0Esa0JBQUE7QUNXSjs7QURSQTtFQUNJLGVBQUE7RUFDQSxjQUFBO0VBQ0EsVUFBQTtFQUNBLGtCQUFBO0FDV0o7O0FEVEE7RUFDSSxpQkFBQTtFQUNBLGdCQUFBO0VBQ0EsZUFBQTtFQUNBLGVBQUE7RUFDQSxZQUFBO0VBQ0Esa0JBQUE7QUNZSjs7QURWQTtFQUNJLGdCQUFBO0VBQ0EsV0FBQTtFQUNBLGtCQUFBO0FDYUo7O0FEWEE7RUFDSSxzQkFBQTtFQUNBLGtCQUFBO0FDY0o7O0FEWkE7RUFDSSxzQkFBQTtFQUNBLFlBQUE7RUFDQSxpQkFBQTtBQ2VKOztBREVBO0VBQ0ksYUFBQTtFQUNBLFlBQUE7RUFDQSxzQkFBQTtFQUNBLFVBQUE7QUNDSjs7QURFQTtFQUVDLG1CQUFBO0VBQ0EseUJBQUE7QUNBRDs7QURFQTtFQUNJLGVBQUE7QUNDSjs7QURDQTtFQUNJLGVBQUE7QUNFSjs7QURBQTtFQUNJLE9BQUE7RUFDQSxhQUFBO0VBQ0EsZ0JBQUE7QUNHSjs7QURNQTtFQUNJLFFBQUE7RUFDQSxnQkFBQTtFQUNBLG9DQUFBO0VBQ0Esc0JBQUE7RUFDQSxXQUFBO0VBQ0EseUJBQUE7RUFDQSxrQkFBQTtBQ0hKOztBRE1BO0VBQ0kseUJBQUE7RUFDQSxXQUFBO0VBQ0Esd0JBQUE7QUNISjs7QURtQkE7RUFDSSxzQkFBQTtBQ2hCSjs7QURxQkE7RUFDSSxhQUFBO0VBQ0Esc0JBQUE7QUNsQko7O0FEcUJBO0VBQ0ksc0JBQUE7RUFDQSxjQUFBO0FDbEJKOztBRHNCQTtFQUNJLGFBQUE7RUFDQSxZQUFBO0VBQ0EsVUFBQTtFQUNBLGdCQUFBO0VBQ0Esa0JBQUE7RUFDQSxvQkFBQTtFQUNBLHNCQUFBO0VBQ0Esd0VBQUE7QUNuQko7O0FEc0JBO0VBQ0kseUJBQUE7QUNuQko7O0FEc0JBO0VBQ0ksT0FBQTtFQUNBLGFBQUE7RUFDQSxnQkFBQTtBQ25CSjs7QURzQkE7RUFDSSxjQUFBO0VBQ0EsV0FBQTtFQUNBLGlCQUFBO0FDbkJKOztBRHNCQTtFQUNJLGNBQUE7QUNuQko7O0FEc0JBO0VBQ0ksV0FBQTtFQUNBLGtCQUFBO0FDbkJKOztBRHNCQTtFQUNJLGNBQUE7QUNuQko7O0FEc0JBO0VBQ0ksWUFBQTtFQUNBLE9BQUE7RUFDQSxzQkFBQTtFQUNBLGFBQUE7RUFDQSw0QkFBQTtFQUNBLCtCQUFBO0FDbkJKOztBRHNCQTtFQUNJLHlCQUFBO0VBQ0EsY0FBQTtBQ25CSjs7QUR3QkE7RUFDSSxZQUFBO0VBQ0EsYUFBQTtFQUNBLFVBQUE7RUFDQSxnQkFBQTtFQUNBLGtCQUFBO0VBQ0EsdUJBQUE7RUFDQSx5QkFBQTtFQUNBLHdFQUFBO0VBQ0EsY0FBQTtFQUNBLGtCQUFBO0VBQ0Esd0JBQUE7QUNyQko7O0FEd0JBO0VBQ0kseUJBQUE7RUFDQSxXQUFBO0VBQ0Esd0JBQUE7QUNyQko7O0FEd0JBO0VBQ0ksc0JBQUE7QUNyQko7O0FEd0JBO0VBQ0ksc0JBQUE7QUNyQko7O0FEd0JBO0VBQ0ksc0JBQUE7QUNyQko7O0FEd0JBO0VBQ0ksdUJBQUE7RUFDQSxxQkFBQTtFQUNBLGVBQUE7RUFDQSxnQkFBQTtFQUNBLGtCQUFBO0VBQ0EsMEJBQUE7QUNyQko7O0FEd0JBO0VBQ0kscUJBQUE7QUNyQkoiLCJmaWxlIjoic3JjL2FwcC9jaGF0L2NoYXQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIvLy8vZXhwXHJcbi53cmFwcGVyIHtcclxuICAgIGhlaWdodDogNTUwcHg7XHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG59XHJcbi5zaWRlLWJhciB7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1wcmltYXJ5Mi1jb2xvcik7XHJcbiAgICBjb2xvcjogd2hpdGU7XHJcbiAgICB3aWR0aDogMjAlO1xyXG4gICAgcGFkZGluZzo1cHggMTBweCA1cHggMTBweDtcclxuICAgIGZvbnQtc2l6ZTogMS4yZW07XHJcbn1cclxuLnNpZGUtYmFyIC5pdGVtIHtcclxuICAgIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCB3aGl0ZTtcclxuICAgIHBhZGRpbmc6IDVweCAwcHg7XHJcbiAgICBjdXJzb3I6IHBvaW50ZXI7XHJcbn1cclxuLnNpZGUtYmFyLXNlY3Rpb24ge1xyXG4gICAgLy8gZGlzcGxheTogZmxleDtcclxuICAgIG92ZXJmbG93LXk6IHNjcm9sbDtcclxuICAgIG92ZXJmbG93LXg6IGhpZGRlbjtcclxuICAgIHBhZGRpbmctcmlnaHQ6IDVweDtcclxuICAgIGhlaWdodDogNTAlO1xyXG59XHJcbi5zaWRlLWJhciBoMyB7XHJcbiAgICBtYXJnaW46IDVweDtcclxufVxyXG5idXR0b246ZGlzYWJsZWQge1xyXG4gICAgY29sb3I6IGdyYXk7XHJcbn1cclxuLm93bi1tZXNzYWdlIHtcclxuICAgIC8vIG1hcmdpbi1yaWdodDogNXB4O1xyXG4gICAgZmxvYXQ6IHJpZ2h0O1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tc3VjZXNzLWNvbG9yKSFpbXBvcnRhbnQ7XHJcbn1cclxuLmNoYXQtYnRuIHtcclxuICAgIGhlaWdodDogNTBweDtcclxuICAgIHdpZHRoOiBhdXRvO1xyXG4gICAgYm9yZGVyLXRvcC1sZWZ0LXJhZGl1czogMHB4O1xyXG4gICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMHB4O1xyXG59XHJcbi5jaGF0LWlucHV0IHtcclxuICAgIGJvcmRlci10b3AtcmlnaHQtcmFkaXVzOiAwcHg7XHJcbiAgICBib3JkZXItYm90dG9tLXJpZ2h0LXJhZGl1czogMHB4O1xyXG4gICAgZmxleDogMTA7XHJcbiAgICBmb250LXNpemU6IDEuM2VtO1xyXG4gICAgZm9udC1mYW1pbHk6ICdPcGVuIFNhbnMnLCBzYW5zLXNlcmlmO1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogI2VlZTtcclxuICAgIGNvbG9yOiAjMDAwO1xyXG4gICAgdHJhbnNpdGlvbjogMC4xcyBlYXNlLW91dDtcclxuICAgIHBhZGRpbmctbGVmdDogMjBweDtcclxufVxyXG4uaW52aXRlLXJvb20tYmxvY2sgeyAgIFxyXG4gICAgd2lkdGg6IDkwJTsgXHJcbiAgICAvLyBmbG9hdDogcmlnaHQ7XHJcbn1cclxuLmludml0ZS1wcml2YXRlLWJsb2NrIHtcclxuICAgIG1hcmdpbi1ib3R0b206IDhweDtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG59XHJcbi8vIC5pbnZpdGUtaW5wdXQtcHJpdmF0ZSB7XHJcbi8vICAgICB3aWR0aDogYXV0byFpbXBvcnRhbnQ7XHJcbi8vIH1cclxuLmludml0ZS1pbnB1dCB7XHJcbiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMHB4O1xyXG4gICAgYm9yZGVyLWJvdHRvbS1yaWdodC1yYWRpdXM6IDBweDtcclxuICAgIGhlaWdodDogMjZweDtcclxuICAgIHdpZHRoOiAxNjBweDtcclxuICAgIGZvbnQtc2l6ZTogMTZweDtcclxufVxyXG4uaW52aXRlLWJ0biB7XHJcbiAgICB3aWR0aDogYXV0bztcclxuICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDBweDtcclxuICAgIGJvcmRlci1ib3R0b20tbGVmdC1yYWRpdXM6IDBweDtcclxuICAgIGhlaWdodDogMzBweDtcclxuICAgIGZvbnQtc2l6ZTogMTZweDtcclxuICAgIHBhZGRpbmc6IDBweCA1cHghaW1wb3J0YW50O1xyXG59XHJcbi5hdmF0YXIge1xyXG4gICAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcclxufVxyXG4ubG9nb3V0LWJ0biB7XHJcbiAgICB3aWR0aDogYXV0bztcclxuICAgIG1hcmdpbi1sZWZ0OiA1cHg7XHJcbiAgICBoZWlnaHQ6IDUwcHg7XHJcbiAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xyXG59XHJcbi51c2VyLWluZm8ge1xyXG4gICAgcGFkZGluZzogNXB4IDBweDtcclxuICAgIHRleHQtYWxpZ246IHJpZ2h0O1xyXG59XHJcbi51c2VyLWluZm8gaDMge1xyXG4gICAgZGlzcGxheTogaW5saW5lO1xyXG4gICAgcGFkZGluZy1yaWdodDogNXB4O1xyXG4gICAgdmVydGljYWwtYWxpZ246IGJvdHRvbTtcclxufVxyXG4uZmVlZFdyYXBwZXIge1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogKCNmZmYpO1xyXG4gICAgZm9udC1zaXplOiAxLjJlbTtcclxuICAgIGZsZXg6IDU7XHJcbiAgICAvLyBvcmRlcjogMjtcclxuICAgIG92ZXJmbG93LXk6IHNjcm9sbDtcclxuICAgIHBhZGRpbmc6IDEwcHggMTBweCAwcHggMTBweDtcclxufVxyXG4uY3VycmVudC1yb29tIHtcclxuICAgIGJvcmRlcjogMXB4O1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tcHJpbWFyeS1jb2xvcik7XHJcbn1cclxuXHJcbi5zZW5kZXJ7XHJcbiAgICBkaXNwbGF5OiBibG9jaztcclxuICAgIGNvbG9yOiAjMjIyO1xyXG4gICAgZm9udC13ZWlnaHQ6IGJvbGQ7XHJcbn1cclxuXHJcbi50aW1lc3RhbXAge1xyXG4gICAgY29sb3I6ICM1NTU7XHJcbiAgICBmb250LXN0eWxlOiBpdGFsaWM7XHJcbn1cclxuXHJcbi5kZWxldGUge1xyXG4gICAgY3Vyc29yOiBwb2ludGVyO1xyXG4gICAgZGlzcGxheTogYmxvY2s7XHJcbiAgICBjb2xvcjogcmVkO1xyXG4gICAgZm9udC1zdHlsZTogaXRhbGljO1xyXG59XHJcbi5uZXctcm9vbSB7XHJcbiAgICBtYXJnaW4tcmlnaHQ6IDJweDtcclxuICAgIGZvbnQtc2l6ZTogMC43ZW07XHJcbiAgICBjdXJzb3I6IHBvaW50ZXI7XHJcbiAgICBkaXNwbGF5OiBpbmxpbmU7XHJcbiAgICBjb2xvcjogZ3JlZW47XHJcbiAgICBmb250LXN0eWxlOiBpdGFsaWM7XHJcbn1cclxuLmFkYXB0ZXItZGF0YSB7XHJcbiAgICBmb250LXNpemU6IDEuMmVtO1xyXG4gICAgZmxvYXQ6IGxlZnQ7XHJcbiAgICBmb250LXN0eWxlOiBpdGFsaWM7XHJcbn1cclxuLm1lbWJlci1zZXR0aW5ncyB7XHJcbiAgICB2ZXJ0aWNhbC1hbGlnbjogYm90dG9tO1xyXG4gICAgcGFkZGluZy1yaWdodDogMnB4O1xyXG59XHJcbi51c2VyLXNldHRpbmdzIHtcclxuICAgIHZlcnRpY2FsLWFsaWduOiBib3R0b207XHJcbiAgICBoZWlnaHQ6IDUwcHg7XHJcbiAgICBwYWRkaW5nLWxlZnQ6IDVweDtcclxuICAgIC8vIHBhZGRpbmctcmlnaHQ6IDJweDtcclxufVxyXG4vLy8vLy9cclxuXHJcbi8vIC51c2VyTGlzdFdyYXBwZXIge1xyXG4vLyAgICAgYmFja2dyb3VuZC1jb2xvcjogIzJBMjg0NTtcclxuLy8gICAgIGNvbG9yOiAjZmZmO1xyXG4vLyAgICAgZGlzcGxheTogZmxleDtcclxuLy8gICAgIGZvbnQtZmFtaWx5OiBcIk9wZW4gU2Fuc1wiLCBzYW5zLXNlcmlmO1xyXG4vLyAgICAgZm9udC1zaXplOiAxLjJlbTtcclxuLy8gICAgIGZsZXg6IDE7XHJcbi8vICAgICBvcmRlcjogMTtcclxuLy8gICAgIHBhZGRpbmc6MjBweCAwcHggNDBweCAzMHB4O1xyXG4vLyAgICAgYm9yZGVyLXJpZ2h0OiAxcHggc29saWQgIzIyMjtcclxuLy8gfVxyXG5cclxuLmNoYXRGb3JtV3JhcHBlciB7XHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG4gICAgaGVpZ2h0OiA1MHB4O1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogI2VlZTtcclxuICAgIHotaW5kZXg6IDM7XHJcbn1cclxuXHJcbiNzY3JvbGwtc3R5bGU6Oi13ZWJraXQtc2Nyb2xsYmFyLXRyYWNrXHJcbntcclxuXHRib3JkZXItcmFkaXVzOiAxMHB4O1xyXG5cdGJhY2tncm91bmQtY29sb3I6ICNGNUY1RjU7XHJcbn1cclxuLmxlYXZlLWJ0biB7XHJcbiAgICBtYXJnaW46IDVweCAwcHg7IFxyXG59XHJcbi51c2VyLWxpc3Qge1xyXG4gICAgbWFyZ2luLXRvcDogNXB4O1xyXG59XHJcbi5tZXNzYWdlRGF0YXtcclxuICAgIGZsZXg6IDE7XHJcbiAgICBwYWRkaW5nOiAxMHB4O1xyXG4gICAgZm9udC1zaXplOiAwLjdlbTtcclxufVxyXG5cclxuXHJcblxyXG5cclxuXHJcblxyXG4vLy8vZm9ybVxyXG4uY2hhdElucHV0e1xyXG4gICAgZmxleDogMTA7XHJcbiAgICBmb250LXNpemU6IDEuM2VtO1xyXG4gICAgZm9udC1mYW1pbHk6ICdPcGVuIFNhbnMnLCBzYW5zLXNlcmlmO1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogI2VlZTtcclxuICAgIGNvbG9yOiAjMDAwO1xyXG4gICAgdHJhbnNpdGlvbjogMC4xcyBlYXNlLW91dDtcclxuICAgIHBhZGRpbmctbGVmdDogMjBweDtcclxufVxyXG5cclxuLmNoYXRJbnB1dDpmb2N1c3tcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICNFNEYxRkU7XHJcbiAgICBjb2xvcjogIzIyMjtcclxuICAgIHRyYW5zaXRpb246IDAuMnMgZWFzZS1pbjtcclxufVxyXG5cclxuXHJcbi8vIC5jaGF0QnV0dG9ue1xyXG4vLyAgICAgZmxleDogMTtcclxuLy8gICAgIHBhZGRpbmc6IDEwcHg7XHJcbi8vICAgICBwYWRkaW5nOiA4cHggMjRweDtcclxuLy8gICAgIGZvbnQtc2l6ZTogMS4zZW07XHJcbi8vICAgICBmb250LWZhbWlseTogJ0Ryb2lkIFNhbnMnLCBzYW5zLXNlcmlmO1xyXG4vLyAgICAgYmFja2dyb3VuZC1jb2xvcjogIzJBMjg0NTtcclxuLy8gICAgIGNvbG9yOiB3aGl0ZTtcclxuLy8gICAgIHRyYW5zaXRpb246IDAuMnMgZWFzZS1vdXQ7XHJcbi8vICAgICBtaW4td2lkdGg6IDUwcHg7XHJcbi8vIH1cclxuXHJcbi5jaGF0QnV0dG9uOmhvdmVye1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzQ0NDtcclxufVxyXG5cclxuXHJcbi8vLy9mZWVkXHJcbi5mZWVke1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XHJcbn1cclxuXHJcbi5tZXNzYWdle1xyXG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcclxuICAgIG1hcmdpbjogMTBweCAwO1xyXG59XHJcblxyXG4vLy8vL21lc3NhZ2VcclxuLm1lc3NhZ2VDb250YWluZXJ7XHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG4gICAgaGVpZ2h0OiBhdXRvO1xyXG4gICAgd2lkdGg6IDcwJTtcclxuICAgIG1pbi13aWR0aDogNDAwcHg7XHJcbiAgICBib3JkZXItcmFkaXVzOiA1cHg7XHJcbiAgICBhbGlnbi1pdGVtczpzdHJldGNoO1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogI2VlZTtcclxuICAgIGJveC1zaGFkb3c6IDAgM3B4IDZweCByZ2JhKDAsMCwwLDAuMjYpLCAwIDNweCA2cHggcmdiYSgwLDAsMCwwLjIzKTtcclxufVxyXG5cclxuLm93bk1lc3NhZ2V7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjMDE1NzlCO1xyXG59XHJcblxyXG4ubWVzc2FnZURhdGF7XHJcbiAgICBmbGV4OiAxO1xyXG4gICAgcGFkZGluZzogMTBweDtcclxuICAgIGZvbnQtc2l6ZTogMC43ZW07XHJcbn1cclxuXHJcbi5zZW5kZXJ7XHJcbiAgICBkaXNwbGF5OiBibG9jaztcclxuICAgIGNvbG9yOiAjMjIyO1xyXG4gICAgZm9udC13ZWlnaHQ6IGJvbGQ7XHJcbn1cclxuXHJcbi5pc093blNlbmRlcntcclxuICAgIGNvbG9yOiAjRTFGNUZFO1xyXG59XHJcblxyXG4udGltZXN0YW1wIHtcclxuICAgIGNvbG9yOiAjNTU1O1xyXG4gICAgZm9udC1zdHlsZTogaXRhbGljO1xyXG59XHJcblxyXG4uaXNPd25UaW1lc3RhbXB7XHJcbiAgICBjb2xvcjogIzRGQzNGNztcclxufVxyXG5cclxuLm1lc3NhZ2VDb250ZW50e1xyXG4gICAgaGVpZ2h0OiBhdXRvO1xyXG4gICAgZmxleDogOTtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICNmZmY7XHJcbiAgICBwYWRkaW5nOiAxMHB4O1xyXG4gICAgYm9yZGVyLXRvcC1yaWdodC1yYWRpdXM6IDVweDtcclxuICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiA1cHg7XHJcbn1cclxuXHJcbi5pc093bk1lc3NhZ2VDb250ZW50e1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogI0UzRjJGRDtcclxuICAgIGNvbG9yOiAjMDE1NzlCO1xyXG59XHJcblxyXG5cclxuLy8vL3VzZXJcclxuLnVzZXJJdGVte1xyXG4gICAgaGVpZ2h0OiBhdXRvO1xyXG4gICAgcGFkZGluZzogMTBweDtcclxuICAgIHdpZHRoOiA5MCU7XHJcbiAgICBtYXJnaW4tdG9wOiAxMHB4O1xyXG4gICAgYm9yZGVyLXJhZGl1czogMXB4O1xyXG4gICAgYWxpZ24taXRlbXM6ZmxleC1zdGFydDtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICMyMDE4MzU7XHJcbiAgICBib3gtc2hhZG93OiAwIDNweCA2cHggcmdiYSgwLDAsMCwwLjE2KSwgMCAzcHggNnB4IHJnYmEoMCwwLDAsMC4yMyk7XHJcbiAgICBjb2xvcjogI0EwOThBNTtcclxuICAgIGJvcmRlci1yYWRpdXM6IDhweDtcclxuICAgIHRyYW5zaXRpb246IGVhc2UtaW4gMC4ycztcclxufVxyXG5cclxuLnVzZXJJdGVtOmhvdmVye1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzQ1Mzk2ODtcclxuICAgIGNvbG9yOiAjZGRkO1xyXG4gICAgdHJhbnNpdGlvbjogZWFzZS1pbiAwLjFzO1xyXG59XHJcblxyXG4ub25saW5le1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzBGQTtcclxufVxyXG5cclxuLmJ1c3l7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjRkIwO1xyXG59XHJcblxyXG4ub2ZmbGluZXtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICM4ODg7XHJcbn1cclxuXHJcbi5zdGF0dXN7XHJcbiAgICBib3JkZXI6IDFweCBzb2xpZCBibGFjaztcclxuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcclxuICAgIG1pbi13aWR0aDogMTBweDtcclxuICAgIG1pbi1oZWlnaHQ6IDEwcHg7XHJcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XHJcbiAgICBtYXJnaW46IDEwcHggMTJweCAwcHggMTBweDtcclxufVxyXG5cclxuLnVzZXJOYW1le1xyXG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xyXG59IiwiLndyYXBwZXIge1xuICBoZWlnaHQ6IDU1MHB4O1xuICBkaXNwbGF5OiBmbGV4O1xufVxuXG4uc2lkZS1iYXIge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1wcmltYXJ5Mi1jb2xvcik7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgd2lkdGg6IDIwJTtcbiAgcGFkZGluZzogNXB4IDEwcHggNXB4IDEwcHg7XG4gIGZvbnQtc2l6ZTogMS4yZW07XG59XG5cbi5zaWRlLWJhciAuaXRlbSB7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCB3aGl0ZTtcbiAgcGFkZGluZzogNXB4IDBweDtcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4uc2lkZS1iYXItc2VjdGlvbiB7XG4gIG92ZXJmbG93LXk6IHNjcm9sbDtcbiAgb3ZlcmZsb3cteDogaGlkZGVuO1xuICBwYWRkaW5nLXJpZ2h0OiA1cHg7XG4gIGhlaWdodDogNTAlO1xufVxuXG4uc2lkZS1iYXIgaDMge1xuICBtYXJnaW46IDVweDtcbn1cblxuYnV0dG9uOmRpc2FibGVkIHtcbiAgY29sb3I6IGdyYXk7XG59XG5cbi5vd24tbWVzc2FnZSB7XG4gIGZsb2F0OiByaWdodDtcbiAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tc3VjZXNzLWNvbG9yKSAhaW1wb3J0YW50O1xufVxuXG4uY2hhdC1idG4ge1xuICBoZWlnaHQ6IDUwcHg7XG4gIHdpZHRoOiBhdXRvO1xuICBib3JkZXItdG9wLWxlZnQtcmFkaXVzOiAwcHg7XG4gIGJvcmRlci1ib3R0b20tbGVmdC1yYWRpdXM6IDBweDtcbn1cblxuLmNoYXQtaW5wdXQge1xuICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMHB4O1xuICBib3JkZXItYm90dG9tLXJpZ2h0LXJhZGl1czogMHB4O1xuICBmbGV4OiAxMDtcbiAgZm9udC1zaXplOiAxLjNlbTtcbiAgZm9udC1mYW1pbHk6IFwiT3BlbiBTYW5zXCIsIHNhbnMtc2VyaWY7XG4gIGJhY2tncm91bmQtY29sb3I6ICNlZWU7XG4gIGNvbG9yOiAjMDAwO1xuICB0cmFuc2l0aW9uOiAwLjFzIGVhc2Utb3V0O1xuICBwYWRkaW5nLWxlZnQ6IDIwcHg7XG59XG5cbi5pbnZpdGUtcm9vbS1ibG9jayB7XG4gIHdpZHRoOiA5MCU7XG59XG5cbi5pbnZpdGUtcHJpdmF0ZS1ibG9jayB7XG4gIG1hcmdpbi1ib3R0b206IDhweDtcbiAgd2lkdGg6IDEwMCU7XG59XG5cbi5pbnZpdGUtaW5wdXQge1xuICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMHB4O1xuICBib3JkZXItYm90dG9tLXJpZ2h0LXJhZGl1czogMHB4O1xuICBoZWlnaHQ6IDI2cHg7XG4gIHdpZHRoOiAxNjBweDtcbiAgZm9udC1zaXplOiAxNnB4O1xufVxuXG4uaW52aXRlLWJ0biB7XG4gIHdpZHRoOiBhdXRvO1xuICBib3JkZXItdG9wLWxlZnQtcmFkaXVzOiAwcHg7XG4gIGJvcmRlci1ib3R0b20tbGVmdC1yYWRpdXM6IDBweDtcbiAgaGVpZ2h0OiAzMHB4O1xuICBmb250LXNpemU6IDE2cHg7XG4gIHBhZGRpbmc6IDBweCA1cHggIWltcG9ydGFudDtcbn1cblxuLmF2YXRhciB7XG4gIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XG59XG5cbi5sb2dvdXQtYnRuIHtcbiAgd2lkdGg6IGF1dG87XG4gIG1hcmdpbi1sZWZ0OiA1cHg7XG4gIGhlaWdodDogNTBweDtcbiAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcbn1cblxuLnVzZXItaW5mbyB7XG4gIHBhZGRpbmc6IDVweCAwcHg7XG4gIHRleHQtYWxpZ246IHJpZ2h0O1xufVxuXG4udXNlci1pbmZvIGgzIHtcbiAgZGlzcGxheTogaW5saW5lO1xuICBwYWRkaW5nLXJpZ2h0OiA1cHg7XG4gIHZlcnRpY2FsLWFsaWduOiBib3R0b207XG59XG5cbi5mZWVkV3JhcHBlciB7XG4gIGJhY2tncm91bmQtY29sb3I6ICNmZmY7XG4gIGZvbnQtc2l6ZTogMS4yZW07XG4gIGZsZXg6IDU7XG4gIG92ZXJmbG93LXk6IHNjcm9sbDtcbiAgcGFkZGluZzogMTBweCAxMHB4IDBweCAxMHB4O1xufVxuXG4uY3VycmVudC1yb29tIHtcbiAgYm9yZGVyOiAxcHg7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLXByaW1hcnktY29sb3IpO1xufVxuXG4uc2VuZGVyIHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIGNvbG9yOiAjMjIyO1xuICBmb250LXdlaWdodDogYm9sZDtcbn1cblxuLnRpbWVzdGFtcCB7XG4gIGNvbG9yOiAjNTU1O1xuICBmb250LXN0eWxlOiBpdGFsaWM7XG59XG5cbi5kZWxldGUge1xuICBjdXJzb3I6IHBvaW50ZXI7XG4gIGRpc3BsYXk6IGJsb2NrO1xuICBjb2xvcjogcmVkO1xuICBmb250LXN0eWxlOiBpdGFsaWM7XG59XG5cbi5uZXctcm9vbSB7XG4gIG1hcmdpbi1yaWdodDogMnB4O1xuICBmb250LXNpemU6IDAuN2VtO1xuICBjdXJzb3I6IHBvaW50ZXI7XG4gIGRpc3BsYXk6IGlubGluZTtcbiAgY29sb3I6IGdyZWVuO1xuICBmb250LXN0eWxlOiBpdGFsaWM7XG59XG5cbi5hZGFwdGVyLWRhdGEge1xuICBmb250LXNpemU6IDEuMmVtO1xuICBmbG9hdDogbGVmdDtcbiAgZm9udC1zdHlsZTogaXRhbGljO1xufVxuXG4ubWVtYmVyLXNldHRpbmdzIHtcbiAgdmVydGljYWwtYWxpZ246IGJvdHRvbTtcbiAgcGFkZGluZy1yaWdodDogMnB4O1xufVxuXG4udXNlci1zZXR0aW5ncyB7XG4gIHZlcnRpY2FsLWFsaWduOiBib3R0b207XG4gIGhlaWdodDogNTBweDtcbiAgcGFkZGluZy1sZWZ0OiA1cHg7XG59XG5cbi5jaGF0Rm9ybVdyYXBwZXIge1xuICBkaXNwbGF5OiBmbGV4O1xuICBoZWlnaHQ6IDUwcHg7XG4gIGJhY2tncm91bmQtY29sb3I6ICNlZWU7XG4gIHotaW5kZXg6IDM7XG59XG5cbiNzY3JvbGwtc3R5bGU6Oi13ZWJraXQtc2Nyb2xsYmFyLXRyYWNrIHtcbiAgYm9yZGVyLXJhZGl1czogMTBweDtcbiAgYmFja2dyb3VuZC1jb2xvcjogI0Y1RjVGNTtcbn1cblxuLmxlYXZlLWJ0biB7XG4gIG1hcmdpbjogNXB4IDBweDtcbn1cblxuLnVzZXItbGlzdCB7XG4gIG1hcmdpbi10b3A6IDVweDtcbn1cblxuLm1lc3NhZ2VEYXRhIHtcbiAgZmxleDogMTtcbiAgcGFkZGluZzogMTBweDtcbiAgZm9udC1zaXplOiAwLjdlbTtcbn1cblxuLmNoYXRJbnB1dCB7XG4gIGZsZXg6IDEwO1xuICBmb250LXNpemU6IDEuM2VtO1xuICBmb250LWZhbWlseTogXCJPcGVuIFNhbnNcIiwgc2Fucy1zZXJpZjtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2VlZTtcbiAgY29sb3I6ICMwMDA7XG4gIHRyYW5zaXRpb246IDAuMXMgZWFzZS1vdXQ7XG4gIHBhZGRpbmctbGVmdDogMjBweDtcbn1cblxuLmNoYXRJbnB1dDpmb2N1cyB7XG4gIGJhY2tncm91bmQtY29sb3I6ICNFNEYxRkU7XG4gIGNvbG9yOiAjMjIyO1xuICB0cmFuc2l0aW9uOiAwLjJzIGVhc2UtaW47XG59XG5cbi5jaGF0QnV0dG9uOmhvdmVyIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzQ0NDtcbn1cblxuLmZlZWQge1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xufVxuXG4ubWVzc2FnZSB7XG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gIG1hcmdpbjogMTBweCAwO1xufVxuXG4ubWVzc2FnZUNvbnRhaW5lciB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGhlaWdodDogYXV0bztcbiAgd2lkdGg6IDcwJTtcbiAgbWluLXdpZHRoOiA0MDBweDtcbiAgYm9yZGVyLXJhZGl1czogNXB4O1xuICBhbGlnbi1pdGVtczogc3RyZXRjaDtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2VlZTtcbiAgYm94LXNoYWRvdzogMCAzcHggNnB4IHJnYmEoMCwgMCwgMCwgMC4yNiksIDAgM3B4IDZweCByZ2JhKDAsIDAsIDAsIDAuMjMpO1xufVxuXG4ub3duTWVzc2FnZSB7XG4gIGJhY2tncm91bmQtY29sb3I6ICMwMTU3OUI7XG59XG5cbi5tZXNzYWdlRGF0YSB7XG4gIGZsZXg6IDE7XG4gIHBhZGRpbmc6IDEwcHg7XG4gIGZvbnQtc2l6ZTogMC43ZW07XG59XG5cbi5zZW5kZXIge1xuICBkaXNwbGF5OiBibG9jaztcbiAgY29sb3I6ICMyMjI7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xufVxuXG4uaXNPd25TZW5kZXIge1xuICBjb2xvcjogI0UxRjVGRTtcbn1cblxuLnRpbWVzdGFtcCB7XG4gIGNvbG9yOiAjNTU1O1xuICBmb250LXN0eWxlOiBpdGFsaWM7XG59XG5cbi5pc093blRpbWVzdGFtcCB7XG4gIGNvbG9yOiAjNEZDM0Y3O1xufVxuXG4ubWVzc2FnZUNvbnRlbnQge1xuICBoZWlnaHQ6IGF1dG87XG4gIGZsZXg6IDk7XG4gIGJhY2tncm91bmQtY29sb3I6ICNmZmY7XG4gIHBhZGRpbmc6IDEwcHg7XG4gIGJvcmRlci10b3AtcmlnaHQtcmFkaXVzOiA1cHg7XG4gIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiA1cHg7XG59XG5cbi5pc093bk1lc3NhZ2VDb250ZW50IHtcbiAgYmFja2dyb3VuZC1jb2xvcjogI0UzRjJGRDtcbiAgY29sb3I6ICMwMTU3OUI7XG59XG5cbi51c2VySXRlbSB7XG4gIGhlaWdodDogYXV0bztcbiAgcGFkZGluZzogMTBweDtcbiAgd2lkdGg6IDkwJTtcbiAgbWFyZ2luLXRvcDogMTBweDtcbiAgYm9yZGVyLXJhZGl1czogMXB4O1xuICBhbGlnbi1pdGVtczogZmxleC1zdGFydDtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzIwMTgzNTtcbiAgYm94LXNoYWRvdzogMCAzcHggNnB4IHJnYmEoMCwgMCwgMCwgMC4xNiksIDAgM3B4IDZweCByZ2JhKDAsIDAsIDAsIDAuMjMpO1xuICBjb2xvcjogI0EwOThBNTtcbiAgYm9yZGVyLXJhZGl1czogOHB4O1xuICB0cmFuc2l0aW9uOiBlYXNlLWluIDAuMnM7XG59XG5cbi51c2VySXRlbTpob3ZlciB7XG4gIGJhY2tncm91bmQtY29sb3I6ICM0NTM5Njg7XG4gIGNvbG9yOiAjZGRkO1xuICB0cmFuc2l0aW9uOiBlYXNlLWluIDAuMXM7XG59XG5cbi5vbmxpbmUge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjMEZBO1xufVxuXG4uYnVzeSB7XG4gIGJhY2tncm91bmQtY29sb3I6ICNGQjA7XG59XG5cbi5vZmZsaW5lIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzg4ODtcbn1cblxuLnN0YXR1cyB7XG4gIGJvcmRlcjogMXB4IHNvbGlkIGJsYWNrO1xuICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gIG1pbi13aWR0aDogMTBweDtcbiAgbWluLWhlaWdodDogMTBweDtcbiAgYm9yZGVyLXJhZGl1czogNTAlO1xuICBtYXJnaW46IDEwcHggMTJweCAwcHggMTBweDtcbn1cblxuLnVzZXJOYW1lIHtcbiAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xufSJdfQ== */");
             /***/ 
         }),
         /***/ "./src/app/chat/chat.component.ts": 
@@ -1050,27 +1193,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             /* harmony import */ var gravatar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/ __webpack_require__.n(gravatar__WEBPACK_IMPORTED_MODULE_2__);
             /* harmony import */ var _services_data_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../_services/data.service */ "./src/app/_services/data.service.ts");
             /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../_services/auth.service */ "./src/app/_services/auth.service.ts");
-            /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm2015/ngx-toastr.js");
+            /* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../_models */ "./src/app/_models/index.ts");
+            /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm2015/ngx-toastr.js");
+            /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm2015/material.js");
+            /* harmony import */ var _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../user-settings/user-settings.component */ "./src/app/user-settings/user-settings.component.ts");
             var ChatComponent = /** @class */ (function () {
-                function ChatComponent(dataService, authService, toastr) {
+                function ChatComponent(dataService, authService, toastr, dialog) {
                     var _this = this;
                     this.dataService = dataService;
                     this.authService = authService;
                     this.toastr = toastr;
+                    this.dialog = dialog;
                     this.roomTypes = _services_data_service__WEBPACK_IMPORTED_MODULE_3__["roomTypes"];
                     this.message = '';
                     this.roomName = '';
                     this.emailCommon = '';
                     this.emailPrivate = '';
-                    this.authService.authUser().subscribe(function (user) {
-                        if (user) {
-                            _this.user = user;
-                            _this.avatar = gravatar__WEBPACK_IMPORTED_MODULE_2__["url"](user.email, { default: 'robohash', size: 50 });
+                    this.authService.authUser().subscribe(function (authUser) {
+                        if (authUser) {
+                            _this.authUser = authUser;
+                            _this.avatar = gravatar__WEBPACK_IMPORTED_MODULE_2__["url"](authUser.email, { default: 'robohash', size: 50 });
                         }
                         else {
-                            _this.user = null;
+                            _this.authUser = null;
                             _this.avatar = null;
                         }
+                    });
+                    this.authService.userData().subscribe(function (user) {
+                        _this.user = new _models__WEBPACK_IMPORTED_MODULE_5__["User"](user.data());
                     });
                     this.dataService.getMessages().subscribe(function (messages) { _this.messages = messages; setTimeout(_this.scrollToBottom.bind(_this), 200); });
                     this.dataService.getRooms().subscribe(function (rooms) {
@@ -1088,7 +1238,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     // this.roomTypes = roomTypes;
                 }
                 ChatComponent.prototype.ngOnInit = function () {
-                    this.apiAdapter = this.authService.apiAdapter;
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            this.apiAdapter = this.authService.apiAdapter;
+                            return [2 /*return*/];
+                        });
+                    });
                 };
                 ChatComponent.prototype.scrollToBottom = function () {
                     this.feedContainer.nativeElement.scrollTop
@@ -1158,7 +1313,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 ChatComponent.prototype.createPrivate = function () {
                     var _this = this;
                     this.emailPrivate = this.emailPrivate.trim();
-                    if (this.emailPrivate === this.user.email) {
+                    if (this.emailPrivate === this.authUser.email) {
                         this.toastr.error('You cannot invite yourself!');
                         return;
                     }
@@ -1230,25 +1385,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     });
                 };
                 ChatComponent.prototype.logout = function () {
-                    // event.preventDefault();
                     this.authService.logout();
                     return false;
                 };
+                ChatComponent.prototype.openUserSettings = function () {
+                    var dialogConfig = new _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatDialogConfig"]();
+                    dialogConfig.autoFocus = true;
+                    dialogConfig.width = '320';
+                    this.dialog.open(_user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_8__["UserSettingsComponent"], dialogConfig);
+                };
+                ChatComponent.prototype.blockMember = function (email) {
+                    if (confirm('Are you sure you want to block this user? He will no be able to add you to group chats anymore.')) {
+                        this.user.addToBlockList(email);
+                        this.authService.saveUserData(this.user.toJSON());
+                    }
+                };
                 ChatComponent.prototype.getRoomName = function (room) {
                     var _this = this;
-                    return room.type === _services_data_service__WEBPACK_IMPORTED_MODULE_3__["roomTypes"].COMMON ? room.name : room.users.find(function (user) { return user !== _this.user.email; });
+                    return room.type === _services_data_service__WEBPACK_IMPORTED_MODULE_3__["roomTypes"].COMMON ? room.name : room.users.find(function (user) { return user !== _this.authUser.email; });
                 };
                 ChatComponent.prototype.isAuthor = function (message) {
-                    return this.user && this.user.email === message.sentBy;
+                    return this.authUser && this.authUser.email === message.sentBy;
                 };
                 ChatComponent.prototype.isCurrentRoom = function (room) {
                     return room === this.room;
                 };
                 ChatComponent.prototype.isMe = function (email) {
-                    return email === this.user.email;
+                    return email === this.authUser.email;
                 };
                 ChatComponent.prototype.ifNew = function (room) {
-                    return !room.joinedAt[this.user.email];
+                    return !room.joinedAt[this.authUser.email];
                 };
                 ChatComponent.prototype.isMember = function (email) {
                     return this.room.joinedAt[email];
@@ -1258,7 +1424,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
             ChatComponent.ctorParameters = function () { return [
                 { type: _services_data_service__WEBPACK_IMPORTED_MODULE_3__["DataService"] },
                 { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_4__["AuthService"] },
-                { type: ngx_toastr__WEBPACK_IMPORTED_MODULE_5__["ToastrService"] }
+                { type: ngx_toastr__WEBPACK_IMPORTED_MODULE_6__["ToastrService"] },
+                { type: _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatDialog"] }
             ]; };
             tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('scroller', { static: false })
@@ -1333,6 +1500,60 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./login.component.scss */ "./src/app/login/login.component.scss")).default]
                 })
             ], LoginComponent);
+            /***/ 
+        }),
+        /***/ "./src/app/user-settings/user-settings.component.scss": 
+        /*!************************************************************!*\
+          !*** ./src/app/user-settings/user-settings.component.scss ***!
+          \************************************************************/
+        /*! exports provided: default */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony default export */ __webpack_exports__["default"] = (".popup-btn {\n  display: inline;\n  margin: 10px;\n  height: 50px;\n  width: auto;\n}\n\n.delete-btn {\n  vertical-align: bottom;\n  float: right;\n}\n\n.item {\n  padding: 10px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvdXNlci1zZXR0aW5ncy9jOlxcZGV2XFxyZXBvXFxmb2tvLWNoYXQvc3JjXFxhcHBcXHVzZXItc2V0dGluZ3NcXHVzZXItc2V0dGluZ3MuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL3VzZXItc2V0dGluZ3MvdXNlci1zZXR0aW5ncy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGVBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtFQUNBLFdBQUE7QUNDSjs7QURDQTtFQUNJLHNCQUFBO0VBQ0EsWUFBQTtBQ0VKOztBREFBO0VBQ0ksYUFBQTtBQ0dKIiwiZmlsZSI6InNyYy9hcHAvdXNlci1zZXR0aW5ncy91c2VyLXNldHRpbmdzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnBvcHVwLWJ0biB7XHJcbiAgICBkaXNwbGF5OiBpbmxpbmU7XHJcbiAgICBtYXJnaW46IDEwcHg7XHJcbiAgICBoZWlnaHQ6IDUwcHg7XHJcbiAgICB3aWR0aDogYXV0bztcclxufVxyXG4uZGVsZXRlLWJ0biB7XHJcbiAgICB2ZXJ0aWNhbC1hbGlnbjogYm90dG9tO1xyXG4gICAgZmxvYXQ6IHJpZ2h0O1xyXG59XHJcbi5pdGVtIHtcclxuICAgIHBhZGRpbmc6IDEwcHg7XHJcbn0iLCIucG9wdXAtYnRuIHtcbiAgZGlzcGxheTogaW5saW5lO1xuICBtYXJnaW46IDEwcHg7XG4gIGhlaWdodDogNTBweDtcbiAgd2lkdGg6IGF1dG87XG59XG5cbi5kZWxldGUtYnRuIHtcbiAgdmVydGljYWwtYWxpZ246IGJvdHRvbTtcbiAgZmxvYXQ6IHJpZ2h0O1xufVxuXG4uaXRlbSB7XG4gIHBhZGRpbmc6IDEwcHg7XG59Il19 */");
+            /***/ 
+        }),
+        /***/ "./src/app/user-settings/user-settings.component.ts": 
+        /*!**********************************************************!*\
+          !*** ./src/app/user-settings/user-settings.component.ts ***!
+          \**********************************************************/
+        /*! exports provided: UserSettingsComponent */
+        /***/ (function (module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserSettingsComponent", function () { return UserSettingsComponent; });
+            /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+            /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+            /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../_services/auth.service */ "./src/app/_services/auth.service.ts");
+            /* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_models */ "./src/app/_models/index.ts");
+            var UserSettingsComponent = /** @class */ (function () {
+                function UserSettingsComponent(authService) {
+                    var _this = this;
+                    this.authService = authService;
+                    this.authService.userData().subscribe(function (user) {
+                        _this.user = new _models__WEBPACK_IMPORTED_MODULE_3__["User"](user.data());
+                    });
+                }
+                UserSettingsComponent.prototype.ngOnInit = function () {
+                };
+                UserSettingsComponent.prototype.removeFromBlockList = function (email) {
+                    this.user.removeFromBlockList(email);
+                };
+                UserSettingsComponent.prototype.save = function () {
+                    this.authService.saveUserData(this.user.toJSON());
+                };
+                return UserSettingsComponent;
+            }());
+            UserSettingsComponent.ctorParameters = function () { return [
+                { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] }
+            ]; };
+            UserSettingsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+                Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+                    selector: 'app-user-settings',
+                    template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./user-settings.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/user-settings/user-settings.component.html")).default,
+                    styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./user-settings.component.scss */ "./src/app/user-settings/user-settings.component.scss")).default]
+                })
+            ], UserSettingsComponent);
             /***/ 
         }),
         /***/ "./src/environments/environment.ts": 

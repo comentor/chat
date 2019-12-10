@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-// import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,12 +12,16 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { environment } from '../environments/environment';
+import { MatDialogModule } from "@angular/material";
+import { UserSettingsComponent } from './user-settings/user-settings.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    ChatComponent
+    ChatComponent,
+    UserSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -29,13 +32,15 @@ import { environment } from '../environments/environment';
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebase),
     BrowserAnimationsModule, // required animations module
+    MatDialogModule,
     ToastrModule.forRoot({
       timeOut: 3500,
     }),
-    // HttpModule,
 		HttpClientModule,
   ],
-  providers: [],
+  entryComponents: [UserSettingsComponent],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

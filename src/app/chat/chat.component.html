@@ -1,7 +1,8 @@
 <span class="adapter-data">Communication with database through: {{apiAdapter}}</span>
 <div class="user-info">
-    <h3 *ngIf="user">Logged as {{user.email}}</h3>
+    <h3 *ngIf="user">Logged as {{authUser.email}}</h3>
     <img class="avatar" src="{{avatar}}" />
+    <img (click)="openUserSettings()" class="user-settings" src="/assets/icons/settings.svg" />
     <button class="btn secondary logout-btn" (click)=logout()>Logout</button>
 </div>
 
@@ -57,7 +58,10 @@
         <div class="invite-private-block">
             <h3>Members</h3>
             <div *ngFor="let email of room.users">
-                <div [ngClass]="{'current-room': isMe(email)}" class="item"><span class="new-room" *ngIf="!isMember(email)">(invited)</span>{{email}}</div>
+                <div [ngClass]="{'current-room': isMe(email)}" class="item">
+                    <img *ngIf="!isMe(email)" (click)="blockMember(email)" class="member-settings" src="/assets/icons/block.svg" />
+                    <span class="new-room" *ngIf="!isMember(email)">(invited)</span>{{email}}
+                </div>
             </div>
         </div>
         <button class="btn primary leave-btn" [disabled]="false" (click)=leaveRoom()>Leave room</button>

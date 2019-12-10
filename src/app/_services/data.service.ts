@@ -4,7 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service'
-import { Message, Room } from './../_models'
+import { Message, Room, User } from './../_models'
 import { HttpClient } from '@angular/common/http';
 
 export const roomTypes = {
@@ -16,7 +16,8 @@ const WEBSOCKET_HOST = location.origin.replace(/^http/, 'ws').replace(/^https/, 
   providedIn: 'root'
 })
 export class DataService {
-  user: any;
+  authUser: any;
+  user: User;
   messages: BehaviorSubject<Array<Message>>;
   rooms: BehaviorSubject<Array<Room>>;
   roomId: string;
@@ -24,28 +25,22 @@ export class DataService {
   private roomSubscription: any;
   private feedSocket: any;
   private roomSocket: any;
-  // private adapter = 'SERVER';
-  // private adapter = 'SERVER';
   constructor(
     private authService: AuthService,
     private fireAuth: AngularFireAuth,
     private firestore: AngularFirestore,
     private httpClient: HttpClient
   ) { 
-    // var HOST = location.origin.replace(/^http/, 'ws')
-    // var ws = new WebSocket(HOST);
-    // ws.onmessage = function (event) {
-    //   console.log(event);
-    // };
-    console.log(this.authService.apiAdapter);
-    // this.adapter = this.authService.apiAdapter;
     this.messages = new BehaviorSubject([]);
     this.rooms = new BehaviorSubject([]);
-    this.authService.authUser().subscribe(user => {
-      if (user) {
-        this.user = user;
+    this.authService.authUser().subscribe(authUser => {
+      if (authUser) {
+        this.authUser = authUser;
         this.subsribeToRooms();
       }
+    });
+    this.authService.userData().subscribe(user => {
+        this.user = new User(user.data());
     })
   }
   getMessages() {
@@ -61,7 +56,7 @@ export class DataService {
     if (!message.id) {
       const sentAt = (new Date()).toISOString();
       message = Object.assign({
-        sentBy: this.user.email,
+        sentBy: this.authUser.email,
         sentAt: sentAt,
         hiddenFor: []
       }, message);
@@ -109,7 +104,7 @@ export class DataService {
   async createPrivate(email: string) {
     await this.saveRoom({
       type: roomTypes.PRIVATE,
-      users: [this.user.email, email]
+      users: [this.authUser.email, email]
     });
   }
   async inviteToRoom(room, email) {
@@ -120,10 +115,11 @@ export class DataService {
       throw 'The user is already in the room!';
     }
     room.users.push(email);
+    room.invitedBy[email] = this.authUser.email;
     return await this.saveRoom(room);
   }
   async leaveRoom(room) {
-    room.users = room.users.filter(email => email !== this.user.email);
+    room.users = room.users.filter(email => email !== this.authUser.email);
     await this.saveRoom(room);
   }
   async saveRoom(room) {
@@ -131,10 +127,11 @@ export class DataService {
       const createdAt = (new Date()).toISOString();
       room = Object.assign({
         createdAt,
-        createdBy: this.user.email,
-        users: [this.user.email],
+        createdBy: this.authUser.email,
+        users: [this.authUser.email],
+        invitedBy: {},
         joinedAt: {
-          [this.user.email]: createdAt
+          [this.authUser.email]: createdAt
         }
       }, room);
     }
@@ -143,8 +140,8 @@ export class DataService {
   setRoom(roomId) {
     this.roomId = roomId;
     let room = this.getRooms().getValue().find(room => roomId === room.id);
-    if (!room.joinedAt[this.user.email]) {
-      room.joinedAt[this.user.email] = (new Date()).toISOString();
+    if (!room.joinedAt[this.authUser.email]) {
+      room.joinedAt[this.authUser.email] = (new Date()).toISOString();
       this.saveRoom(room);  
     }
     this.subsribeToFeed();
@@ -154,7 +151,7 @@ export class DataService {
     if (!Array.isArray(message.hiddenFor)) {
       message.hiddenFor = [];
     }
-    message.hiddenFor.push(this.user.email);
+    message.hiddenFor.push(this.authUser.email);
     await this.saveMessage(message);
   }
   subsribeToFeed() {
@@ -168,12 +165,12 @@ export class DataService {
     this.feedSocket = new WebSocket(WEBSOCKET_HOST);
     this.feedSocket.onopen = () => {
       const room = this.getRooms().getValue().find(room => this.roomId === room.id);
-      this.feedSocket.send(JSON.stringify({event: 'setRoom', data: {roomId: this.roomId, joinedAt: room.joinedAt[this.user.email]}}));
+      this.feedSocket.send(JSON.stringify({event: 'setRoom', data: {roomId: this.roomId, joinedAt: room.joinedAt[this.authUser.email]}}));
     }
     this.feedSocket.onmessage = (event) => {
       const res = JSON.parse(event.data);
       if(Array.isArray(res.data)) {
-        this.messages.next(res.data.filter(message => !message.hiddenFor || !message.hiddenFor.includes(this.user.email)));
+        this.messages.next(res.data.filter(message => !message.hiddenFor || !message.hiddenFor.includes(this.authUser.email)));
       }
     }
   }
@@ -187,12 +184,12 @@ export class DataService {
       const room = this.getRooms().getValue().find(room => this.roomId === room.id);
       query = query.orderBy('sentAt', 'asc');
       if (this.roomId) { query = query.where('roomId', '==', this.roomId); }
-      if (room && room.joinedAt[this.user.email]) { query = query.where('sentAt', '>', room.joinedAt[this.user.email]); }
+      if (room && room.joinedAt[this.authUser.email]) { query = query.where('sentAt', '>', room.joinedAt[this.authUser.email]); }
       return query;
     }).snapshotChanges().subscribe((data) => {
       const messages = data.map((e) => {
         return <Message> { ...e.payload.doc.data(), id: e.payload.doc.id }
-      }).filter(message => !message.hiddenFor || !message.hiddenFor.includes(this.user.email));
+      }).filter(message => !message.hiddenFor || !message.hiddenFor.includes(this.authUser.email));
         this.messages.next(messages);
       });
   }
@@ -204,7 +201,7 @@ export class DataService {
     if (this.roomSocket) { this.roomSocket.close(); }
     this.roomSocket = new WebSocket(WEBSOCKET_HOST);
     this.roomSocket.onopen = () => {
-      this.roomSocket.send(JSON.stringify({event: 'getRooms', data: {email: this.user.email}}));
+      this.roomSocket.send(JSON.stringify({event: 'getRooms', data: {email: this.authUser.email}}));
     }
     this.roomSocket.onmessage = (event) => {
       const res = JSON.parse(event.data);
@@ -218,11 +215,14 @@ export class DataService {
     if (this.roomSocket) { this.roomSocket.close(); }
     this.roomSubscription = this.firestore.collection('rooms', (ref) => {
       let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-      query = query.where('users', 'array-contains', this.user.email);
+      query = query.where('users', 'array-contains', this.authUser.email);
+      query = query.orderBy('createdAt', 'desc');
 			return query;
     }).snapshotChanges().subscribe((data) => {
       const rooms = data.map((e) => {
         return <Room> { ...e.payload.doc.data(), id: e.payload.doc.id }
+      }).filter((room) => {
+        return !this.user.blockList.includes(room.invitedBy[this.authUser.email])
       });
       this.rooms.next(rooms);
     });
