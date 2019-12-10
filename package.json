@@ -9,6 +9,7 @@
     "build": "ng build",
     "build-server": "cd server && npm run build",
     "postinstall": "cd server && npm i",
+    "install-all": "npm i && cd server && npm i",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
