@@ -5,8 +5,7 @@ Angular 8 / NodeJS chat with groups and private messaging. Supports two API: Ang
 ## Installation
 
 You should have installed "node": "10.x" and "npm": "6.x" to run the applcation.
-Also for some commands, you will need "angular-cli" installed.
-To install dependendencies run "install-all".
+To install both server and client dependendencies run "npm i".
 
 ## Build
 

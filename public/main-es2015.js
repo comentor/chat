@@ -382,8 +382,8 @@ class Room {
     constructor(json) {
         this.id = '';
         this.name = '';
-        this.createAt = '';
-        this.createBy = '';
+        this.createdAt = '';
+        this.createdBy = '';
         this.type = '';
         this.users = [];
         this.joinedAt = {};
@@ -474,7 +474,6 @@ let AuthService = class AuthService {
             this.apiAdapter = localStorage.getItem('apiAdapter');
         }
         this.user = this.fireAuth.authState;
-        // fireAuth.authState.
         this.authState = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
         this.user.subscribe((user) => {
             this.authState.next(Boolean(user));
@@ -1072,6 +1071,10 @@ let ChatComponent = class ChatComponent {
         this.roomName = '';
         this.emailCommon = '';
         this.emailPrivate = '';
+        this.audio = {
+            message: null,
+            group: null
+        };
         this.authService.authUser().subscribe((authUser) => {
             if (authUser) {
                 this.authUser = authUser;
@@ -1085,7 +1088,16 @@ let ChatComponent = class ChatComponent {
         this.authService.userData().subscribe((user) => {
             this.user = new _models__WEBPACK_IMPORTED_MODULE_5__["User"](user.data());
         });
-        this.dataService.getMessages().subscribe(messages => { this.messages = messages; setTimeout(this.scrollToBottom.bind(this), 200); });
+        this.audio.message = new Audio('./../../assets/sounds/hollow.mp3');
+        this.audio.group = new Audio('./../../assets/sounds/worthwhile.mp3');
+        this.dataService.getMessages().subscribe(messages => {
+            this.messages = messages;
+            setTimeout(this.scrollToBottom.bind(this), 200);
+            const lastMessage = this.messages[this.messages.length - 1];
+            if (lastMessage && (new Date()).valueOf() - (new Date(lastMessage.sentAt)).valueOf() < 3000) {
+                this.audio.message.play();
+            }
+        });
         this.dataService.getRooms().subscribe(rooms => {
             this.rooms = rooms;
             const roomId = localStorage && localStorage.getItem('roomId');
@@ -1094,11 +1106,15 @@ let ChatComponent = class ChatComponent {
                     if (room.id === roomId) {
                         this.onRoomClick(room);
                     }
+                    const lastRoom = this.rooms[0];
+                    if (lastRoom && (new Date()).valueOf() - (new Date(lastRoom.createdAt)).valueOf() < 3000) {
+                        this.audio.group.play();
+                    }
                     return false;
                 });
             }
         });
-        // this.roomTypes = roomTypes;
+        this.roomTypes = _services_data_service__WEBPACK_IMPORTED_MODULE_3__["roomTypes"];
     }
     ngOnInit() {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {

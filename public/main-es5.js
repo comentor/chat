@@ -451,8 +451,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 function Room(json) {
                     this.id = '';
                     this.name = '';
-                    this.createAt = '';
-                    this.createBy = '';
+                    this.createdAt = '';
+                    this.createdBy = '';
                     this.type = '';
                     this.users = [];
                     this.joinedAt = {};
@@ -533,7 +533,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                         this.apiAdapter = localStorage.getItem('apiAdapter');
                     }
                     this.user = this.fireAuth.authState;
-                    // fireAuth.authState.
                     this.authState = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](false);
                     this.user.subscribe(function (user) {
                         _this.authState.next(Boolean(user));
@@ -1209,6 +1208,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     this.roomName = '';
                     this.emailCommon = '';
                     this.emailPrivate = '';
+                    this.audio = {
+                        message: null,
+                        group: null
+                    };
                     this.authService.authUser().subscribe(function (authUser) {
                         if (authUser) {
                             _this.authUser = authUser;
@@ -1222,7 +1225,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                     this.authService.userData().subscribe(function (user) {
                         _this.user = new _models__WEBPACK_IMPORTED_MODULE_5__["User"](user.data());
                     });
-                    this.dataService.getMessages().subscribe(function (messages) { _this.messages = messages; setTimeout(_this.scrollToBottom.bind(_this), 200); });
+                    this.audio.message = new Audio('./../../assets/sounds/hollow.mp3');
+                    this.audio.group = new Audio('./../../assets/sounds/worthwhile.mp3');
+                    this.dataService.getMessages().subscribe(function (messages) {
+                        _this.messages = messages;
+                        setTimeout(_this.scrollToBottom.bind(_this), 200);
+                        var lastMessage = _this.messages[_this.messages.length - 1];
+                        if (lastMessage && (new Date()).valueOf() - (new Date(lastMessage.sentAt)).valueOf() < 3000) {
+                            _this.audio.message.play();
+                        }
+                    });
                     this.dataService.getRooms().subscribe(function (rooms) {
                         _this.rooms = rooms;
                         var roomId = localStorage && localStorage.getItem('roomId');
@@ -1231,11 +1243,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                                 if (room.id === roomId) {
                                     _this.onRoomClick(room);
                                 }
+                                var lastRoom = _this.rooms[0];
+                                if (lastRoom && (new Date()).valueOf() - (new Date(lastRoom.createdAt)).valueOf() < 3000) {
+                                    _this.audio.group.play();
+                                }
                                 return false;
                             });
                         }
                     });
-                    // this.roomTypes = roomTypes;
+                    this.roomTypes = _services_data_service__WEBPACK_IMPORTED_MODULE_3__["roomTypes"];
                 }
                 ChatComponent.prototype.ngOnInit = function () {
                     return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {

@@ -2,8 +2,8 @@ import _ from 'lodash';
 export class Room {
   id = '';
   name = '';
-  createAt = '';
-  createBy = '';
+  createdAt = '';
+  createdBy = '';
   type = '';
   users = [];
   joinedAt: any = {};

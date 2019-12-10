@@ -120,7 +120,7 @@ export class ChatApi {
         const ref = this.firestore.collection('rooms');
         return ref
             .where('users', 'array-contains', data.email)
-            // .orderBy('createdAt', 'asc')
+            .orderBy('createdAt', 'desc')
             .onSnapshot(docSnapshot => {
                 const records = docSnapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}));
                 ws.send(JSON.stringify({event: 'newRooms', data: records}));

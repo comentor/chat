@@ -201,7 +201,7 @@ var ChatApi = /** @class */ (function () {
         var ref = this.firestore.collection('rooms');
         return ref
             .where('users', 'array-contains', data.email)
-            // .orderBy('createdAt', 'asc')
+            .orderBy('createdAt', 'desc')
             .onSnapshot(function (docSnapshot) {
             var records = docSnapshot.docs.map(function (doc) { return (__assign({ id: doc.id }, doc.data())); });
             ws.send(JSON.stringify({ event: 'newRooms', data: records }));

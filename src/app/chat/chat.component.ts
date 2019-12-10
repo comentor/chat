@@ -26,6 +26,10 @@ export class ChatComponent implements OnInit {
   private emailCommon: string = '';
   private emailPrivate: string = '';
   private apiAdapter: string;
+  private audio = {
+    message: null,
+    group: null
+  }
   @ViewChild('scroller', {static: false}) private feedContainer: ElementRef;
   constructor(
     private dataService: DataService,
@@ -45,8 +49,16 @@ export class ChatComponent implements OnInit {
     this.authService.userData().subscribe((user) => {
       this.user = new User(user.data());
     });
-    
-    this.dataService.getMessages().subscribe(messages => { this.messages = messages; setTimeout(this.scrollToBottom.bind(this), 200); });
+    this.audio.message = new Audio('./../../assets/sounds/hollow.mp3');
+    this.audio.group = new Audio('./../../assets/sounds/worthwhile.mp3');
+    this.dataService.getMessages().subscribe(messages => { 
+      this.messages = messages; 
+      setTimeout(this.scrollToBottom.bind(this), 200); 
+      const lastMessage = this.messages[this.messages.length-1];
+      if (lastMessage && (new Date()).valueOf() - (new Date(lastMessage.sentAt)).valueOf() < 3000) {
+        this.audio.message.play();
+      }
+    });
     this.dataService.getRooms().subscribe(rooms => { 
       this.rooms = rooms; 
       const roomId = localStorage && localStorage.getItem('roomId');
@@ -54,6 +66,10 @@ export class ChatComponent implements OnInit {
         this.rooms.forEach((room) => {
           if (room.id === roomId) {
             this.onRoomClick(room);
+          }
+          const lastRoom = this.rooms[0];
+          if (lastRoom && (new Date()).valueOf() - (new Date(lastRoom.createdAt)).valueOf() < 3000) {
+            this.audio.group.play();
           }
           return false;
         })
